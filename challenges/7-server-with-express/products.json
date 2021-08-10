@@ -1,0 +1,20 @@
+[
+  {
+    "title": "water",
+    "price": "$200",
+    "thumbnail": "./img/water.png",
+    "id": 1
+  },
+  {
+    "title": "orange",
+    "price": "$10",
+    "thumbnail": "./img/orange.png",
+    "id": 2
+  },
+  {
+    "title": "milk",
+    "price": "$90",
+    "thumbnail": "./img/milk.png",
+    "id": 3
+  }
+]
