@@ -1,13 +1,16 @@
-const express = require('express');
-const productsRoute = require('./routes/productsRoute');
+const express = require("express");
+const fs = require("fs");
 const app = express();
-const handlebars = require('express-handlebars');
-const port = 3000
+const handlebars = require("express-handlebars");
+const port = 3000;
+
+let rawData = fs.readFileSync("products.json", "utf-8");
+let products = JSON.parse(rawData.toString("utf-8"));
 
 //Middlewares
 app.use(express.text());
 app.use(express.json());
-app.use(express.urlencoded({extended: true}));
+app.use(express.urlencoded({ extended: true }));
 
 //Handlebars
 app.engine(
@@ -18,41 +21,64 @@ app.engine(
     layoutsDir: __dirname + "/views/layouts",
     partialsDir: __dirname + "/views/partials",
   })
-)
+);
 
+//Engines
 app.set("view engine", "hbs");
 app.set("views", "./views");
+
+//Static files
 app.use(express.static("public"));
 
 //Routes
-app.use('/api', productsRoute);
-app.get('', (req, res,) => {
-  //res.sendFile('/public/index.hbs', {root: __dirname});
-  res.render("index", {
-    products: [
-      {
-        "title": "calculator",
-        "price": 123.45,
-        "thumbnail": "https://cdn3.iconfinder.com/data/icons/education-209/64/calculator-math-tool-school-128.png",
-        "id": 0
-      },
-      {
-        "title": "squad",
-        "price": 234.56,
-        "thumbnail": "https://cdn3.iconfinder.com/data/icons/education-209/64/ruler-triangle-stationary-school-128.png",
-        "id": 1
-      },
-      {
-        "title": "clock",
-        "price": 345,
-        "thumbnail": "https://cdn3.iconfinder.com/data/icons/education-209/64/clock-stopwatch-timer-time-128.png",
-        "id": 2
-      }
-    ]
-  })
-})
+app.get("/", (req, res) => {
+  res.render("index", { products: [...products] });
+});
+
+app.get("/api/products", (req, res) => {
+  if (products.length > 1) {
+    res.render("products", { products: [...products] });
+  } else {
+    res.send("There are no products.");
+  }
+});
+
+app.get("/api/products/list/:id", (req, res) => {
+  const productId = req.params.id;
+  if (productId >= 0 && productId <= products.length - 1) {
+    res.render("products", { products: [products[productId]] });
+  } else {
+    res.send("Product not found");
+  }
+});
+
+app.post("/api/products", (req, res) => {
+  const data = req.body;
+  products = [...products, { ...data, id: products.length }];
+  res.render("products", { products: [...products] });
+});
+
+app.put("/api/products/update/:id", (req, res) => {
+  const productId = req.params.id;
+  if (productId >= 0 && productId <= products.length - 1) {
+    products[productId] = { ...req.body, id: productId };
+    res.render("products", { products: [products[productId]] });
+  } else {
+    res.send("Product not found");
+  }
+});
+
+app.delete("/api/products/delete/:id", (req, res) => {
+  const productId = req.params.id;
+  if (productId >= 0 && productId <= products.length - 1) {
+    const deletedItem = products.splice(productId, 1);
+    res.render("products", { products: [deletedItem[0]] });
+  } else {
+    res.send("Product not found");
+  }
+});
 
 //Port
 app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`)
-})
+  console.log(`Example app listening at http://localhost:${port}`);
+});
