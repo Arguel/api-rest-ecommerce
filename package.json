@@ -5,14 +5,15 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "babel babel/src -d babel/lib"
+    "build": "babel babel/src -d babel/lib",
+    "lint": "eslint ."
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Arguel/api-rest-ecommerce.git"
   },
   "keywords": [
-    "nodejs",
+    "node",
     "javascript",
     "typescript"
   ],
@@ -26,11 +27,22 @@
     "@babel/cli": "^7.14.8",
     "@babel/core": "^7.15.0",
     "@babel/preset-env": "^7.15.0",
+    "@typescript-eslint/eslint-plugin": "^4.29.2",
+    "@typescript-eslint/parser": "^4.29.2",
+    "eslint": "^7.32.0",
+    "eslint-config-google": "^0.14.0",
+    "husky": "^7.0.1",
     "typescript": "^4.3.5"
   },
   "dependencies": {
     "express": "^4.17.1",
     "express-handlebars": "^5.3.3",
     "rxjs": "^7.3.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint",
+      "pre-push": "npm run test"
+    }
   }
 }
