@@ -4,15 +4,15 @@ const app = express();
 const handlebars = require("express-handlebars");
 const port = 3000;
 
-let rawData = fs.readFileSync("products.json", "utf-8");
+const rawData = fs.readFileSync("products.json", "utf-8");
 let products = JSON.parse(rawData.toString("utf-8"));
 
-//Middlewares
+// Middlewares
 app.use(express.text());
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({extended: true}));
 
-//Handlebars
+// Handlebars
 app.engine(
   "hbs",
   handlebars({
@@ -20,24 +20,24 @@ app.engine(
     defaultLayout: "main.hbs",
     layoutsDir: __dirname + "/views/layouts",
     partialsDir: __dirname + "/views/partials",
-  })
+  }),
 );
 
-//Engines
+// Engines
 app.set("view engine", "hbs");
 app.set("views", "./views");
 
-//Static files
+// Static files
 app.use(express.static("public"));
 
-//Routes
+// Routes
 app.get("/", (req, res) => {
-  res.render("index", { products: [...products] });
+  res.render("index", {products: [...products]});
 });
 
 app.get("/api/products", (req, res) => {
   if (products.length > 1) {
-    res.render("products", { products: [...products] });
+    res.render("products", {products: [...products]});
   } else {
     res.send("There are no products.");
   }
@@ -46,7 +46,7 @@ app.get("/api/products", (req, res) => {
 app.get("/api/products/:id", (req, res) => {
   const productId = req.params.id;
   if (productId >= 0 && productId <= products.length - 1) {
-    res.render("products", { products: [products[productId]] });
+    res.render("products", {products: [products[productId]]});
   } else {
     res.send("Product not found");
   }
@@ -54,15 +54,15 @@ app.get("/api/products/:id", (req, res) => {
 
 app.post("/api/products", (req, res) => {
   const data = req.body;
-  products = [...products, { ...data, id: products.length }];
-  res.render("products", { products: [...products] });
+  products = [...products, {...data, id: products.length}];
+  res.render("products", {products: [...products]});
 });
 
 app.put("/api/products/:id", (req, res) => {
   const productId = req.params.id;
   if (productId >= 0 && productId <= products.length - 1) {
-    products[productId] = { ...req.body, id: productId };
-    res.render("products", { products: [products[productId]] });
+    products[productId] = {...req.body, id: productId};
+    res.render("products", {products: [products[productId]]});
   } else {
     res.send("Product not found");
   }
@@ -72,13 +72,13 @@ app.delete("/api/products/:id", (req, res) => {
   const productId = req.params.id;
   if (productId >= 0 && productId <= products.length - 1) {
     const deletedItem = products.splice(productId, 1);
-    res.render("products", { products: [deletedItem[0]] });
+    res.render("products", {products: [deletedItem[0]]});
   } else {
     res.send("Product not found");
   }
 });
 
-//Port
+// Port
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });

@@ -9,13 +9,13 @@ class Archive {
     try {
       const rawData = await fs.promises.readFile(
         `${this._filename}.txt`,
-        "utf-8"
+        "utf-8",
       );
       const data = JSON.parse(rawData.toString("utf-8"));
       console.log(data);
     } catch {
       console.log(
-        `The ${this._filename} file was not found, creating ${this._filename}.txt...`
+        `The ${this._filename} file was not found, creating ${this._filename}.txt...`,
       );
       fs.writeFileSync(`${this._filename}.txt`, "", "utf-8");
     }
@@ -28,17 +28,17 @@ class Archive {
       fs.writeFileSync(
         `${this._filename}.txt`,
         JSON.stringify(
-          [...data, { ...productObj, id: data.length + 1 }],
+          [...data, {...productObj, id: data.length + 1}],
           null,
-          "\t"
+          "\t",
         ),
-        "utf-8"
+        "utf-8",
       );
     } catch {
       fs.writeFileSync(
         `${this._filename}.txt`,
-        JSON.stringify([{ ...productObj, id: 1 }], null, "\t"),
-        "utf-8"
+        JSON.stringify([{...productObj, id: 1}], null, "\t"),
+        "utf-8",
       );
     }
   }
@@ -60,4 +60,4 @@ myArchive.save = {
   price: "$200",
   thumbnail: "./img/pato.png",
 };
-//myArchive.delete;
+// myArchive.delete;

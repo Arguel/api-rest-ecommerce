@@ -1,5 +1,4 @@
 export default class Suma {
-
   private resultado: number = 0;
 
   constructor(a: number, b: number) {

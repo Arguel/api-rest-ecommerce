@@ -4,9 +4,11 @@
   "description": "Rest api using Node.js and MongoDB",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "echo \"Error: no test specified\"",
     "build": "babel babel/src -d babel/lib",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "lintfix": "npm run lint -- --fix",
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
@@ -38,11 +40,5 @@
     "express": "^4.17.1",
     "express-handlebars": "^5.3.3",
     "rxjs": "^7.3.0"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run lint",
-      "pre-push": "npm run test"
-    }
   }
 }
