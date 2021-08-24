@@ -1,7 +1,7 @@
 const express = require("express");
 const fs = require("fs");
 const app = express();
-const handlebars = require("express-handlebars");
+// const pug = require("pug");
 const port = 3000;
 
 const rawData = fs.readFileSync("products.json", "utf-8");
@@ -12,19 +12,8 @@ app.use(express.text());
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
-// Handlebars
-app.engine(
-  "hbs",
-  handlebars({
-    extname: ".hbs",
-    defaultLayout: "main.hbs",
-    layoutsDir: __dirname + "/views/layouts",
-    partialsDir: __dirname + "/views/partials",
-  }),
-);
-
 // Engines
-app.set("view engine", "hbs");
+app.set("view engine", "pug");
 app.set("views", "./views");
 
 // Static files

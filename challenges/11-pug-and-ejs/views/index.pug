@@ -1,0 +1,12 @@
+form(class="bg-danger m-2 rounded p-2 text-white" action="api/products" method="POST" accept-charset="utf-8")
+  //-title
+  label(class="form-label" for="title") Item title
+  input(class="form-control" type="text" name="title" id="title" placeholder="item title") 
+  //-price
+  label(class="form-label" for="price") Item price
+  input(class="form-control" type="number" name="price" id="price" value="1")
+  //-thumbnail
+  label(class="form-label" for="thumbnail") Item thumbnail
+  input(class="form-control" type="text" name="thumbnail" id="thumbnail" placeholder="Eg. './img/pato.png'")
+  br
+  button(class="btn bg-dark text-white" type="submit") Submit
