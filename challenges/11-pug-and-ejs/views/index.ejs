@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Challenge - 10</title>
+    <!--Bootstrap css-->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We"
+      crossorigin="anonymous"
+    />
+    <!--Bootstrap js bundle-->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
+      crossorigin="anonymous"
+      defer
+    ></script>
+  </head>
+
+  <body>
+    <form
+      class="bg-danger m-2 rounded p-2 text-white"
+      action="api/products"
+      method="POST"
+      accept-charset="utf-8"
+    >
+      <!--title-->
+      <label class="form-label" for="title">Item title</label>
+      <input
+        class="form-control"
+        type="text"
+        name="title"
+        id="title"
+        placeholder="item title"
+      />
+      <!--price-->
+      <label class="form-label" for="price">Item price</label>
+      <input
+        class="form-control"
+        type="number"
+        name="price"
+        id="price"
+        value="1"
+      />
+      <!--thumbnail-->
+      <label class="form-label" for="thumbnail">Item thumbnail</label>
+      <input
+        class="form-control"
+        type="text"
+        name="thumbnail"
+        id="thumbnail"
+        placeholder="Eg. './img/pato.png'"
+      />
+      <br />
+      <button class="btn bg-dark text-white" type="submit">Submit</button>
+    </form>
+  </body>
+</html>

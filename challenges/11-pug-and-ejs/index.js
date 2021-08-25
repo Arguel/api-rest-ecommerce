@@ -1,7 +1,6 @@
 const express = require("express");
 const fs = require("fs");
 const app = express();
-// const pug = require("pug");
 const port = 3000;
 
 const rawData = fs.readFileSync("products.json", "utf-8");
@@ -13,8 +12,8 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
 // Engines
-app.set("view engine", "pug");
-app.set("views", "./views");
+app.set("view engine", "ejs");
+app.set("views", __dirname + "/views");
 
 // Static files
 app.use(express.static("public"));
@@ -32,7 +31,7 @@ app.get("/api/products", (req, res) => {
   }
 });
 
-app.get("/api/products/:id", (req, res) => {
+app.get("/api/products/list/:id", (req, res) => {
   const productId = req.params.id;
   if (productId >= 0 && productId <= products.length - 1) {
     res.render("products", {products: [products[productId]]});
@@ -47,7 +46,7 @@ app.post("/api/products", (req, res) => {
   res.render("products", {products: [...products]});
 });
 
-app.put("/api/products/:id", (req, res) => {
+app.put("/api/products/update/:id", (req, res) => {
   const productId = req.params.id;
   if (productId >= 0 && productId <= products.length - 1) {
     products[productId] = {...req.body, id: productId};
@@ -57,7 +56,7 @@ app.put("/api/products/:id", (req, res) => {
   }
 });
 
-app.delete("/api/products/:id", (req, res) => {
+app.delete("/api/products/delete/:id", (req, res) => {
   const productId = req.params.id;
   if (productId >= 0 && productId <= products.length - 1) {
     const deletedItem = products.splice(productId, 1);
