@@ -1,0 +1,25 @@
+<div class="m-5 p-5 bg-light-2">
+  <h1 class="text-primary pt-3 mb-3">Enter product</h1>
+  <form class="row g-3 mb-3" action="api/products" method="POST" accept-charset="utf-8">
+    {{!-- title --}}
+    <div class="col-12">
+      <label class="form-label" for="title">Item title</label>
+      <input class="form-control" type="text" name="title" id="title" placeholder="item title" />
+    </div>
+    {{!-- price --}}
+    <div class="col-12">
+      <label class="form-label" for="price">Item price</label>
+      <input class="form-control" type="number" name="price" id="price" value="1" />
+    </div>
+    {{!-- thumbnail --}}
+    <div class="col-12">
+      <label class="form-label" for="thumbnail">Item thumbnail</label>
+      <input class="form-control" type="text" name="thumbnail" id="thumbnail" placeholder="Eg. './img/pato.png'" />
+    </div>
+    <div class="col-12">
+      <button class="btn btn-success" type="submit">Submit</button>
+    </div>
+  </form>
+  <hr/>
+  {{> table}}
+</div>
