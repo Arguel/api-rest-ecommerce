@@ -1,0 +1,86 @@
+<div class="m-5 p-5 bg-light-2">
+  <h1 class="text-primary pt-3 mb-3">Enter product</h1>
+  <form
+    class="row g-3 mb-3"
+    action="api/products"
+    method="POST"
+    accept-charset="utf-8"
+  >
+    {{!-- title --}}
+    <div class="col-12">
+      <label class="form-label" for="title">Item title</label>
+      <input
+        class="form-control"
+        type="text"
+        name="title"
+        id="title"
+        placeholder="item title"
+      />
+    </div>
+    {{!-- price --}}
+    <div class="col-12">
+      <label class="form-label" for="price">Item price</label>
+      <input
+        class="form-control"
+        type="number"
+        name="price"
+        id="price"
+        value="1"
+      />
+    </div>
+    {{!-- thumbnail --}}
+    <div class="col-12">
+      <label class="form-label" for="thumbnail">Item thumbnail</label>
+      <input
+        class="form-control"
+        type="text"
+        name="thumbnail"
+        id="thumbnail"
+        placeholder="Eg. './img/pato.png'"
+      />
+    </div>
+    <div class="col-12">
+      <button class="btn btn-success" type="submit">Submit</button>
+    </div>
+  </form>
+  <hr />
+  {{> table}}
+</div>
+<div class="m-5 p-5 bg-light-2">
+  <h1 class="text-primary pt-3 mb-3">Message center</h1>
+  <div class="w-50 mb-3">
+    <label class="form-label" for="userEmail">Your email</label>
+    <input
+      class="form-control"
+      type="email"
+      name="userEmail"
+      id="userEmail"
+      placeholder="duck@gmail.com"
+    />
+  </div>
+  <hr />
+  <ul class="list-unstyled my-4">
+    {{#each messages}}
+    <li>
+      <span class="text-primary fw-bold">{{ this.userEmail }} </span>
+      <span class="text-danger">[{{ this.messageDate }}] </span>
+      <span class="text-success">: {{ this.userMessage }}</span>
+    </li>
+    {{/each}}
+  </ul>
+  <form class="row align-items-end w-50" id="formMessages">
+    <div class="col-9">
+      <label class="form-label" for="userMessage">Your message</label>
+      <input
+        class="form-control"
+        type="text"
+        name="userMessage"
+        id="userMessage"
+        placeholder="Enter a message"
+      />
+    </div>
+    <div class="col-3">
+      <button class="btn btn-success w-100" type="submit">Send</button>
+    </div>
+  </form>
+</div>
