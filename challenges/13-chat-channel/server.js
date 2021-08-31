@@ -7,10 +7,10 @@ const fs = require("fs");
 const handlebars = require("express-handlebars");
 
 // Products json
-const productsData = fs.readFileSync("products.json", "utf-8");
+const productsData = fs.readFileSync(__dirname + "/products.json", "utf-8");
 let products = JSON.parse(productsData.toString("utf-8"));
 // Messages json
-const messagesData = fs.readFileSync("userMessages.json", "utf-8");
+const messagesData = fs.readFileSync(__dirname + "/userMessages.json", "utf-8");
 const messages = JSON.parse(messagesData.toString("utf-8"));
 
 // Middlewares
@@ -38,12 +38,12 @@ app.use(express.static("public"));
 
 // Routes
 app.get("/", (req, res) => {
-  res.render("index", {products: [...products], messages});
+  res.render("index", {products, messages});
 });
 
 app.get("/api/products", (req, res) => {
   if (products.length > 1) {
-    res.render("index", {products: [...products]});
+    res.render("index", {products});
   } else {
     res.send("There are no products.");
   }
@@ -62,7 +62,7 @@ app.post("/api/products", (req, res) => {
   const data = req.body;
   const newProduct = {...data, id: products.length};
   products = [...products, newProduct];
-  res.render("products", {products: [...products]});
+  res.render("products", {products});
   io.emit("newProduct", newProduct);
 });
 
@@ -90,6 +90,11 @@ io.on("connection", (socket) => {
   console.log("New connection");
   socket.on("newMessage", (message) => {
     messages.push(message);
+    fs.writeFileSync(
+      __dirname + "/userMessages.json",
+      JSON.stringify(messages, null, "\t"),
+      "utf-8",
+    );
     io.emit("messages", messages);
   });
 });
