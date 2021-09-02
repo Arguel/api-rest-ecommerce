@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const httpServer = require("http").createServer(app);
 const io = require("socket.io")(httpServer);
-const port = 3000;
+const port: number = 3000;
 const fs = require("fs");
 const handlebars = require("express-handlebars");
 
@@ -42,18 +42,15 @@ app.get("/", (req, res) => {
 });
 
 app.get("/api/products", (req, res) => {
-  if (products.length > 1)
-    res.render("index", {products});
-   else
-    res.send("There are no products.");
+  if (products.length > 1) res.render("index", {products});
+  else res.send("There are no products.");
 });
 
 app.get("/api/products/list/:id", (req, res) => {
   const productId = req.params.id;
   if (productId >= 0 && productId <= products.length - 1)
     res.render("products", {products: [products[productId]]});
-   else
-    res.send("Product not found");
+  else res.send("Product not found");
 });
 
 app.post("/api/products", (req, res) => {

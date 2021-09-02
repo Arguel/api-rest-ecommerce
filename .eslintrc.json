@@ -13,13 +13,14 @@
   "rules": {
     "require-jsdoc": "off",
     "quotes": ["error", "double"],
-    "max-len": ["error", {"code": 120}],
+    "max-len": ["warn", {"code": 120}],
     "indent": "off",
     "space-before-function-paren": "off",
     "new-cap": "warn",
     "no-var": "warn",
     "no-invalid-this": "warn",
     "prefer-rest-params": "warn",
-    "curly": ["warn", "multi", "consistent"]
+    "curly": ["warn", "multi", "consistent"],
+    "prefer-spread": "warn"
   }
 }
