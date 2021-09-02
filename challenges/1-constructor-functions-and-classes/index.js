@@ -12,11 +12,10 @@ function Usuario(nombre, apellido, libros, mascotas) {
     this.mascotas.push(mascota);
   };
   this.getMascotas = function () {
-    if (this.mascotas.length > 0) {
+    if (this.mascotas.length > 0)
       return this.mascotas.length;
-    } else {
+     else
       return "Lista de mascotas vacia";
-    }
   };
   /* the parameters are 2 strings*/
   this.addBook = function (bookName, author) {
@@ -27,12 +26,11 @@ function Usuario(nombre, apellido, libros, mascotas) {
     this.libros.push(book);
   };
   this.getBooks = function () {
-    if (this.libros.length > 0) {
+    if (this.libros.length > 0)
       /* return this.libros.reduce((acc, elem) => ([...acc, elem.nombre]), []);*/
       return this.libros.map((elem) => elem.nombre);
-    } else {
+     else
       return "Lista de libros vacia";
-    }
   };
 }
 
@@ -71,11 +69,10 @@ class UsuarioClass {
     this._mascotas.push(mascota);
   }
   get getMascotas() {
-    if (this._mascotas.length > 0) {
+    if (this._mascotas.length > 0)
       return this._mascotas.length;
-    } else {
+     else
       return "Lista de mascotas vacia";
-    }
   }
   /* the parameters are 2 strings*/
   addBook(bookName, author) {
@@ -86,12 +83,11 @@ class UsuarioClass {
     this._libros.push(book);
   }
   get getBooks() {
-    if (this._libros.length > 0) {
+    if (this._libros.length > 0)
       /* return this._libros.reduce((acc, elem) => ([...acc, elem.nombre]), []);*/
       return this._libros.map((elem) => elem.nombre);
-    } else {
+     else
       return "Lista de libros vacia";
-    }
   }
 }
 

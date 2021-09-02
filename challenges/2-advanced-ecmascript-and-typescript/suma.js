@@ -1,12 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", {value: true});
-class Suma {
-  constructor(a, b) {
+const Suma = /** @class */ (function () {
+  function Suma(a, b) {
     this.resultado = 0;
     this.resultado = a + b;
   }
-  ver() {
+  Suma.prototype.ver = function () {
     return this.resultado;
-  }
-}
+  };
+  return Suma;
+})();
 exports.default = Suma;

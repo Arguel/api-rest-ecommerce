@@ -5,7 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\"",
-    "build": "babel babel/src -d babel/lib",
+    "babel": "babel babel/src -d babel/lib",
+    "babelw": "babel babel/src -d babel/lib -w",
+    "ts": "npx tsc -p ./tsconfig.json",
+    "tsw": "npx tsc -p ./tsconfig.json -w",
     "lint": "eslint .",
     "lintfix": "npm run lint -- --fix",
     "prepare": "husky install"

@@ -23,22 +23,20 @@ let products = [
 ];
 
 router.get("/products/list", (req, res) => {
-  if (products.length) {
+  if (products.length)
     res.json(products);
-  } else {
+   else
     res.json({
       error: "No products loaded",
     });
-  }
 });
 
 router.get("/products/list/:id", (req, res) => {
   const productId = req.params.id;
-  if (productId >= 0 && productId <= products.length - 1) {
+  if (productId >= 0 && productId <= products.length - 1)
     res.json(products[productId]);
-  } else {
+   else
     res.send("Product not found");
-  }
 });
 
 router.post("/products/save", (req, res) => {

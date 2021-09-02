@@ -29,22 +29,20 @@ app.use(express.urlencoded({extended: true}));
 
 
 app.get("/api/products/list", (req, res) => {
-  if (products.length) {
+  if (products.length)
     res.json(products);
-  } else {
+   else
     res.json({
       "error": "No products loaded",
     });
-  }
 });
 
 app.get("/api/products/list/:id", (req, res) => {
   const productId = req.params.id;
-  if (productId >= 0 && productId <= products.length - 1) {
+  if (productId >= 0 && productId <= products.length - 1)
     res.json(products[productId]);
-  } else {
+   else
     res.send("Product not found");
-  }
 });
 
 app.post("/api/products/save", (req, res) => {

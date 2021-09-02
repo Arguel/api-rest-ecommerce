@@ -18,6 +18,8 @@
     "space-before-function-paren": "off",
     "new-cap": "warn",
     "no-var": "warn",
-    "no-invalid-this": "warn"
+    "no-invalid-this": "warn",
+    "prefer-rest-params": "warn",
+    "curly": ["warn", "multi", "consistent"]
   }
 }

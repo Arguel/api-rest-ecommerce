@@ -38,20 +38,18 @@ app.get("/", (req, res) => {
 });
 
 app.get("/api/products", (req, res) => {
-  if (products.length > 1) {
+  if (products.length > 1)
     res.render("index", {products: [...products]});
-  } else {
+   else
     res.send("There are no products.");
-  }
 });
 
 app.get("/api/products/list/:id", (req, res) => {
   const productId = req.params.id;
-  if (productId >= 0 && productId <= products.length - 1) {
+  if (productId >= 0 && productId <= products.length - 1)
     res.render("products", {products: [products[productId]]});
-  } else {
+   else
     res.send("Product not found");
-  }
 });
 
 app.post("/api/products", (req, res) => {

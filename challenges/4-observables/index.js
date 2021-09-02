@@ -20,13 +20,12 @@ document.addEventListener("DOMContentLoaded", () => {
     // e = e.target.value.split('').reverse().join('')
 
     espejo.textContent = e;
-    if (/rorre/.test(e)) {
+    if (/rorre/.test(e))
       // error
       blockInput("Salgo por error", subscription, inputText, espejo, true);
-    } else if (/etelpmoc/.test(e)) {
+     else if (/etelpmoc/.test(e))
       // complete
       blockInput("Complete", subscription, inputText, espejo, false);
-    }
   });
 
   setTimeout(() => {
