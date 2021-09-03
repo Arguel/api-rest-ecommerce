@@ -1,5 +1,6 @@
-const express = require("express");
-const app = express();
+// const express = require("express");
+import express from "express";
+const app: express.Application = express();
 const httpServer = require("http").createServer(app);
 const io = require("socket.io")(httpServer);
 const port: number = 3000;
@@ -37,7 +38,7 @@ app.set("views", "./views");
 app.use(express.static("public"));
 
 // Routes
-app.get("/", (req, res) => {
+app.get("/", (req: express.Request, res: express.Response) => {
   res.render("index", {products, messages});
 });
 
