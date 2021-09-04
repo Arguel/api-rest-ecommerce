@@ -33,10 +33,10 @@ app.engine(
 
 // Engines
 app.set("view engine", "hbs");
-app.set("views", "./views");
+app.set("views", __dirname + "/views");
 
 // Static files
-app.use(express.static("public"));
+app.use(express.static(__dirname + "/public"));
 
 // Routes
 app.get("/", (req: express.Request, res: express.Response) => {
