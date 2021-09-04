@@ -21,6 +21,7 @@
     "no-invalid-this": "warn",
     "prefer-rest-params": "warn",
     "curly": ["warn", "multi", "consistent"],
-    "prefer-spread": "warn"
+    "prefer-spread": "warn",
+    "camelcase": "warn"
   }
 }
