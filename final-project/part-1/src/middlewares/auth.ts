@@ -22,7 +22,7 @@ function isAdmin(
   else
     res.status(401).json({
       error: 401,
-      description: `route '${req.path}' method '${req.method}' unauthorized`,
+      description: `Route '${req.originalUrl}' - Method '${req.method}' unauthorized`,
     });
 }
 

@@ -31,6 +31,7 @@ const path_1 = __importDefault(require("path"));
 const products_routes_1 = __importDefault(require("./routes/products.routes"));
 const cart_routes_1 = __importDefault(require("./routes/cart.routes"));
 require("./database");
+const auth_1 = require("./middlewares/auth");
 const app = (0, express_1.default)();
 const server = http.createServer(app);
 // Settings
@@ -39,8 +40,17 @@ app.set("port", process.env.PORT || 8080);
 app.use((0, morgan_1.default)("dev"));
 app.use(express_1.default.json());
 // Routes
-app.use("/products", products_routes_1.default);
+app.get("/", function (req, res) {
+    res.sendFile(__dirname + "/public/index.html");
+});
+app.use("/products", auth_1.userProperties, products_routes_1.default);
 app.use("/cart", cart_routes_1.default);
+app.get("*", function (req, res) {
+    res.status(404).json({
+        error: 404,
+        description: "Route '" + req.originalUrl + "' - Method '" + req.method + "' not found",
+    });
+});
 // Static files
 app.use(express_1.default.static(path_1.default.join(__dirname, "public")));
 // Starting the server
