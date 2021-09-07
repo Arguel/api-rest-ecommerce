@@ -81,9 +81,6 @@ const mongoose_1 = __importDefault(require("mongoose"));
 const dotenv_1 = __importDefault(require("dotenv"));
 // import cors from "cors";
 dotenv_1.default.config();
-console.log("asdd");
-console.log(process.env.MONGO_URI);
-console.log(process.env.PORT);
 run().catch(function (err) {
  return console.log(err);
 });

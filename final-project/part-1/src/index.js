@@ -39,8 +39,8 @@ app.set("port", process.env.PORT || 8080);
 app.use((0, morgan_1.default)("dev"));
 app.use(express_1.default.json());
 // Routes
-app.use("products", products_routes_1.default);
-app.use("cart", cart_routes_1.default);
+app.use("/products", products_routes_1.default);
+app.use("/cart", cart_routes_1.default);
 // Static files
 app.use(express_1.default.static(path_1.default.join(__dirname, "public")));
 // Starting the server

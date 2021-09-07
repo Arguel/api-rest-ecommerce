@@ -5,6 +5,7 @@ import path from "path";
 import productsRoutes from "./routes/products.routes";
 import cartRoutes from "./routes/cart.routes";
 import "./database";
+import {userProperties, isAdmin} from "./../middlewares/auth";
 const app: express.Application = express();
 const server: http.Server = http.createServer(app);
 
@@ -16,8 +17,8 @@ app.use(morgan("dev"));
 app.use(express.json());
 
 // Routes
-app.use("products", productsRoutes);
-app.use("cart", cartRoutes);
+app.use("/products", productsRoutes);
+app.use("/cart", cartRoutes);
 
 // Static files
 app.use(express.static(path.join(__dirname, "public")));

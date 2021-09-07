@@ -3,9 +3,6 @@ import dotenv from "dotenv";
 // import cors from "cors";
 
 dotenv.config();
-console.log("asdd");
-console.log(process.env.MONGO_URI);
-console.log(process.env.PORT);
 
 run().catch((err) => console.log(err));
 
