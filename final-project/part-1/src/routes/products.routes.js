@@ -79,7 +79,7 @@ const __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", {value: true});
 const express_1 = __importDefault(require("express"));
 const products_1 = require("../models/products");
-const auth_1 = require("./../middlewares/auth");
+const auth_1 = require("../middlewares/auth");
 const router = express_1.default.Router();
 // GET all Products
 router.get("/", function (req, res) {

@@ -1,6 +1,6 @@
 import express from "express";
 import {ProductModel} from "../models/products";
-import {isAdmin} from "./../middlewares/auth";
+import {isAdmin} from "../middlewares/auth";
 const router = express.Router();
 
 // GET all Products

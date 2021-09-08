@@ -111,4 +111,3 @@ function run() {
         });
     });
 }
-exports.default = mongoose_1.default;
