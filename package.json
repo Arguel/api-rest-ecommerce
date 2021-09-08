@@ -4,7 +4,9 @@
   "description": "Rest api using Node.js and MongoDB",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node src/server.js",
+    "ts": "npx tsc -p ./tsconfig.json",
+    "tsw": "npx tsc -p ./tsconfig.json -w"
   },
   "repository": {
     "type": "git",
@@ -20,5 +22,16 @@
   "bugs": {
     "url": "https://github.com/Arguel/api-rest-ecommerce/issues"
   },
-  "homepage": "https://github.com/Arguel/api-rest-ecommerce#readme"
+  "homepage": "https://github.com/Arguel/api-rest-ecommerce#readme",
+  "devDependencies": {
+    "@types/express": "^4.17.13",
+    "@types/morgan": "^1.9.3",
+    "@types/node": "^16.9.0"
+  },
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "mongoose": "^6.0.5",
+    "morgan": "^1.10.0"
+  }
 }
