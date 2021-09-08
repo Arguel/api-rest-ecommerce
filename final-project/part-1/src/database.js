@@ -80,21 +80,33 @@ Object.defineProperty(exports, "__esModule", {value: true});
 const mongoose_1 = __importDefault(require("mongoose"));
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
-run().catch(function (err) {
- return console.log(err);
-});
+run();
 function run() {
     return __awaiter(this, void 0, void 0, function () {
+        let err_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    if (!process.env.MONGO_URI) return [3 /* break*/, 2];
-                    return [4 /* yield*/, mongoose_1.default.connect(process.env.MONGO_URI)];
+                    if (!process.env.MONGO_URI) return [3 /* break*/, 5];
+                    _a.label = 1;
                 case 1:
+                    _a.trys.push([1, 3, , 4]);
+                    return [4 /* yield*/, mongoose_1.default.connect(process.env.MONGO_URI)];
+                case 2:
                     _a.sent();
                     console.log("Mongo connected");
-                    _a.label = 2;
-                case 2: return [2];
+                    return [3 /* break*/, 4];
+                case 3:
+                    err_1 = _a.sent();
+                    console.error(err_1.message || "Mongo disconnected");
+                    process.exit(1);
+                    return [3 /* break*/, 4];
+                case 4: return [3 /* break*/, 6];
+                case 5:
+                    console.log("Could not find the file '.env'");
+                    process.exit(1);
+                    _a.label = 6;
+                case 6: return [2];
             }
         });
     });

@@ -3,12 +3,20 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-run().catch((err) => console.log(err));
+run();
 
 async function run(): Promise<void> {
   if (process.env.MONGO_URI) {
-    await mongoose.connect(process.env.MONGO_URI);
-    console.log("Mongo connected");
+    try {
+      await mongoose.connect(process.env.MONGO_URI);
+      console.log("Mongo connected");
+    } catch (err) {
+      console.error(err.message || "Mongo disconnected");
+      process.exit(1);
+    }
+  } else {
+    console.log("Could not find the file '.env'");
+    process.exit(1);
   }
 }
 
