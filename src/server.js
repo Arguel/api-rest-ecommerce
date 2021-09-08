@@ -1,16 +1,16 @@
 "use strict";
-const __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : {"default": mod};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-Object.defineProperty(exports, "__esModule", {value: true});
-const express_1 = __importDefault(require("express"));
-const morgan_1 = __importDefault(require("morgan"));
-const path_1 = __importDefault(require("path"));
-const products_routes_1 = __importDefault(require("./routes/products.routes"));
-const cart_routes_1 = __importDefault(require("./routes/cart.routes"));
+Object.defineProperty(exports, "__esModule", { value: true });
+var express_1 = __importDefault(require("express"));
+var morgan_1 = __importDefault(require("morgan"));
+var path_1 = __importDefault(require("path"));
+var products_routes_1 = __importDefault(require("./routes/products.routes"));
+var cart_routes_1 = __importDefault(require("./routes/cart.routes"));
 require("./database");
-const auth_1 = require("./middlewares/auth");
-const app = (0, express_1.default)();
+var auth_1 = require("./middlewares/auth");
+var app = (0, express_1.default)();
 // Settings
 app.set("port", process.env.PORT || 8080);
 // Middlewares
