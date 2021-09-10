@@ -5,7 +5,6 @@
   "main": "index.js",
   "scripts": {
     "start": "node final-project/part-1/src/server.js",
-    "test": "echo \"Error: no test specified\"",
     "babel": "babel babel/src -d babel/lib",
     "babelw": "babel babel/src -d babel/lib -w",
     "ts": "npx tsc -p ./tsconfig.json",
