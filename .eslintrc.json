@@ -22,6 +22,7 @@
     "prefer-rest-params": "warn",
     "curly": ["warn", "multi", "consistent"],
     "prefer-spread": "warn",
-    "camelcase": "warn"
+    "camelcase": "warn",
+    "linebreak-style": "warn"
   }
 }
