@@ -8,7 +8,7 @@ var morgan_1 = __importDefault(require("morgan"));
 var path_1 = __importDefault(require("path"));
 var products_routes_1 = __importDefault(require("./routes/products.routes"));
 var cart_routes_1 = __importDefault(require("./routes/cart.routes"));
-require("./database");
+require("./databaseMongoDb");
 var auth_1 = require("./middlewares/auth");
 var app = (0, express_1.default)();
 // Settings

@@ -6,7 +6,18 @@
     "code": 214124,
     "thumbnail": "https://cdn3.iconfinder.com/data/icons/education-209/64/calculator-math-tool-school-128.png",
     "price": 123.45,
-    "stock": 24
+    "stock": 24,
+    "__v": 0
+  },
+  {
+    "timestamp": "Mon Sep 06 2021 20:53:00 GMT-0300 (hora estándar de Argentina)",
+    "name": "Clock",
+    "description": "Simple clock",
+    "code": 52534,
+    "thumbnail": "https://cdn3.iconfinder.com/data/icons/education-209/64/clock-stopwatch-timer-time-128.png",
+    "price": 345.0,
+    "stock": 14,
+    "__v": 0
   },
   {
     "timestamp": "Mon Sep 06 2021 20:32:52 GMT-0300 (hora estándar de Argentina)",
@@ -15,15 +26,7 @@
     "code": 5252,
     "thumbnail": "https://cdn3.iconfinder.com/data/icons/education-209/64/ruler-triangle-stationary-school-128.png",
     "price": 234.56,
-    "stock": 42
-  },
-  {
-    "timestamp": "Mon Sep 06 2021 20:53:00 GMT-0300 (hora estándar de Argentina)",
-    "name": "Clock",
-    "description": "Simple clock",
-    "code": 52534,
-    "thumbnail": "https://cdn3.iconfinder.com/data/icons/education-209/64/clock-stopwatch-timer-time-128.png",
-    "price": 345,
-    "stock": 14
+    "stock": 42,
+    "__v": 0
   }
 ]
