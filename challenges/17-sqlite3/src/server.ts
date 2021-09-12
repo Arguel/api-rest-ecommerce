@@ -3,7 +3,6 @@ import morgan from "morgan";
 import path from "path";
 import productsRoutes from "./routes/products.routes";
 import cartRoutes from "./routes/cart.routes";
-import "./databaseMongoDb";
 import {userProperties} from "./middlewares/auth";
 const app: express.Application = express();
 

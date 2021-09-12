@@ -1,7 +1,9 @@
-export const options: object = {
+import {Knex} from "knex";
+
+export const options: Knex.Config = {
   client: "sqlite3",
   connection: {
-    filename: "./../db/myFirstDatabase.db",
+    filename: "./dist/db/myFirstDatabase.db",
   },
   useNullAsDefault: true,
 };

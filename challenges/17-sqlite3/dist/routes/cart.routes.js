@@ -40,8 +40,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = __importDefault(require("express"));
-var products_1 = require("../models/products");
-var cart_1 = require("../models/cart");
+var databaseKnex_1 = require("../databaseKnex");
 var router = express_1.default.Router();
 // GET all Products
 router.get("/", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
@@ -50,7 +49,7 @@ router.get("/", function (req, res) { return __awaiter(void 0, void 0, void 0, f
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, cart_1.CartProductModel.find()];
+                return [4 /*yield*/, (0, databaseKnex_1.knexInstance)("cartProducts").select("*")];
             case 1:
                 productsInCart = _a.sent();
                 res.status(200).json(productsInCart);
@@ -73,9 +72,7 @@ router.get("/:id", function (req, res) { return __awaiter(void 0, void 0, void 0
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, cart_1.CartProductModel.findOne({
-                        productId: req.params.id,
-                    })];
+                return [4 /*yield*/, (0, databaseKnex_1.knexInstance)("cartProducts").where("productId", req.params.id)];
             case 1:
                 productInCart = _a.sent();
                 res.status(200).json(productInCart);
@@ -93,25 +90,26 @@ router.get("/:id", function (req, res) { return __awaiter(void 0, void 0, void 0
 }); });
 // ADD a new Product
 router.post("/:id", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, _id, timestamp, name_1, description, code, thumbnail, price, stock, newProductInCart, err_3;
+    var newProduct, _a, _id, timestamp, name_1, description, code, thumbnail, price, stock, err_3;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
                 _b.trys.push([0, 3, , 4]);
-                return [4 /*yield*/, products_1.ProductModel.findById(req.params.id)];
+                return [4 /*yield*/, (0, databaseKnex_1.knexInstance)("products").where("_id", req.params.id)];
             case 1:
-                _a = _b.sent(), _id = _a._id, timestamp = _a.timestamp, name_1 = _a.name, description = _a.description, code = _a.code, thumbnail = _a.thumbnail, price = _a.price, stock = _a.stock;
-                newProductInCart = new cart_1.CartProductModel({
-                    productId: _id,
-                    timestamp: timestamp,
-                    name: name_1,
-                    description: description,
-                    code: code,
-                    thumbnail: thumbnail,
-                    price: price,
-                    stock: stock,
-                });
-                return [4 /*yield*/, newProductInCart.save()];
+                newProduct = _b.sent();
+                _a = newProduct[0], _id = _a._id, timestamp = _a.timestamp, name_1 = _a.name, description = _a.description, code = _a.code, thumbnail = _a.thumbnail, price = _a.price, stock = _a.stock;
+                return [4 /*yield*/, (0, databaseKnex_1.knexInstance)("cartProducts").insert({
+                        productId: _id,
+                        timestamp: timestamp,
+                        name: name_1,
+                        description: description,
+                        code: code,
+                        thumbnail: thumbnail,
+                        price: price,
+                        stock: stock,
+                        __v: 0,
+                    })];
             case 2:
                 _b.sent();
                 res.status(200).json({ Status: "Product saved" });
@@ -129,32 +127,24 @@ router.post("/:id", function (req, res) { return __awaiter(void 0, void 0, void 
 }); });
 // DELETE a Product
 router.delete("/:id", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var cartProduct, err_4;
+    var err_4;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                _a.trys.push([0, 5, , 6]);
-                return [4 /*yield*/, cart_1.CartProductModel.findOne({
-                        productId: req.params.id,
-                    })];
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, (0, databaseKnex_1.knexInstance)("cartProducts").where("productId", req.params.id).del()];
             case 1:
-                cartProduct = _a.sent();
-                if (!cartProduct) return [3 /*break*/, 3];
-                return [4 /*yield*/, cart_1.CartProductModel.findByIdAndRemove(cartProduct._id)];
-            case 2:
                 _a.sent();
                 res.status(200).json({ status: "Product Deleted" });
-                return [3 /*break*/, 4];
-            case 3: throw new Error("Product not found");
-            case 4: return [3 /*break*/, 6];
-            case 5:
+                return [3 /*break*/, 3];
+            case 2:
                 err_4 = _a.sent();
                 res.status(500).json({
                     Error: "" + (err_4.message || "Unknown"),
                     Status: "We are having problems connecting to the system, please try again later",
                 });
-                return [3 /*break*/, 6];
-            case 6: return [2 /*return*/];
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
         }
     });
 }); });

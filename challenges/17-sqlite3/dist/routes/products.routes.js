@@ -40,8 +40,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = __importDefault(require("express"));
-var products_1 = require("../models/products");
 var auth_1 = require("../middlewares/auth");
+var databaseKnex_1 = require("../databaseKnex");
 var router = express_1.default.Router();
 // GET all Products
 router.get("/", function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
@@ -50,7 +50,7 @@ router.get("/", function (req, res) { return __awaiter(void 0, void 0, void 0, f
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, products_1.ProductModel.find()];
+                return [4 /*yield*/, (0, databaseKnex_1.knexInstance)("products").select("*")];
             case 1:
                 products = _a.sent();
                 res.status(200).json(products);
@@ -73,7 +73,7 @@ router.get("/:id", auth_1.isAdmin, function (req, res) { return __awaiter(void 0
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, products_1.ProductModel.findById(req.params.id)];
+                return [4 /*yield*/, (0, databaseKnex_1.knexInstance)("products").where("_id", req.params.id)];
             case 1:
                 product = _a.sent();
                 res.status(200).json(product);
@@ -91,22 +91,22 @@ router.get("/:id", auth_1.isAdmin, function (req, res) { return __awaiter(void 0
 }); });
 // ADD a new Product
 router.post("/", auth_1.isAdmin, function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, name_1, description, code, thumbnail, price, stock, newProduct, err_3;
+    var _a, name_1, description, code, thumbnail, price, stock, err_3;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
                 _b.trys.push([0, 2, , 3]);
                 _a = req.body, name_1 = _a.name, description = _a.description, code = _a.code, thumbnail = _a.thumbnail, price = _a.price, stock = _a.stock;
-                newProduct = new products_1.ProductModel({
-                    timestamp: new Date().toString(),
-                    name: name_1,
-                    description: description,
-                    code: Math.round(code),
-                    thumbnail: thumbnail,
-                    price: price.toFixed(2),
-                    stock: Math.round(stock),
-                });
-                return [4 /*yield*/, newProduct.save()];
+                return [4 /*yield*/, (0, databaseKnex_1.knexInstance)("products").insert({
+                        timestamp: new Date().toString(),
+                        name: name_1,
+                        description: description,
+                        code: Math.round(code),
+                        thumbnail: thumbnail,
+                        price: price.toFixed(2),
+                        stock: Math.round(stock),
+                        __v: 0,
+                    })];
             case 1:
                 _b.sent();
                 res.status(200).json({ Status: "Product saved" });
@@ -131,7 +131,9 @@ router.put("/:id", auth_1.isAdmin, function (req, res) { return __awaiter(void 0
                 _b.trys.push([0, 2, , 3]);
                 _a = req.body, name_2 = _a.name, description = _a.description, code = _a.code, thumbnail = _a.thumbnail, price = _a.price, stock = _a.stock;
                 newProduct = { name: name_2, description: description, code: code, thumbnail: thumbnail, price: price, stock: stock };
-                return [4 /*yield*/, products_1.ProductModel.findByIdAndUpdate(req.params.id, newProduct)];
+                return [4 /*yield*/, (0, databaseKnex_1.knexInstance)("products")
+                        .where("_id", req.params.id)
+                        .update(newProduct)];
             case 1:
                 _b.sent();
                 res.status(200).json({ Status: "Product updated" });
@@ -154,7 +156,7 @@ router.delete("/:id", auth_1.isAdmin, function (req, res) { return __awaiter(voi
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, products_1.ProductModel.findByIdAndRemove(req.params.id)];
+                return [4 /*yield*/, (0, databaseKnex_1.knexInstance)("products").where("_id", req.params.id).del()];
             case 1:
                 _a.sent();
                 res.status(200).json({ status: "Product Deleted" });

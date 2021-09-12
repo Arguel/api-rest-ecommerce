@@ -11,7 +11,7 @@ async function run(): Promise<void> {
       await mongoose.connect(process.env.MONGO_URI);
       console.log("Mongo connected");
     } catch (err) {
-      console.error(err.message || "Mongo disconnected");
+      console.error((err as Error).message || "Mongo disconnected");
       process.exit(1);
     }
   } else {

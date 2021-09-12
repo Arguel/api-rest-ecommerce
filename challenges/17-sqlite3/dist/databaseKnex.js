@@ -1,21 +1,9 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-var sqlite3_1 = require("./options/sqlite3");
-var knex_1 = require("knex");
-(0, knex_1.knex)(sqlite3_1.options);
-var asd = [
-    {
-        thumbnail: "https://cdn3.iconfinder.com/data/icons/education-209/64/calculator-math-tool-school-128.png",
-    },
-    {
-        thumbnail: "https://cdn3.iconfinder.com/data/icons/education-209/64/clock-stopwatch-timer-time-128.png",
-    },
-    {
-        thumbnail: "https://cdn3.iconfinder.com/data/icons/education-209/64/ruler-triangle-stationary-school-128.png",
-    },
-];
-(0, knex_1.knex)("products")
-    .insert(asd)
-    .then(function () { return console.log("insertado"); })
-    .catch(function (err) { return console.log(err); })
-    .finally(function () { return console.log("termine"); });
+exports.knexInstance = void 0;
+var knex_1 = __importDefault(require("knex"));
+var knexfile_1 = require("./knexfile");
+exports.knexInstance = (0, knex_1.default)(knexfile_1.knexfile.development);
