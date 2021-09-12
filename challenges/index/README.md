@@ -1,4 +1,4 @@
-## Requirements to run the project:
+## Requirements:
 * [NodeJS](https://nodejs.org/) (Latest Features) (version >= 14.0.0)
 
 ## Notes:
@@ -9,7 +9,7 @@ Normally the main file is in the <code>dist/</code> folder with the name of <cod
 ## To run the project, follow these steps:
 
 1. Go to the challenge folder:
-<br/> For example <code>C:\api-rest-ecommerce\challenges\14-transpilators\ </code>
+<br/> For example <code>C:\api-rest-ecommerce\challenges\17-sqlite3\ </code>
 
 2. Run the following commands on the console: 
     * <pre><code>git init</code></pre>
