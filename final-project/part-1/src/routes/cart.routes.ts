@@ -1,11 +1,12 @@
 import express from "express";
-import {knexInstance} from "../databaseKnex";
+import {ProductModel} from "../models/products";
+import {CartProductModel} from "../models/cart";
 const router = express.Router();
 
 // GET all Products
 router.get("/", async (req: express.Request, res: express.Response) => {
   try {
-    const productsInCart = await knexInstance("cartProducts").select("*");
+    const productsInCart = await CartProductModel.find();
     res.status(200).json(productsInCart);
   } catch (err) {
     res.status(500).json({
@@ -19,10 +20,9 @@ router.get("/", async (req: express.Request, res: express.Response) => {
 // GET one Product
 router.get("/:id", async (req: express.Request, res: express.Response) => {
   try {
-    const productInCart = await knexInstance("cartProducts").where(
-      "productId",
-      req.params.id,
-    );
+    const productInCart = await CartProductModel.findOne({
+      productId: req.params.id,
+    });
     res.status(200).json(productInCart);
   } catch (err) {
     res.status(500).json({
@@ -36,13 +36,9 @@ router.get("/:id", async (req: express.Request, res: express.Response) => {
 // ADD a new Product
 router.post("/:id", async (req: express.Request, res: express.Response) => {
   try {
-    const newProduct: object[] = await knexInstance("products").where(
-      "_id",
-      req.params.id,
-    );
     const {_id, timestamp, name, description, code, thumbnail, price, stock} =
-      newProduct[0];
-    await knexInstance("cartProducts").insert({
+      await ProductModel.findById(req.params.id);
+    const newProductInCart = new CartProductModel({
       productId: _id,
       timestamp,
       name,
@@ -51,8 +47,8 @@ router.post("/:id", async (req: express.Request, res: express.Response) => {
       thumbnail,
       price,
       stock,
-      __v: 0,
     });
+    await newProductInCart.save();
     res.status(200).json({Status: "Product saved"});
   } catch (err) {
     res.status(500).json({
@@ -66,8 +62,15 @@ router.post("/:id", async (req: express.Request, res: express.Response) => {
 // DELETE a Product
 router.delete("/:id", async (req: express.Request, res: express.Response) => {
   try {
-    await knexInstance("cartProducts").where("productId", req.params.id).del();
-    res.status(200).json({status: "Product Deleted"});
+    const cartProduct = await CartProductModel.findOne({
+      productId: req.params.id,
+    });
+    if (cartProduct) {
+      await CartProductModel.findByIdAndRemove(cartProduct._id);
+      res.status(200).json({status: "Product Deleted"});
+    } else {
+      throw new Error("Product not found");
+    }
   } catch (err) {
     res.status(500).json({
       Error: `${(err as Error).message || "Unknown"}`,

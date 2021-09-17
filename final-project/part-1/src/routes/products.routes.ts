@@ -1,12 +1,12 @@
 import express from "express";
+import {ProductModel} from "../models/products";
 import {isAdmin} from "../middlewares/auth";
-import {knexInstance} from "../databaseKnex";
 const router = express.Router();
 
 // GET all Products
 router.get("/", async (req: express.Request, res: express.Response) => {
   try {
-    const products = await knexInstance("products").select("*");
+    const products = await ProductModel.find();
     res.status(200).json(products);
   } catch (err) {
     res.status(500).json({
@@ -23,10 +23,7 @@ router.get(
   isAdmin,
   async (req: express.Request, res: express.Response) => {
     try {
-      const product = await knexInstance("products").where(
-        "_id",
-        req.params.id,
-      );
+      const product = await ProductModel.findById(req.params.id);
       res.status(200).json(product);
     } catch (err) {
       res.status(500).json({
@@ -45,7 +42,7 @@ router.post(
   async (req: express.Request, res: express.Response) => {
     try {
       const {name, description, code, thumbnail, price, stock} = req.body;
-      await knexInstance("products").insert({
+      const newProduct = new ProductModel({
         timestamp: new Date().toString(),
         name,
         description,
@@ -53,8 +50,8 @@ router.post(
         thumbnail,
         price: price.toFixed(2),
         stock: Math.round(stock),
-        __v: 0,
       });
+      await newProduct.save();
       res.status(200).json({Status: "Product saved"});
     } catch (err) {
       res.status(500).json({
@@ -74,9 +71,7 @@ router.put(
     try {
       const {name, description, code, thumbnail, price, stock} = req.body;
       const newProduct = {name, description, code, thumbnail, price, stock};
-      await knexInstance("products")
-        .where("_id", req.params.id)
-        .update(newProduct);
+      await ProductModel.findByIdAndUpdate(req.params.id, newProduct);
       res.status(200).json({Status: "Product updated"});
     } catch (err) {
       res.status(500).json({
@@ -94,7 +89,7 @@ router.delete(
   isAdmin,
   async (req: express.Request, res: express.Response) => {
     try {
-      await knexInstance("products").where("_id", req.params.id).del();
+      await ProductModel.findByIdAndRemove(req.params.id);
       res.status(200).json({status: "Product Deleted"});
     } catch (err) {
       res.status(500).json({
