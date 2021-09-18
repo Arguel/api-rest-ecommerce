@@ -39,11 +39,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.connectDB = void 0;
 var mongoose_1 = __importDefault(require("mongoose"));
 var dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
-run();
-function run() {
+function connectDB() {
     return __awaiter(this, void 0, void 0, function () {
         var err_1;
         return __generator(this, function (_a) {
@@ -53,14 +53,17 @@ function run() {
                     _a.label = 1;
                 case 1:
                     _a.trys.push([1, 3, , 4]);
-                    return [4 /*yield*/, mongoose_1.default.connect(process.env.MONGO_URI)];
+                    return [4 /*yield*/, mongoose_1.default.connect(process.env.MONGO_URI, {
+                            useNewUrlParser: true,
+                            useUnifiedTopology: true,
+                        })];
                 case 2:
                     _a.sent();
-                    console.log("Mongo connected");
+                    console.log("MongoDB connection SUCCESS");
                     return [3 /*break*/, 4];
                 case 3:
                     err_1 = _a.sent();
-                    console.error(err_1.message || "Mongo disconnected");
+                    console.error(err_1.message || "MongoDB connection FAIL");
                     process.exit(1);
                     return [3 /*break*/, 4];
                 case 4: return [3 /*break*/, 6];
@@ -73,3 +76,4 @@ function run() {
         });
     });
 }
+exports.connectDB = connectDB;

@@ -9,6 +9,10 @@ var path_1 = __importDefault(require("path"));
 var products_routes_1 = __importDefault(require("./routes/products.routes"));
 var cart_routes_1 = __importDefault(require("./routes/cart.routes"));
 var auth_1 = require("./middlewares/auth");
+var db_1 = require("./config/db");
+// MongoDB connection
+(0, db_1.connectDB)();
+// Main application
 var app = (0, express_1.default)();
 // Settings
 app.set("port", process.env.PORT || 8080);
