@@ -1,10 +1,10 @@
-import express from "express";
+import {Router} from "express";
 import {isAdmin} from "../middlewares/auth";
 import {ProductsController} from "../controller/products.controllers";
 
 const controller: ProductsController = new ProductsController();
 
-const router = express.Router();
+const router: Router = Router();
 
 // GET all Products
 router.get("/", controller.getProducts);
