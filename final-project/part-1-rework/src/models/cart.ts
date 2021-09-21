@@ -1,13 +1,12 @@
-import {Schema, model, Model} from "mongoose";
+import {Schema, model, Model, Types} from "mongoose";
 
 export interface ICart {
-  _id?: string;
+  _id?: Types.ObjectId;
   products: object[];
   timestamp: string;
 }
 
 const cartSchema = new Schema<ICart>({
-  _id: String,
   products: {type: [Object], required: true},
   timestamp: {type: String, required: true},
 });

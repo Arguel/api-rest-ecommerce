@@ -1,7 +1,7 @@
-import {Schema, model, Model} from "mongoose";
+import {Schema, model, Model, Types} from "mongoose";
 
 export interface IProduct {
-  _id?: string;
+  _id?: Types.ObjectId;
   timestamp: string;
   name: string;
   description: string;
@@ -13,7 +13,6 @@ export interface IProduct {
 }
 
 const productSchema = new Schema<IProduct>({
-  _id: String,
   timestamp: {type: String, required: true},
   name: {type: String, required: true},
   description: {type: String, required: true},
@@ -21,7 +20,6 @@ const productSchema = new Schema<IProduct>({
   thumbnail: {type: String, required: true},
   price: {type: Number, required: true},
   stock: {type: Number, required: true},
-  quantityOnCart: Number,
 });
 
 export const ProductModel: Model<IProduct> = model<IProduct>(
