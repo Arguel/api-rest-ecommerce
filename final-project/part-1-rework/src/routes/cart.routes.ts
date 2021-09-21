@@ -6,15 +6,15 @@ const controller: CartController = new CartController();
 const router: Router = Router();
 
 // GET all Products
-router.get("/", controller.getProducts);
+router.get("/", controller.getCart.bind(controller));
 
 // GET one Product
-router.get("/:id", controller.getProductById);
+router.get("/:id", controller.getCartProduct.bind(controller));
 
 // ADD a new Product
-router.post("/:id", controller.addProduct);
+router.post("/:id", controller.addProduct.bind(controller));
 
 // DELETE a Product
-router.delete("/:id", controller.deleteProductById);
+router.delete("/:id", controller.deleteProductById.bind(controller));
 
 export default router;

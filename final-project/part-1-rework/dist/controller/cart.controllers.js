@@ -42,25 +42,53 @@ var cart_1 = require("../models/cart");
 var CartController = /** @class */ (function () {
     function CartController() {
     }
-    // GET all Products
-    CartController.prototype.getProducts = function (req, res) {
+    // Default error handler
+    CartController.prototype.defaultError = function (err) {
+        return {
+            Error: "" + (err.message || "Unknown"),
+            Status: "We are having problems connecting to the system, please try again later",
+        };
+    };
+    // GET local cart
+    CartController.prototype.getLocalCart = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var productsInCart, err_1;
+            var cart, localCartId, doc;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        cart = {
+                            products: [],
+                            timestamp: new Date().toString(),
+                        };
+                        localCartId = localStorage.getItem("cartId");
+                        if (!localCartId) return [3 /*break*/, 2];
+                        return [4 /*yield*/, cart_1.CartModel.findById(localCartId)];
+                    case 1:
+                        doc = _a.sent();
+                        if (doc)
+                            cart = doc;
+                        _a.label = 2;
+                    case 2: return [2 /*return*/, cart];
+                }
+            });
+        });
+    };
+    // GET current cart
+    CartController.prototype.getCart = function (req, res) {
+        return __awaiter(this, void 0, void 0, function () {
+            var cart, err_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, cart_1.CartProductModel.find()];
+                        return [4 /*yield*/, this.getLocalCart()];
                     case 1:
-                        productsInCart = _a.sent();
-                        res.status(200).json(productsInCart);
+                        cart = _a.sent();
+                        res.status(200).json(cart);
                         return [3 /*break*/, 3];
                     case 2:
                         err_1 = _a.sent();
-                        res.status(500).json({
-                            Error: "" + (err_1.message || "Unknown"),
-                            Status: "We are having problems connecting to the system, please try again later",
-                        });
+                        res.status(500).json(this.defaultError(err_1));
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
                 }
@@ -68,26 +96,27 @@ var CartController = /** @class */ (function () {
         });
     };
     // GET one Product
-    CartController.prototype.getProductById = function (req, res) {
+    CartController.prototype.getCartProduct = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var productInCart, err_2;
+            var cart, product, productInCart, err_2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, cart_1.CartProductModel.findOne({
-                                productId: req.params.id,
-                            })];
+                        return [4 /*yield*/, this.getLocalCart()];
                     case 1:
-                        productInCart = _a.sent();
-                        res.status(200).json(productInCart);
+                        cart = _a.sent();
+                        product = {};
+                        if (cart.products.length > 1) {
+                            productInCart = cart.products.find(function (elem) { return elem._id === req.params.id; });
+                            if (productInCart)
+                                product = productInCart;
+                        }
+                        res.status(200).json(product);
                         return [3 /*break*/, 3];
                     case 2:
                         err_2 = _a.sent();
-                        res.status(500).json({
-                            Error: "" + (err_2.message || "Unknown"),
-                            Status: "We are having problems connecting to the system, please try again later",
-                        });
+                        res.status(500).json(this.defaultError(err_2));
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
                 }
@@ -97,35 +126,44 @@ var CartController = /** @class */ (function () {
     // ADD a new Product
     CartController.prototype.addProduct = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var _a, _id, timestamp, name_1, description, code, thumbnail, price, stock, newProductInCart, err_3;
+            var cart, _a, _id_1, timestamp, name_1, description, code, thumbnail, price, stock, itemIndex, newProductInCart, updatedCart, err_3;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
                         _b.trys.push([0, 3, , 4]);
-                        return [4 /*yield*/, products_1.ProductModel.findById(req.params.id)];
+                        return [4 /*yield*/, this.getLocalCart()];
                     case 1:
-                        _a = _b.sent(), _id = _a._id, timestamp = _a.timestamp, name_1 = _a.name, description = _a.description, code = _a.code, thumbnail = _a.thumbnail, price = _a.price, stock = _a.stock;
-                        newProductInCart = new cart_1.CartProductModel({
-                            productId: _id,
-                            timestamp: timestamp,
-                            name: name_1,
-                            description: description,
-                            code: code,
-                            thumbnail: thumbnail,
-                            price: price,
-                            stock: stock,
-                        });
-                        return [4 /*yield*/, newProductInCart.save()];
+                        cart = _b.sent();
+                        return [4 /*yield*/, products_1.ProductModel.findById(req.params.id)];
                     case 2:
-                        _b.sent();
-                        res.status(200).json({ Status: "Product saved" });
+                        _a = (_b.sent()), _id_1 = _a._id, timestamp = _a.timestamp, name_1 = _a.name, description = _a.description, code = _a.code, thumbnail = _a.thumbnail, price = _a.price, stock = _a.stock;
+                        itemIndex = cart.products.findIndex(function (obj) { return obj._id === _id_1; });
+                        if (itemIndex !== -1) {
+                            cart.products[itemIndex].quantityOnCart++;
+                        }
+                        else {
+                            newProductInCart = {
+                                _id: _id_1,
+                                timestamp: timestamp,
+                                name: name_1,
+                                description: description,
+                                code: code,
+                                thumbnail: thumbnail,
+                                price: price,
+                                stock: stock,
+                                quantityOnCart: 1,
+                            };
+                            cart.products.push(newProductInCart);
+                        }
+                        updatedCart = new cart_1.CartModel(cart);
+                        updatedCart.save(function (err, room) {
+                            localStorage.setItem("cartId", room._id);
+                            res.status(200).json({ Status: "Product saved" });
+                        });
                         return [3 /*break*/, 4];
                     case 3:
                         err_3 = _b.sent();
-                        res.status(500).json({
-                            Error: "" + (err_3.message || "Unknown"),
-                            Status: "We are having problems connecting to the system, please try again later",
-                        });
+                        res.status(500).json(this.defaultError(err_3));
                         return [3 /*break*/, 4];
                     case 4: return [2 /*return*/];
                 }
@@ -135,32 +173,28 @@ var CartController = /** @class */ (function () {
     // DELETE a Product
     CartController.prototype.deleteProductById = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var cartProduct, err_4;
+            var cart, itemIndex, err_4;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 5, , 6]);
-                        return [4 /*yield*/, cart_1.CartProductModel.findOne({
-                                productId: req.params.id,
-                            })];
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, this.getLocalCart()];
                     case 1:
-                        cartProduct = _a.sent();
-                        if (!cartProduct) return [3 /*break*/, 3];
-                        return [4 /*yield*/, cart_1.CartProductModel.findByIdAndRemove(cartProduct._id)];
+                        cart = _a.sent();
+                        itemIndex = cart.products.findIndex(function (obj) { return obj._id === req.params.id; });
+                        if (itemIndex !== -1) {
+                            cart.products.splice(itemIndex, 1);
+                            res.status(200).json({ status: "Product Deleted" });
+                        }
+                        else {
+                            throw new Error("Product not found");
+                        }
+                        return [3 /*break*/, 3];
                     case 2:
-                        _a.sent();
-                        res.status(200).json({ status: "Product Deleted" });
-                        return [3 /*break*/, 4];
-                    case 3: throw new Error("Product not found");
-                    case 4: return [3 /*break*/, 6];
-                    case 5:
                         err_4 = _a.sent();
-                        res.status(500).json({
-                            Error: "" + (err_4.message || "Unknown"),
-                            Status: "We are having problems connecting to the system, please try again later",
-                        });
-                        return [3 /*break*/, 6];
-                    case 6: return [2 /*return*/];
+                        res.status(500).json(this.defaultError(err_4));
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
                 }
             });
         });
@@ -168,3 +202,4 @@ var CartController = /** @class */ (function () {
     return CartController;
 }());
 exports.CartController = CartController;
+// asd

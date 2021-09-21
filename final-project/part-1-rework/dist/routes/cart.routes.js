@@ -1,18 +1,15 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-var express_1 = __importDefault(require("express"));
+var express_1 = require("express");
 var cart_controllers_1 = require("../controller/cart.controllers");
 var controller = new cart_controllers_1.CartController();
-var router = express_1.default.Router();
+var router = (0, express_1.Router)();
 // GET all Products
-router.get("/", controller.getProducts);
+router.get("/", controller.getCart.bind(controller));
 // GET one Product
-router.get("/:id", controller.getProductById);
+router.get("/:id", controller.getCartProduct.bind(controller));
 // ADD a new Product
-router.post("/:id", controller.addProduct);
+router.post("/:id", controller.addProduct.bind(controller));
 // DELETE a Product
-router.delete("/:id", controller.deleteProductById);
+router.delete("/:id", controller.deleteProductById.bind(controller));
 exports.default = router;

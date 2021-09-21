@@ -1,4 +1,4 @@
-import {Schema, model} from "mongoose";
+import {Schema, model, Model} from "mongoose";
 
 export interface IProduct {
   _id?: string;
@@ -24,4 +24,7 @@ const productSchema = new Schema<IProduct>({
   quantityOnCart: Number,
 });
 
-export const ProductModel = model<IProduct>("Product", productSchema);
+export const ProductModel: Model<IProduct> = model<IProduct>(
+  "Product",
+  productSchema,
+);

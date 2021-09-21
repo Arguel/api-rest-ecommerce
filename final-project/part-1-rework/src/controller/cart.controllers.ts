@@ -3,6 +3,7 @@ import {ProductModel, IProduct} from "../models/products";
 import {CartModel, ICart} from "../models/cart";
 
 export class CartController {
+  // Default error handler
   defaultError(err: Error): object {
     return {
       Error: `${err.message || "Unknown"}`,
@@ -58,24 +59,23 @@ export class CartController {
       const cart: ICart = await this.getLocalCart();
       const {_id, timestamp, name, description, code, thumbnail, price, stock} =
         (await ProductModel.findById(req.params.id)) as IProduct;
-      const newProductInCart: IProduct = {
-        _id,
-        timestamp,
-        name,
-        description,
-        code,
-        thumbnail,
-        price,
-        stock,
-      };
-
       const itemIndex: number = cart.products.findIndex(
         (obj) => (obj as IProduct)._id === _id,
       );
       if (itemIndex !== -1) {
         (cart.products[itemIndex] as IProduct).quantityOnCart!++;
       } else {
-        newProductInCart.quantityOnCart = 1;
+        const newProductInCart: IProduct = {
+          _id,
+          timestamp,
+          name,
+          description,
+          code,
+          thumbnail,
+          price,
+          stock,
+          quantityOnCart: 1,
+        };
         cart.products.push(newProductInCart);
       }
       const updatedCart = new CartModel(cart);
@@ -94,11 +94,13 @@ export class CartController {
     res: Response,
   ): Promise<Response | void> {
     try {
-      const cartProduct = await CartModel.findOne({
-        productId: req.params.id,
-      });
-      if (cartProduct) {
-        await CartModel.findByIdAndRemove(cartProduct._id);
+      const cart: ICart = await this.getLocalCart();
+
+      const itemIndex: number = cart.products.findIndex(
+        (obj) => (obj as IProduct)._id === req.params.id,
+      );
+      if (itemIndex !== -1) {
+        cart.products.splice(itemIndex, 1);
         res.status(200).json({status: "Product Deleted"});
       } else {
         throw new Error("Product not found");
@@ -108,3 +110,4 @@ export class CartController {
     }
   }
 }
+// asd
