@@ -2,7 +2,7 @@
 Rest api using Node.js and MongoDB
 
 ## Active development branches:
-* [main](https://github.com/Arguel/api-rest-ecommerce)
+* [main](https://github.com/Arguel/api-rest-ecommerce) --> (<b>combination of all other branches</b>)
 * [develop](https://github.com/Arguel/api-rest-ecommerce/tree/develop)
 
 ## Templates and temporary files:
