@@ -11,3 +11,4 @@ Rest api using Node.js and MongoDB
 
 ## Final project and deploys:
 * [final-project-part-1](https://github.com/Arguel/api-rest-ecommerce/tree/final-project-part-1)
+* [final-project-part-1-rework](https://github.com/Arguel/api-rest-ecommerce/tree/rework-fp)
