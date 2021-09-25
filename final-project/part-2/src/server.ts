@@ -4,10 +4,6 @@ import path from "path";
 import productsRoutes from "./routes/products.routes";
 import cartRoutes from "./routes/cart.routes";
 import {userProperties} from "./middlewares/auth";
-import {connectDB} from "./config/db";
-
-// MongoDB connection
-connectDB();
 
 // Main application
 const app: express.Application = express();

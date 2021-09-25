@@ -36,20 +36,23 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ProductsController = void 0;
-var products_1 = require("../models/products");
-var ProductsController = /** @class */ (function () {
-    function ProductsController() {
+exports.MongodbProducts = void 0;
+var products_1 = require("../../models/products");
+var mongodb_db_1 = require("../../config/mongodb.db");
+var MongodbProducts = /** @class */ (function () {
+    function MongodbProducts() {
+        // MongoDB connection
+        (0, mongodb_db_1.connectDB)();
     }
     // Default error handler
-    ProductsController.prototype.defaultError = function (err) {
+    MongodbProducts.prototype.defaultError = function (err) {
         return {
             Error: "" + (err.message || "Unknown"),
             Status: "We are having problems connecting to the system, please try again later",
         };
     };
     // GET all Products
-    ProductsController.prototype.getProducts = function (req, res) {
+    MongodbProducts.prototype.getProducts = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
             var products, err_1;
             return __generator(this, function (_a) {
@@ -71,7 +74,7 @@ var ProductsController = /** @class */ (function () {
         });
     };
     // GET one Product
-    ProductsController.prototype.getProductById = function (req, res) {
+    MongodbProducts.prototype.getProductById = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
             var product, err_2;
             return __generator(this, function (_a) {
@@ -93,7 +96,7 @@ var ProductsController = /** @class */ (function () {
         });
     };
     // ADD a new Product
-    ProductsController.prototype.addProduct = function (req, res) {
+    MongodbProducts.prototype.addProduct = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
             var _a, name_1, description, code, thumbnail, price, stock, newProduct, err_3;
             return __generator(this, function (_b) {
@@ -125,7 +128,7 @@ var ProductsController = /** @class */ (function () {
         });
     };
     // UPDATE a Product
-    ProductsController.prototype.updateProductById = function (req, res) {
+    MongodbProducts.prototype.updateProductById = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
             var _a, name_2, description, code, thumbnail, price, stock, newProduct, err_4;
             return __generator(this, function (_b) {
@@ -149,7 +152,7 @@ var ProductsController = /** @class */ (function () {
         });
     };
     // DELETE a Product
-    ProductsController.prototype.deleteProductById = function (req, res) {
+    MongodbProducts.prototype.deleteProductById = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
             var err_5;
             return __generator(this, function (_a) {
@@ -170,6 +173,6 @@ var ProductsController = /** @class */ (function () {
             });
         });
     };
-    return ProductsController;
+    return MongodbProducts;
 }());
-exports.ProductsController = ProductsController;
+exports.MongodbProducts = MongodbProducts;
