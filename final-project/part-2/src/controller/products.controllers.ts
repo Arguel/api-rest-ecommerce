@@ -1,16 +1,30 @@
 import {persistenceType} from "../config/factoryType";
-import {FactoryProducts, ICrudProducts} from "./factory/products";
+import {Request, Response} from "express";
+import {FactoryProducts} from "./factory/products";
+import {ICrudProducts} from "../utils/crudInterfaces";
 
 // Main switch/selector for persistence types
 const factory = new FactoryProducts();
 
-export class ProductsController {
+export class ProductsController implements ICrudProducts {
   factory: ICrudProducts;
 
   constructor() {
     this.factory = factory.type(persistenceType);
   }
-  getProducts(req, res) {
+  getProducts(req: Request, res: Response) {
     return this.factory.getProducts(req, res);
+  }
+  getProductById(req: Request, res: Response) {
+    return this.factory.getProductById(req, res);
+  }
+  addProduct(req: Request, res: Response) {
+    return this.factory.addProduct(req, res);
+  }
+  updateProductById(req: Request, res: Response) {
+    return this.factory.updateProductById(req, res);
+  }
+  deleteProductById(req: Request, res: Response) {
+    return this.factory.deleteProductById(req, res);
   }
 }

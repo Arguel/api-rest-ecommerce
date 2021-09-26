@@ -12,6 +12,18 @@ var ProductsController = /** @class */ (function () {
     ProductsController.prototype.getProducts = function (req, res) {
         return this.factory.getProducts(req, res);
     };
+    ProductsController.prototype.getProductById = function (req, res) {
+        return this.factory.getProductById(req, res);
+    };
+    ProductsController.prototype.addProduct = function (req, res) {
+        return this.factory.addProduct(req, res);
+    };
+    ProductsController.prototype.updateProductById = function (req, res) {
+        return this.factory.updateProductById(req, res);
+    };
+    ProductsController.prototype.deleteProductById = function (req, res) {
+        return this.factory.deleteProductById(req, res);
+    };
     return ProductsController;
 }());
 exports.ProductsController = ProductsController;
