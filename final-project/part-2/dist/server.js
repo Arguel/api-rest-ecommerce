@@ -6,7 +6,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = __importDefault(require("express"));
 var morgan_1 = __importDefault(require("morgan"));
 var path_1 = __importDefault(require("path"));
+var products_routes_1 = __importDefault(require("./routes/products.routes"));
 var cart_routes_1 = __importDefault(require("./routes/cart.routes"));
+var auth_1 = require("./middlewares/auth");
 // Main application
 var app = (0, express_1.default)();
 // Settings
@@ -18,7 +20,7 @@ app.use(express_1.default.json());
 app.get("/", function (req, res) {
     res.sendFile(path_1.default.join(__dirname, "/public/index.html"));
 });
-//app.use("/products", userProperties, productsRoutes);
+app.use("/products", auth_1.userProperties, products_routes_1.default);
 app.use("/cart", cart_routes_1.default);
 app.get("*", function (req, res) {
     res.status(404).json({

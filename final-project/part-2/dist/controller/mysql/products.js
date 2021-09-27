@@ -38,6 +38,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MysqlProducts = void 0;
 var cart_products_1 = require("../../models/mysql/cart-products");
+var mysql_db_1 = require("../../config/mysql.db");
 var MysqlProducts = /** @class */ (function () {
     function MysqlProducts() {
         // MySQL connection
@@ -58,9 +59,11 @@ var MysqlProducts = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, ProductModel.find()];
+                        return [4 /*yield*/, (0, mysql_db_1.mysqlKnexInstance)("products").select("*")];
                     case 1:
                         products = _a.sent();
+                        if (products.length === 0)
+                            throw new Error("Product list is empty");
                         res.status(200).json(products);
                         return [3 /*break*/, 3];
                     case 2:
@@ -80,9 +83,11 @@ var MysqlProducts = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, ProductModel.findById(req.params.id)];
+                        return [4 /*yield*/, (0, mysql_db_1.mysqlKnexInstance)("products").where("_id", req.params.id)];
                     case 1:
-                        product = (_a.sent());
+                        product = _a.sent();
+                        if (product.length === 0)
+                            throw new Error("The product is not added to the shopping cart");
                         res.status(200).json(product);
                         return [3 /*break*/, 3];
                     case 2:
@@ -103,16 +108,15 @@ var MysqlProducts = /** @class */ (function () {
                     case 0:
                         _b.trys.push([0, 2, , 3]);
                         _a = req.body, name_1 = _a.name, description = _a.description, code = _a.code, thumbnail = _a.thumbnail, price = _a.price, stock = _a.stock;
-                        newProduct = new ProductModel({
-                            timestamp: new Date().toString(),
+                        newProduct = {
                             name: name_1,
                             description: description,
                             code: Math.round(code),
                             thumbnail: thumbnail,
                             price: price.toFixed(2),
                             stock: Math.round(stock),
-                        });
-                        return [4 /*yield*/, newProduct.save()];
+                        };
+                        return [4 /*yield*/, (0, mysql_db_1.mysqlKnexInstance)("products").insert(newProduct)];
                     case 1:
                         _b.sent();
                         res.status(200).json({ Status: "Product saved" });
@@ -129,16 +133,19 @@ var MysqlProducts = /** @class */ (function () {
     // UPDATE a Product
     MysqlProducts.prototype.updateProductById = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var _a, name_2, description, code, thumbnail, price, stock, newProduct, err_4;
+            var _a, name_2, description, code, thumbnail, price, stock, newProduct, asd, err_4;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
                         _b.trys.push([0, 2, , 3]);
                         _a = req.body, name_2 = _a.name, description = _a.description, code = _a.code, thumbnail = _a.thumbnail, price = _a.price, stock = _a.stock;
                         newProduct = { name: name_2, description: description, code: code, thumbnail: thumbnail, price: price, stock: stock };
-                        return [4 /*yield*/, ProductModel.findByIdAndUpdate(req.params.id, newProduct)];
+                        return [4 /*yield*/, (0, mysql_db_1.mysqlKnexInstance)("products")
+                                .where({ _id: req.params.id })
+                                .update(newProduct)];
                     case 1:
-                        _b.sent();
+                        asd = _b.sent();
+                        console.log(asd);
                         res.status(200).json({ Status: "Product updated" });
                         return [3 /*break*/, 3];
                     case 2:
@@ -153,14 +160,17 @@ var MysqlProducts = /** @class */ (function () {
     // DELETE a Product
     MysqlProducts.prototype.deleteProductById = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var err_5;
+            var asd, err_5;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, ProductModel.findByIdAndRemove(req.params.id)];
+                        return [4 /*yield*/, (0, mysql_db_1.mysqlKnexInstance)("products")
+                                .where({ _id: req.params.id })
+                                .del()];
                     case 1:
-                        _a.sent();
+                        asd = _a.sent();
+                        console.log(asd);
                         res.status(200).json({ status: "Product Deleted" });
                         return [3 /*break*/, 3];
                     case 2:

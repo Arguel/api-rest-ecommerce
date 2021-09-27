@@ -20,7 +20,10 @@ export class MysqlProducts {
   // GET all Products
   async getProducts(req: Request, res: Response): Promise<Response | void> {
     try {
-      const products: IProduct[] = await ProductModel.find();
+      const products: IProduct[] = await mysqlKnexInstance("products").select(
+        "*",
+      );
+      if (products.length === 0) throw new Error("Product list is empty");
       res.status(200).json(products);
     } catch (err) {
       res.status(500).json(this.defaultError(err as Error));
@@ -30,9 +33,12 @@ export class MysqlProducts {
   // GET one Product
   async getProductById(req: Request, res: Response): Promise<Response | void> {
     try {
-      const product: IProduct = (await ProductModel.findById(
+      const product: IProduct[] = await mysqlKnexInstance("products").where(
+        "_id",
         req.params.id,
-      )) as IProduct;
+      );
+      if (product.length === 0)
+        throw new Error("The product is not added to the shopping cart");
       res.status(200).json(product);
     } catch (err) {
       res.status(500).json(this.defaultError(err as Error));
@@ -43,16 +49,15 @@ export class MysqlProducts {
   async addProduct(req: Request, res: Response): Promise<Response | void> {
     try {
       const {name, description, code, thumbnail, price, stock} = req.body;
-      const newProduct = new ProductModel({
-        timestamp: new Date().toString(),
+      const newProduct = {
         name,
         description,
         code: Math.round(code),
         thumbnail,
         price: price.toFixed(2),
         stock: Math.round(stock),
-      });
-      await newProduct.save();
+      };
+      await mysqlKnexInstance("products").insert(newProduct);
       res.status(200).json({Status: "Product saved"});
     } catch (err) {
       res.status(500).json(this.defaultError(err as Error));
@@ -67,7 +72,10 @@ export class MysqlProducts {
     try {
       const {name, description, code, thumbnail, price, stock} = req.body;
       const newProduct = {name, description, code, thumbnail, price, stock};
-      await ProductModel.findByIdAndUpdate(req.params.id, newProduct);
+      const asd = await mysqlKnexInstance("products")
+        .where({_id: req.params.id})
+        .update(newProduct);
+      console.log(asd);
       res.status(200).json({Status: "Product updated"});
     } catch (err) {
       res.status(500).json(this.defaultError(err as Error));
@@ -80,7 +88,10 @@ export class MysqlProducts {
     res: Response,
   ): Promise<Response | void> {
     try {
-      await ProductModel.findByIdAndRemove(req.params.id);
+      const asd = await mysqlKnexInstance("products")
+        .where({_id: req.params.id})
+        .del();
+      console.log(asd);
       res.status(200).json({status: "Product Deleted"});
     } catch (err) {
       res.status(500).json(this.defaultError(err as Error));

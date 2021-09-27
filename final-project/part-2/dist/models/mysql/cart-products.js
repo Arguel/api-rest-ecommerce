@@ -51,8 +51,10 @@ function connectMySQL() {
                     if (!!connecedCartScheme) return [3 /*break*/, 3];
                     return [4 /*yield*/, mysql_db_1.mysqlKnexInstance.schema.createTable("carts", function (t) {
                             t.increments("_id");
-                            t.string("products", 20000);
-                            t.timestamp("timestamp");
+                            t.string("products", 20000).notNullable();
+                            t.timestamp("timestamp")
+                                .defaultTo(mysql_db_1.mysqlKnexInstance.fn.now())
+                                .notNullable();
                         })];
                 case 2:
                     _a.sent();
@@ -64,13 +66,15 @@ function connectMySQL() {
                     if (!!connecedProductScheme) return [3 /*break*/, 6];
                     return [4 /*yield*/, mysql_db_1.mysqlKnexInstance.schema.createTable("products", function (t) {
                             t.increments("_id");
-                            t.timestamp("timestamp");
-                            t.string("name");
-                            t.string("description", 1000);
-                            t.integer("code", 15);
-                            t.string("thumbnail", 400);
-                            t.integer("price", 15);
-                            t.integer("stock", 10);
+                            t.timestamp("timestamp")
+                                .defaultTo(mysql_db_1.mysqlKnexInstance.fn.now())
+                                .notNullable();
+                            t.string("name").notNullable();
+                            t.string("description", 1000).notNullable();
+                            t.integer("code", 15).notNullable();
+                            t.string("thumbnail", 400).notNullable();
+                            t.integer("price", 15).notNullable();
+                            t.integer("stock", 10).notNullable();
                         })];
                 case 5:
                     _a.sent();

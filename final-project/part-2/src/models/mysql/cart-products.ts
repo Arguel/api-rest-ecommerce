@@ -6,8 +6,10 @@ export async function connectMySQL(): Promise<void> {
     if (!connecedCartScheme) {
       await mysqlKnexInstance.schema.createTable("carts", (t) => {
         t.increments("_id");
-        t.string("products", 20000);
-        t.timestamp("timestamp");
+        t.string("products", 20000).notNullable();
+        t.timestamp("timestamp")
+          .defaultTo(mysqlKnexInstance.fn.now())
+          .notNullable();
       });
       console.log("Cart table created");
     }
@@ -17,13 +19,15 @@ export async function connectMySQL(): Promise<void> {
     if (!connecedProductScheme) {
       await mysqlKnexInstance.schema.createTable("products", (t) => {
         t.increments("_id");
-        t.timestamp("timestamp");
-        t.string("name");
-        t.string("description", 1000);
-        t.integer("code", 15);
-        t.string("thumbnail", 400);
-        t.integer("price", 15);
-        t.integer("stock", 10);
+        t.timestamp("timestamp")
+          .defaultTo(mysqlKnexInstance.fn.now())
+          .notNullable();
+        t.string("name").notNullable();
+        t.string("description", 1000).notNullable();
+        t.integer("code", 15).notNullable();
+        t.string("thumbnail", 400).notNullable();
+        t.integer("price", 15).notNullable();
+        t.integer("stock", 10).notNullable();
       });
       console.log("Products table created");
     }
