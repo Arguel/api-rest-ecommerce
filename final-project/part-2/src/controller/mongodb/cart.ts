@@ -1,6 +1,7 @@
 import {Request, Response} from "express";
-import {ProductModel, IProduct} from "../../models/mongodb/products";
-import {CartModel, ICart} from "../../models/mongodb/cart";
+import {ProductModel} from "../../models/mongodb/products";
+import {CartModel} from "../../models/mongodb/cart";
+import {ICart, IProduct} from "../../utils/modelsInterfaces";
 import {connectMongoDB} from "../../config/mongodb.db";
 
 const cartId = "614a4346c63a6bed117cfdbb";
@@ -37,6 +38,8 @@ export class MongodbCart {
   async getCart(req: Request, res: Response): Promise<Response | void> {
     try {
       const cart: ICart = await this.getLocalCart();
+      if (cart.products.length === 0)
+        throw new Error("The shopping cart is empty");
       res.status(200).json(cart);
     } catch (err) {
       res.status(500).json(this.defaultError(err as Error));
@@ -79,6 +82,7 @@ export class MongodbCart {
       if (itemIndex !== -1) {
         (cart.products[itemIndex] as IProduct).quantityOnCart!++;
       } else {
+        // This item is extracted from the "products" database
         const newProductInCart: IProduct = {
           _id,
           timestamp,

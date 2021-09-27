@@ -19,7 +19,7 @@ app.use(express.json());
 app.get("/", (req: express.Request, res: express.Response) => {
   res.sendFile(path.join(__dirname, "/public/index.html"));
 });
-app.use("/products", userProperties, productsRoutes);
+//app.use("/products", userProperties, productsRoutes);
 app.use("/cart", cartRoutes);
 app.get("*", (req: express.Request, res: express.Response) => {
   res.status(404).json({

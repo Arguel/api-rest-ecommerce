@@ -7,7 +7,7 @@ var router = (0, express_1.Router)();
 // GET all Products
 router.get("/", controller.getCart.bind(controller));
 // GET one Product
-router.get("/:id", controller.getCartProduct.bind(controller));
+router.get("/:id", controller.getCartProductById.bind(controller));
 // ADD a new Product
 router.post("/:id", controller.addProduct.bind(controller));
 // DELETE a Product

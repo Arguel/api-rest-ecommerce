@@ -2,4 +2,4 @@
 // * mysql
 // * mongodb
 
-export const persistenceType: string = "mongodb";
+export const persistenceType: string = "mysql";

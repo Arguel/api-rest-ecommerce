@@ -9,7 +9,7 @@ const router: Router = Router();
 router.get("/", controller.getCart.bind(controller));
 
 // GET one Product
-router.get("/:id", controller.getCartProduct.bind(controller));
+router.get("/:id", controller.getCartProductById.bind(controller));
 
 // ADD a new Product
 router.post("/:id", controller.addProduct.bind(controller));

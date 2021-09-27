@@ -1,10 +1,5 @@
-import {Schema, model, Model, Types} from "mongoose";
-
-export interface ICart {
-  _id?: Types.ObjectId;
-  products: object[];
-  timestamp: string;
-}
+import {Schema, model, Model} from "mongoose";
+import {ICart} from "../../utils/modelsInterfaces";
 
 const cartSchema = new Schema<ICart>({
   products: {type: [Object], required: true},

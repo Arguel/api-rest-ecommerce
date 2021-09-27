@@ -1,4 +1,5 @@
 import {MongodbProducts} from "../mongodb/products";
+import {MysqlProducts} from "../mysql/products";
 import {ICrudProducts} from "../../utils/crudInterfaces";
 
 export class FactoryProducts {

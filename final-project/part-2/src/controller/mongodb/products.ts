@@ -1,5 +1,6 @@
 import {Request, Response} from "express";
-import {ProductModel, IProduct} from "../../models/mongodb/products";
+import {ProductModel} from "../../models/mongodb/products";
+import {IProduct} from "../../utils/modelsInterfaces";
 import {connectMongoDB} from "../../config/mongodb.db";
 
 export class MongodbProducts {

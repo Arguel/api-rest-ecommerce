@@ -1,6 +1,7 @@
 import {Request, Response} from "express";
 import {connectMySQL} from "../../models/mysql/cart-products";
-import {knexfile} from "../../config/knexfile";
+import {ICart, IProduct} from "../../utils/modelsInterfaces";
+import {mysqlKnexInstance} from "../../config/mysql.db";
 
 const cartId = "1";
 
@@ -19,15 +20,17 @@ export class MysqlCart {
   }
 
   // GET local cart
-  async getLocalCart(): Promise<ICart> {
+  async getLocalCart(req: Request): Promise<ICart> {
     let cart: ICart = {
       products: [],
-      timestamp: new Date().toString(),
     };
     const localCartId = cartId;
     if (localCartId) {
-      const doc: ICart | null = await CartModel.findById(localCartId);
-      if (doc) cart = doc;
+      const doc: unknown[] = await mysqlKnexInstance("carts").where(
+        "_id",
+        cartId,
+      );
+      if (doc.length > 0) cart = doc as unknown as ICart;
     }
     return cart;
   }
@@ -35,7 +38,10 @@ export class MysqlCart {
   // GET current cart (GET)
   async getCart(req: Request, res: Response): Promise<Response | void> {
     try {
-      const cart: ICart = await this.getLocalCart();
+      const cart: ICart = await this.getLocalCart(req);
+      console.log(cart);
+      if (cart.products.length === 0)
+        throw new Error("The shopping cart is empty");
       res.status(200).json(cart);
     } catch (err) {
       res.status(500).json(this.defaultError(err as Error));
@@ -48,10 +54,10 @@ export class MysqlCart {
     res: Response,
   ): Promise<Response | void> {
     try {
-      const cart: ICart = await this.getLocalCart();
+      const cart: ICart = await this.getLocalCart(req);
       let product: object = {};
       const productInCart: object | undefined = cart.products.find(
-        (elem) => (elem as IProduct)._id!.toString() === req.params.id,
+        (elem) => (elem as IProduct)._id === req.params.id,
       );
       if (productInCart) product = productInCart;
       else
@@ -67,17 +73,22 @@ export class MysqlCart {
   // ADD a new Product (POST /:id)
   async addProduct(req: Request, res: Response): Promise<Response | void> {
     try {
-      const cart: ICart = await this.getLocalCart();
+      const cart: ICart = await this.getLocalCart(req);
       let itemIndex: number = -1;
       const {_id, timestamp, name, description, code, thumbnail, price, stock} =
-        (await ProductModel.findById(req.params.id)) as IProduct;
+        (await mysqlKnexInstance("products").where(
+          "_id",
+          req.params.id,
+        )) as unknown as IProduct;
       if (cart.products.length > 0)
         itemIndex = cart.products.findIndex(
-          (obj) => (obj as IProduct)._id!.toString() === _id!.toString(),
+          (obj) => (obj as IProduct)._id === _id,
         );
       if (itemIndex !== -1) {
         (cart.products[itemIndex] as IProduct).quantityOnCart!++;
+        await mysqlKnexInstance("carts").where({_id: cartId}).update(cart);
       } else {
+        // This item is extracted from the "products" database
         const newProductInCart: IProduct = {
           _id,
           timestamp,
@@ -90,10 +101,9 @@ export class MysqlCart {
           quantityOnCart: 1,
         };
         cart.products.push(newProductInCart);
+        await mysqlKnexInstance("carts").insert(cart);
       }
-      const updatedCart = new CartModel(cart);
       // cartId = updatedCart._id;
-      await updatedCart.save();
       res.status(200).json({Status: "Product saved/updated"});
     } catch (err) {
       res.status(500).json(this.defaultError(err as Error));
@@ -106,15 +116,14 @@ export class MysqlCart {
     res: Response,
   ): Promise<Response | void> {
     try {
-      const cart: ICart = await this.getLocalCart();
+      const cart: ICart = await this.getLocalCart(req);
 
       const itemIndex: number = cart.products.findIndex(
-        (obj) => (obj as IProduct)._id!.toString() === req.params.id,
+        (obj) => (obj as IProduct)._id === req.params.id,
       );
       if (itemIndex !== -1) {
         cart.products.splice(itemIndex, 1);
-        const updatedCart = new CartModel(cart);
-        await updatedCart.save();
+        await mysqlKnexInstance("carts").where({_id: cartId}).update(cart);
         res.status(200).json({status: "Product Deleted"});
       } else {
         throw new Error("Product not found");

@@ -88,6 +88,8 @@ var MongodbCart = /** @class */ (function () {
                         return [4 /*yield*/, this.getLocalCart()];
                     case 1:
                         cart = _a.sent();
+                        if (cart.products.length === 0)
+                            throw new Error("The shopping cart is empty");
                         res.status(200).json(cart);
                         return [3 /*break*/, 3];
                     case 2:

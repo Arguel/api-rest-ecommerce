@@ -1,19 +1,21 @@
-import {knexInstance} from "../../config/mysql.db";
+import {mysqlKnexInstance} from "../../config/mysql.db";
 
 export async function connectMySQL(): Promise<void> {
   try {
-    const connecedCartScheme = await knexInstance.schema.hasTable("carts");
+    const connecedCartScheme = await mysqlKnexInstance.schema.hasTable("carts");
     if (!connecedCartScheme) {
-      knexInstance.schema.createTable("carts", (t) => {
+      await mysqlKnexInstance.schema.createTable("carts", (t) => {
         t.increments("_id");
-        t.string("products", 30000);
+        t.string("products", 20000);
         t.timestamp("timestamp");
       });
       console.log("Cart table created");
     }
-    const connecedProductScheme = await knexInstance.schema.hasTable("carts");
+    const connecedProductScheme = await mysqlKnexInstance.schema.hasTable(
+      "products",
+    );
     if (!connecedProductScheme) {
-      knexInstance.schema.createTable("products", (t) => {
+      await mysqlKnexInstance.schema.createTable("products", (t) => {
         t.increments("_id");
         t.timestamp("timestamp");
         t.string("name");

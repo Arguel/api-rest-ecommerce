@@ -1,16 +1,5 @@
-import {Schema, model, Model, Types} from "mongoose";
-
-export interface IProduct {
-  _id?: Types.ObjectId;
-  timestamp: string;
-  name: string;
-  description: string;
-  code: number;
-  thumbnail: string;
-  price: number;
-  stock: number;
-  quantityOnCart?: number;
-}
+import {Schema, model, Model} from "mongoose";
+import {IProduct} from "../../utils/modelsInterfaces";
 
 const productSchema = new Schema<IProduct>({
   timestamp: {type: String, required: true},

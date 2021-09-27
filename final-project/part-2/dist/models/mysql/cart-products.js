@@ -44,23 +44,25 @@ function connectMySQL() {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    _a.trys.push([0, 3, , 4]);
-                    return [4 /*yield*/, mysql_db_1.knexInstance.schema.hasTable("carts")];
+                    _a.trys.push([0, 7, , 8]);
+                    return [4 /*yield*/, mysql_db_1.mysqlKnexInstance.schema.hasTable("carts")];
                 case 1:
                     connecedCartScheme = _a.sent();
-                    if (!connecedCartScheme) {
-                        mysql_db_1.knexInstance.schema.createTable("carts", function (t) {
+                    if (!!connecedCartScheme) return [3 /*break*/, 3];
+                    return [4 /*yield*/, mysql_db_1.mysqlKnexInstance.schema.createTable("carts", function (t) {
                             t.increments("_id");
-                            t.string("products", 30000);
+                            t.string("products", 20000);
                             t.timestamp("timestamp");
-                        });
-                        console.log("Cart table created");
-                    }
-                    return [4 /*yield*/, mysql_db_1.knexInstance.schema.hasTable("carts")];
+                        })];
                 case 2:
+                    _a.sent();
+                    console.log("Cart table created");
+                    _a.label = 3;
+                case 3: return [4 /*yield*/, mysql_db_1.mysqlKnexInstance.schema.hasTable("products")];
+                case 4:
                     connecedProductScheme = _a.sent();
-                    if (!connecedProductScheme) {
-                        mysql_db_1.knexInstance.schema.createTable("products", function (t) {
+                    if (!!connecedProductScheme) return [3 /*break*/, 6];
+                    return [4 /*yield*/, mysql_db_1.mysqlKnexInstance.schema.createTable("products", function (t) {
                             t.increments("_id");
                             t.timestamp("timestamp");
                             t.string("name");
@@ -69,18 +71,21 @@ function connectMySQL() {
                             t.string("thumbnail", 400);
                             t.integer("price", 15);
                             t.integer("stock", 10);
-                        });
-                        console.log("Products table created");
-                    }
+                        })];
+                case 5:
+                    _a.sent();
+                    console.log("Products table created");
+                    _a.label = 6;
+                case 6:
                     if (connecedCartScheme && connecedProductScheme)
                         console.log("MySQL connection SUCCESS");
-                    return [3 /*break*/, 4];
-                case 3:
+                    return [3 /*break*/, 8];
+                case 7:
                     err_1 = _a.sent();
                     console.error(err_1.message || "MySQL connection FAIL");
                     process.exit(1);
-                    return [3 /*break*/, 4];
-                case 4: return [2 /*return*/];
+                    return [3 /*break*/, 8];
+                case 8: return [2 /*return*/];
             }
         });
     });
