@@ -12,8 +12,8 @@ var CartController = /** @class */ (function () {
     CartController.prototype.getCart = function (req, res) {
         return this.factory.getCart(req, res);
     };
-    CartController.prototype.getCartProduct = function (req, res) {
-        return this.factory.getCartProduct(req, res);
+    CartController.prototype.getCartProductById = function (req, res) {
+        return this.factory.getCartProductById(req, res);
     };
     CartController.prototype.addProduct = function (req, res) {
         return this.factory.addProduct(req, res);

@@ -15,8 +15,8 @@ export class CartController implements ICrudCart {
   getCart(req: Request, res: Response) {
     return this.factory.getCart(req, res);
   }
-  getCartProduct(req: Request, res: Response) {
-    return this.factory.getCartProduct(req, res);
+  getCartProductById(req: Request, res: Response) {
+    return this.factory.getCartProductById(req, res);
   }
   addProduct(req: Request, res: Response) {
     return this.factory.addProduct(req, res);

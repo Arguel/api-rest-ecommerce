@@ -1,11 +1,11 @@
 import {Request, Response} from "express";
-import {ProductModel, IProduct} from "../../models/products";
-import {connectDB} from "../../config/mongodb.db";
+import {ProductModel, IProduct} from "../../models/mongodb/products";
+import {connectMongoDB} from "../../config/mongodb.db";
 
 export class MongodbProducts {
   constructor() {
     // MongoDB connection
-    connectDB();
+    connectMongoDB();
   }
 
   // Default error handler

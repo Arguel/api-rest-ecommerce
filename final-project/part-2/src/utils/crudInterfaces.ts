@@ -10,7 +10,7 @@ export interface ICrudProducts {
 
 export interface ICrudCart {
   getCart(req: Request, res: Response): Promise<Response | void>;
-  getCartProduct(req: Request, res: Response): Promise<Response | void>;
+  getCartProductById(req: Request, res: Response): Promise<Response | void>;
   addProduct(req: Request, res: Response): Promise<Response | void>;
   deleteProductById(req: Request, res: Response): Promise<Response | void>;
 }

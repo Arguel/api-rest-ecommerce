@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-export async function connectDB(): Promise<void> {
+export async function connectMongoDB(): Promise<void> {
   if (process.env.MONGO_URI) {
     try {
       await mongoose.connect(process.env.MONGO_URI, {

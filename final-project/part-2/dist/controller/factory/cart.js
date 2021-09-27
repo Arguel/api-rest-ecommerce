@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.FactoryCart = void 0;
 var cart_1 = require("../mongodb/cart");
+var cart_2 = require("../mysql/cart");
 var FactoryCart = /** @class */ (function () {
     function FactoryCart() {
     }
@@ -10,7 +11,7 @@ var FactoryCart = /** @class */ (function () {
             case "mongodb":
                 return new cart_1.MongodbCart();
             case "mysql":
-                return new MysqlProducts();
+                return new cart_2.MysqlCart();
             default:
                 return new cart_1.MongodbCart();
         }

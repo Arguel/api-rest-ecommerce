@@ -1,14 +1,14 @@
 import {Request, Response} from "express";
-import {ProductModel, IProduct} from "../../models/products";
-import {CartModel, ICart} from "../../models/cart";
-import {connectDB} from "../../config/mongodb.db";
+import {ProductModel, IProduct} from "../../models/mongodb/products";
+import {CartModel, ICart} from "../../models/mongodb/cart";
+import {connectMongoDB} from "../../config/mongodb.db";
 
 const cartId = "614a4346c63a6bed117cfdbb";
 
 export class MongodbCart {
   constructor() {
     // MongoDB connection
-    connectDB();
+    connectMongoDB();
   }
   // Default error handler
   defaultError(err: Error): object {
@@ -44,7 +44,10 @@ export class MongodbCart {
   }
 
   // GET one Product (GET /:id)
-  async getCartProduct(req: Request, res: Response): Promise<Response | void> {
+  async getCartProductById(
+    req: Request,
+    res: Response,
+  ): Promise<Response | void> {
     try {
       const cart: ICart = await this.getLocalCart();
       let product: object = {};

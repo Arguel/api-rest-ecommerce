@@ -37,12 +37,12 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MongodbProducts = void 0;
-var products_1 = require("../../models/products");
+var products_1 = require("../../models/mongodb/products");
 var mongodb_db_1 = require("../../config/mongodb.db");
 var MongodbProducts = /** @class */ (function () {
     function MongodbProducts() {
         // MongoDB connection
-        (0, mongodb_db_1.connectDB)();
+        (0, mongodb_db_1.connectMongoDB)();
     }
     // Default error handler
     MongodbProducts.prototype.defaultError = function (err) {

@@ -37,14 +37,14 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MongodbCart = void 0;
-var products_1 = require("../../models/products");
-var cart_1 = require("../../models/cart");
+var products_1 = require("../../models/mongodb/products");
+var cart_1 = require("../../models/mongodb/cart");
 var mongodb_db_1 = require("../../config/mongodb.db");
 var cartId = "614a4346c63a6bed117cfdbb";
 var MongodbCart = /** @class */ (function () {
     function MongodbCart() {
         // MongoDB connection
-        (0, mongodb_db_1.connectDB)();
+        (0, mongodb_db_1.connectMongoDB)();
     }
     // Default error handler
     MongodbCart.prototype.defaultError = function (err) {
@@ -100,7 +100,7 @@ var MongodbCart = /** @class */ (function () {
         });
     };
     // GET one Product (GET /:id)
-    MongodbCart.prototype.getCartProduct = function (req, res) {
+    MongodbCart.prototype.getCartProductById = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
             var cart, product, productInCart, err_2;
             return __generator(this, function (_a) {

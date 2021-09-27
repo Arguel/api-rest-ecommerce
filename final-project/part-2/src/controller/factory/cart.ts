@@ -1,4 +1,5 @@
 import {MongodbCart} from "../mongodb/cart";
+import {MysqlCart} from "../mysql/cart";
 import {ICrudCart} from "../../utils/crudInterfaces";
 
 export class FactoryCart {
@@ -7,7 +8,7 @@ export class FactoryCart {
       case "mongodb":
         return new MongodbCart();
       case "mysql":
-        return new MysqlProducts();
+        return new MysqlCart();
       default:
         return new MongodbCart();
     }
