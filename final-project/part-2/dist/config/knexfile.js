@@ -1,10 +1,10 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
+const __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : {"default": mod};
 };
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", {value: true});
 exports.knexfile = void 0;
-var dotenv_1 = __importDefault(require("dotenv"));
+const dotenv_1 = __importDefault(require("dotenv"));
 // Update with your config settings.
 // Environment Variables
 dotenv_1.default.config();
@@ -48,6 +48,6 @@ exports.knexfile = {
     mysql: {
         client: "mysql",
         connection: process.env.MYSQL_URI,
-        pool: { min: 2, max: 10 },
+        pool: {min: 2, max: 10},
     },
 };
