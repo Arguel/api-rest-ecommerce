@@ -6,6 +6,7 @@ export interface ICrudProducts {
   addProduct(req: Request, res: Response): Promise<Response | void>;
   updateProductById(req: Request, res: Response): Promise<Response | void>;
   deleteProductById(req: Request, res: Response): Promise<Response | void>;
+  filter(req: Request, res: Response): Promise<Response | void>;
 }
 
 export interface ICrudCart {
@@ -13,4 +14,11 @@ export interface ICrudCart {
   getCartProductById(req: Request, res: Response): Promise<Response | void>;
   addProduct(req: Request, res: Response): Promise<Response | void>;
   deleteProductById(req: Request, res: Response): Promise<Response | void>;
+}
+
+export interface IQueryProduct {
+  name?: string;
+  code?: number;
+  price?: object;
+  stock?: object;
 }

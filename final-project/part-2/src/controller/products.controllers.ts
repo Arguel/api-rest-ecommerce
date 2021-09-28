@@ -27,4 +27,7 @@ export class ProductsController implements ICrudProducts {
   deleteProductById(req: Request, res: Response) {
     return this.factory.deleteProductById(req, res);
   }
+  filter(req: Request, res: Response) {
+    return this.factory.filter(req, res);
+  }
 }

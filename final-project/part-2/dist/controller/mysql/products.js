@@ -139,7 +139,14 @@ var MysqlProducts = /** @class */ (function () {
                     case 0:
                         _b.trys.push([0, 2, , 3]);
                         _a = req.body, name_2 = _a.name, description = _a.description, code = _a.code, thumbnail = _a.thumbnail, price = _a.price, stock = _a.stock;
-                        newProduct = { name: name_2, description: description, code: code, thumbnail: thumbnail, price: price, stock: stock };
+                        newProduct = {
+                            name: name_2,
+                            description: description,
+                            code: code,
+                            thumbnail: thumbnail,
+                            price: price,
+                            stock: stock,
+                        };
                         return [4 /*yield*/, (0, mysql_db_1.mysqlKnexInstance)("products")
                                 .where({ _id: req.params.id })
                                 .update(newProduct)];
@@ -180,6 +187,56 @@ var MysqlProducts = /** @class */ (function () {
                     case 2:
                         err_5 = _a.sent();
                         res.status(500).json(this.defaultError(err_5));
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    // Filter the products (POST)
+    MysqlProducts.prototype.filter = function (req, res) {
+        return __awaiter(this, void 0, void 0, function () {
+            var _a, name_3, code_1, minPrice_1, maxPrice_1, minStock_1, maxStock_1, result, err_6;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        _b.trys.push([0, 2, , 3]);
+                        _a = req.body, name_3 = _a.name, code_1 = _a.code, minPrice_1 = _a.minPrice, maxPrice_1 = _a.maxPrice, minStock_1 = _a.minStock, maxStock_1 = _a.maxStock;
+                        return [4 /*yield*/, (0, mysql_db_1.mysqlKnexInstance)("products")
+                                .modify(function (cxn) {
+                                if (name_3)
+                                    cxn.where({ name: name_3 });
+                            })
+                                .modify(function (cxn) {
+                                if (code_1)
+                                    cxn.where({ code: code_1 });
+                            })
+                                .modify(function (cxn) {
+                                if (minPrice_1)
+                                    cxn.where("price", ">=", minPrice_1);
+                            })
+                                .modify(function (cxn) {
+                                if (maxPrice_1)
+                                    cxn.where("price", "<=", maxPrice_1);
+                            })
+                                .modify(function (cxn) {
+                                if (minStock_1)
+                                    cxn.where("stock", ">=", minStock_1);
+                            })
+                                .modify(function (cxn) {
+                                if (maxStock_1)
+                                    cxn.where("stock", "<=", maxStock_1);
+                            })];
+                    case 1:
+                        result = _b.sent();
+                        if (result.length > 0)
+                            res.status(200).json(result[0]);
+                        else
+                            throw new Error("No product matches this search/properties");
+                        return [3 /*break*/, 3];
+                    case 2:
+                        err_6 = _b.sent();
+                        res.status(500).json(this.defaultError(err_6));
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
                 }

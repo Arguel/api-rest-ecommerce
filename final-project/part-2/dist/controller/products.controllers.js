@@ -24,6 +24,9 @@ var ProductsController = /** @class */ (function () {
     ProductsController.prototype.deleteProductById = function (req, res) {
         return this.factory.deleteProductById(req, res);
     };
+    ProductsController.prototype.filter = function (req, res) {
+        return this.factory.filter(req, res);
+    };
     return ProductsController;
 }());
 exports.ProductsController = ProductsController;

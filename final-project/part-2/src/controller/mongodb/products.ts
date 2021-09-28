@@ -2,6 +2,7 @@ import {Request, Response} from "express";
 import {ProductModel} from "../../models/mongodb/products";
 import {IProduct} from "../../utils/modelsInterfaces";
 import {connectMongoDB} from "../../config/mongodb.db";
+import {IQueryProduct} from "../../utils/crudInterfaces";
 
 export class MongodbProducts {
   constructor() {
@@ -68,7 +69,14 @@ export class MongodbProducts {
     try {
       // We extract the properties from the request body
       const {name, description, code, thumbnail, price, stock} = req.body;
-      const newProduct = {name, description, code, thumbnail, price, stock};
+      const newProduct: object = {
+        name,
+        description,
+        code,
+        thumbnail,
+        price,
+        stock,
+      };
       // We update the product if it exists
       await ProductModel.findByIdAndUpdate(req.params.id, newProduct);
       res.status(200).json({Status: "Product updated"});
@@ -86,6 +94,31 @@ export class MongodbProducts {
       // We delete the product from the database
       await ProductModel.findByIdAndRemove(req.params.id);
       res.status(200).json({status: "Product Deleted"});
+    } catch (err) {
+      res.status(500).json(this.defaultError(err as Error));
+    }
+  }
+
+  // Filter the products (POST)
+  async filter(req: Request, res: Response): Promise<Response | void> {
+    try {
+      // We extract the properties from the request body
+      const {name, code, minPrice, maxPrice, minStock, maxStock} = req.body;
+      const filters: IQueryProduct = {};
+      if (name) filters.name = name;
+      if (code) filters.code = code;
+      if (minPrice)
+        filters.price = {...(filters.price as object), $gte: minPrice};
+      if (maxPrice)
+        filters.price = {...(filters.price as object), $lte: maxPrice};
+      if (minStock)
+        filters.stock = {...(filters.stock as object), $gte: minStock};
+      if (maxStock)
+        filters.stock = {...(filters.stock as object), $lte: maxStock};
+
+      const product: IProduct | null = await ProductModel.findOne(filters);
+      if (product) res.status(200).json(product);
+      else throw new Error("No product matches this search/properties");
     } catch (err) {
       res.status(500).json(this.defaultError(err as Error));
     }

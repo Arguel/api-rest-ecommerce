@@ -1,4 +1,15 @@
 "use strict";
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -136,7 +147,14 @@ var MongodbProducts = /** @class */ (function () {
                     case 0:
                         _b.trys.push([0, 2, , 3]);
                         _a = req.body, name_2 = _a.name, description = _a.description, code = _a.code, thumbnail = _a.thumbnail, price = _a.price, stock = _a.stock;
-                        newProduct = { name: name_2, description: description, code: code, thumbnail: thumbnail, price: price, stock: stock };
+                        newProduct = {
+                            name: name_2,
+                            description: description,
+                            code: code,
+                            thumbnail: thumbnail,
+                            price: price,
+                            stock: stock,
+                        };
                         // We update the product if it exists
                         return [4 /*yield*/, products_1.ProductModel.findByIdAndUpdate(req.params.id, newProduct)];
                     case 1:
@@ -171,6 +189,45 @@ var MongodbProducts = /** @class */ (function () {
                     case 2:
                         err_5 = _a.sent();
                         res.status(500).json(this.defaultError(err_5));
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    // Filter the products (POST)
+    MongodbProducts.prototype.filter = function (req, res) {
+        return __awaiter(this, void 0, void 0, function () {
+            var _a, name_3, code, minPrice, maxPrice, minStock, maxStock, filters, product, err_6;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        _b.trys.push([0, 2, , 3]);
+                        _a = req.body, name_3 = _a.name, code = _a.code, minPrice = _a.minPrice, maxPrice = _a.maxPrice, minStock = _a.minStock, maxStock = _a.maxStock;
+                        filters = {};
+                        if (name_3)
+                            filters.name = name_3;
+                        if (code)
+                            filters.code = code;
+                        if (minPrice)
+                            filters.price = __assign(__assign({}, filters.price), { $gte: minPrice });
+                        if (maxPrice)
+                            filters.price = __assign(__assign({}, filters.price), { $lte: maxPrice });
+                        if (minStock)
+                            filters.stock = __assign(__assign({}, filters.stock), { $gte: minStock });
+                        if (maxStock)
+                            filters.stock = __assign(__assign({}, filters.stock), { $lte: maxStock });
+                        return [4 /*yield*/, products_1.ProductModel.findOne(filters)];
+                    case 1:
+                        product = _b.sent();
+                        if (product)
+                            res.status(200).json(product);
+                        else
+                            throw new Error("No product matches this search/properties");
+                        return [3 /*break*/, 3];
+                    case 2:
+                        err_6 = _b.sent();
+                        res.status(500).json(this.defaultError(err_6));
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
                 }

@@ -75,7 +75,14 @@ export class MysqlProducts {
     try {
       // We extract the properties from the request body
       const {name, description, code, thumbnail, price, stock} = req.body;
-      const newProduct = {name, description, code, thumbnail, price, stock};
+      const newProduct: object = {
+        name,
+        description,
+        code,
+        thumbnail,
+        price,
+        stock,
+      };
       // We update the product if it exists
       const result = await mysqlKnexInstance("products")
         .where({_id: req.params.id})
@@ -105,6 +112,38 @@ export class MysqlProducts {
         throw new Error(
           "The product could not be found / The product does not exist in the shopping cart",
         );
+    } catch (err) {
+      res.status(500).json(this.defaultError(err as Error));
+    }
+  }
+
+  // Filter the products (POST)
+  async filter(req: Request, res: Response): Promise<Response | void> {
+    try {
+      // We extract the properties from the request body
+      const {name, code, minPrice, maxPrice, minStock, maxStock} = req.body;
+      const result: IProduct[] = await mysqlKnexInstance("products")
+        .modify((cxn) => {
+          if (name) cxn.where({name});
+        })
+        .modify((cxn) => {
+          if (code) cxn.where({code});
+        })
+        .modify((cxn) => {
+          if (minPrice) cxn.where("price", ">=", minPrice);
+        })
+        .modify((cxn) => {
+          if (maxPrice) cxn.where("price", "<=", maxPrice);
+        })
+        .modify((cxn) => {
+          if (minStock) cxn.where("stock", ">=", minStock);
+        })
+        .modify((cxn) => {
+          if (maxStock) cxn.where("stock", "<=", maxStock);
+        });
+
+      if (result.length > 0) res.status(200).json(result[0]);
+      else throw new Error("No product matches this search/properties");
     } catch (err) {
       res.status(500).json(this.defaultError(err as Error));
     }
