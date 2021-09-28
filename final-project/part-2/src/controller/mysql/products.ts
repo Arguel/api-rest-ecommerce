@@ -17,7 +17,7 @@ export class MysqlProducts {
         "We are having problems connecting to the system, please try again later",
     };
   }
-  // GET all Products
+  // GET all Products (GET)
   async getProducts(req: Request, res: Response): Promise<Response | void> {
     try {
       const products: IProduct[] = await mysqlKnexInstance("products").select(
@@ -30,7 +30,7 @@ export class MysqlProducts {
     }
   }
 
-  // GET one Product
+  // GET one Product (GET /:id)
   async getProductById(req: Request, res: Response): Promise<Response | void> {
     try {
       const product: IProduct[] = await mysqlKnexInstance("products").where(
@@ -38,14 +38,16 @@ export class MysqlProducts {
         req.params.id,
       );
       if (product.length === 0)
-        throw new Error("The product is not added to the shopping cart");
+        throw new Error(
+          "The product is not added. You can add it by making an http POST request to domain/products",
+        );
       res.status(200).json(product);
     } catch (err) {
       res.status(500).json(this.defaultError(err as Error));
     }
   }
 
-  // ADD a new Product
+  // ADD a new Product (POST /:id)
   async addProduct(req: Request, res: Response): Promise<Response | void> {
     try {
       const {name, description, code, thumbnail, price, stock} = req.body;
@@ -64,7 +66,7 @@ export class MysqlProducts {
     }
   }
 
-  // UPDATE a Product
+  // UPDATE a Product (PUT /:id)
   async updateProductById(
     req: Request,
     res: Response,
@@ -72,27 +74,33 @@ export class MysqlProducts {
     try {
       const {name, description, code, thumbnail, price, stock} = req.body;
       const newProduct = {name, description, code, thumbnail, price, stock};
-      const asd = await mysqlKnexInstance("products")
+      const result = await mysqlKnexInstance("products")
         .where({_id: req.params.id})
         .update(newProduct);
-      console.log(asd);
-      res.status(200).json({Status: "Product updated"});
+      if (result) res.status(200).json({Status: "Product updated"});
+      else
+        throw new Error(
+          "The product could not be updated / The product does not exist in the shopping cart",
+        );
     } catch (err) {
       res.status(500).json(this.defaultError(err as Error));
     }
   }
 
-  // DELETE a Product
+  // DELETE a Product (DELETE /:id)
   async deleteProductById(
     req: Request,
     res: Response,
   ): Promise<Response | void> {
     try {
-      const asd = await mysqlKnexInstance("products")
+      const result = await mysqlKnexInstance("products")
         .where({_id: req.params.id})
         .del();
-      console.log(asd);
-      res.status(200).json({status: "Product Deleted"});
+      if (result) res.status(200).json({status: "Product Deleted"});
+      else
+        throw new Error(
+          "The product could not be found / The product does not exist in the shopping cart",
+        );
     } catch (err) {
       res.status(500).json(this.defaultError(err as Error));
     }

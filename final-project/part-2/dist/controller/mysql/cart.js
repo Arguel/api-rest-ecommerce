@@ -39,7 +39,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.MysqlCart = void 0;
 var cart_products_1 = require("../../models/mysql/cart-products");
 var mysql_db_1 = require("../../config/mysql.db");
-var cartId = "1";
+var cartId = "13";
 var MysqlCart = /** @class */ (function () {
     function MysqlCart() {
         // MySQL connection
@@ -55,7 +55,7 @@ var MysqlCart = /** @class */ (function () {
     // GET local cart
     MysqlCart.prototype.getLocalCart = function (req) {
         return __awaiter(this, void 0, void 0, function () {
-            var cart, localCartId, doc;
+            var cart, localCartId, doc, docCart;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -67,8 +67,11 @@ var MysqlCart = /** @class */ (function () {
                         return [4 /*yield*/, (0, mysql_db_1.mysqlKnexInstance)("carts").where("_id", cartId)];
                     case 1:
                         doc = _a.sent();
-                        if (doc.length > 0)
-                            cart = doc;
+                        if (doc.length > 0) {
+                            docCart = doc[0];
+                            docCart.products = JSON.parse(docCart.products);
+                            cart = docCart;
+                        }
                         _a.label = 2;
                     case 2: return [2 /*return*/, cart];
                 }
@@ -86,7 +89,6 @@ var MysqlCart = /** @class */ (function () {
                         return [4 /*yield*/, this.getLocalCart(req)];
                     case 1:
                         cart = _a.sent();
-                        console.log(cart);
                         if (cart.products.length === 0)
                             throw new Error("The shopping cart is empty");
                         res.status(200).json(cart);
@@ -112,11 +114,13 @@ var MysqlCart = /** @class */ (function () {
                     case 1:
                         cart = _a.sent();
                         product = {};
-                        productInCart = cart.products.find(function (elem) { return elem._id === req.params.id; });
+                        console.log(cart);
+                        productInCart = cart.products.find(function (elem) { return elem._id === parseInt(req.params.id); });
+                        console.log(productInCart);
                         if (productInCart)
                             product = productInCart;
                         else
-                            throw new Error("The cart does not have this product added. You can add it by making an http PUT request to domain/cart/" + req.params.id);
+                            throw new Error("The cart does not have this product added. You can add it by making an http POST request to domain/cart/" + req.params.id);
                         res.status(200).json(product);
                         return [3 /*break*/, 3];
                     case 2:
@@ -131,26 +135,34 @@ var MysqlCart = /** @class */ (function () {
     // ADD a new Product (POST /:id)
     MysqlCart.prototype.addProduct = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var cart, itemIndex, _a, _id_1, timestamp, name_1, description, code, thumbnail, price, stock, newProductInCart, err_3;
+            var cart, result, itemIndex, products, _a, _id_1, timestamp, name_1, description, code, thumbnail, price, stock, newProductInCart, err_3;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
-                        _b.trys.push([0, 7, , 8]);
+                        _b.trys.push([0, 9, , 10]);
                         return [4 /*yield*/, this.getLocalCart(req)];
                     case 1:
                         cart = _b.sent();
+                        result = false;
                         itemIndex = -1;
                         return [4 /*yield*/, (0, mysql_db_1.mysqlKnexInstance)("products").where("_id", req.params.id)];
                     case 2:
-                        _a = (_b.sent()), _id_1 = _a._id, timestamp = _a.timestamp, name_1 = _a.name, description = _a.description, code = _a.code, thumbnail = _a.thumbnail, price = _a.price, stock = _a.stock;
+                        products = _b.sent();
+                        // In case the product does not exist in the product database
+                        if (products.length === 0)
+                            throw new Error("No product with that id was found");
+                        _a = products[0], _id_1 = _a._id, timestamp = _a.timestamp, name_1 = _a.name, description = _a.description, code = _a.code, thumbnail = _a.thumbnail, price = _a.price, stock = _a.stock;
+                        // We check if it is already added to the shopping cart
                         if (cart.products.length > 0)
                             itemIndex = cart.products.findIndex(function (obj) { return obj._id === _id_1; });
                         if (!(itemIndex !== -1)) return [3 /*break*/, 4];
                         cart.products[itemIndex].quantityOnCart++;
-                        return [4 /*yield*/, (0, mysql_db_1.mysqlKnexInstance)("carts").where({ _id: cartId }).update(cart)];
+                        return [4 /*yield*/, (0, mysql_db_1.mysqlKnexInstance)("carts")
+                                .where({ _id: cartId })
+                                .update({ products: JSON.stringify(cart.products) })];
                     case 3:
-                        _b.sent();
-                        return [3 /*break*/, 6];
+                        result = _b.sent();
+                        return [3 /*break*/, 8];
                     case 4:
                         newProductInCart = {
                             _id: _id_1,
@@ -164,19 +176,33 @@ var MysqlCart = /** @class */ (function () {
                             quantityOnCart: 1,
                         };
                         cart.products.push(newProductInCart);
-                        return [4 /*yield*/, (0, mysql_db_1.mysqlKnexInstance)("carts").insert(cart)];
+                        if (!cart._id) return [3 /*break*/, 6];
+                        return [4 /*yield*/, (0, mysql_db_1.mysqlKnexInstance)("carts")
+                                .where({ _id: cartId })
+                                .update({
+                                products: JSON.stringify(cart.products),
+                            })];
                     case 5:
-                        _b.sent();
-                        _b.label = 6;
-                    case 6:
-                        // cartId = updatedCart._id;
-                        res.status(200).json({ Status: "Product saved/updated" });
+                        result = _b.sent();
                         return [3 /*break*/, 8];
+                    case 6: return [4 /*yield*/, (0, mysql_db_1.mysqlKnexInstance)("carts").insert({
+                            products: JSON.stringify(cart.products),
+                        })];
                     case 7:
+                        result = _b.sent();
+                        _b.label = 8;
+                    case 8:
+                        // cartId = updatedCart._id;
+                        if (result)
+                            res.status(200).json({ Status: "Product saved/updated" });
+                        else
+                            throw new Error("The product could not be added / updated, check that the information matches the schema");
+                        return [3 /*break*/, 10];
+                    case 9:
                         err_3 = _b.sent();
                         res.status(500).json(this.defaultError(err_3));
-                        return [3 /*break*/, 8];
-                    case 8: return [2 /*return*/];
+                        return [3 /*break*/, 10];
+                    case 10: return [2 /*return*/];
                 }
             });
         });

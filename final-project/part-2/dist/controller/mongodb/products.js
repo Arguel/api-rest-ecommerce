@@ -51,7 +51,7 @@ var MongodbProducts = /** @class */ (function () {
             Status: "We are having problems connecting to the system, please try again later",
         };
     };
-    // GET all Products
+    // GET all Products (GET)
     MongodbProducts.prototype.getProducts = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
             var products, err_1;
@@ -73,7 +73,7 @@ var MongodbProducts = /** @class */ (function () {
             });
         });
     };
-    // GET one Product
+    // GET one Product (GET /:id)
     MongodbProducts.prototype.getProductById = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
             var product, err_2;
@@ -95,7 +95,7 @@ var MongodbProducts = /** @class */ (function () {
             });
         });
     };
-    // ADD a new Product
+    // ADD a new Product (POST /:id)
     MongodbProducts.prototype.addProduct = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
             var _a, name_1, description, code, thumbnail, price, stock, newProduct, err_3;
@@ -127,7 +127,7 @@ var MongodbProducts = /** @class */ (function () {
             });
         });
     };
-    // UPDATE a Product
+    // UPDATE a Product (PUT /:id)
     MongodbProducts.prototype.updateProductById = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
             var _a, name_2, description, code, thumbnail, price, stock, newProduct, err_4;
@@ -151,7 +151,7 @@ var MongodbProducts = /** @class */ (function () {
             });
         });
     };
-    // DELETE a Product
+    // DELETE a Product (DELETE /:id)
     MongodbProducts.prototype.deleteProductById = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
             var err_5;

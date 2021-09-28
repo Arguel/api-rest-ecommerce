@@ -51,7 +51,7 @@ var MysqlProducts = /** @class */ (function () {
             Status: "We are having problems connecting to the system, please try again later",
         };
     };
-    // GET all Products
+    // GET all Products (GET)
     MysqlProducts.prototype.getProducts = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
             var products, err_1;
@@ -75,7 +75,7 @@ var MysqlProducts = /** @class */ (function () {
             });
         });
     };
-    // GET one Product
+    // GET one Product (GET /:id)
     MysqlProducts.prototype.getProductById = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
             var product, err_2;
@@ -87,7 +87,7 @@ var MysqlProducts = /** @class */ (function () {
                     case 1:
                         product = _a.sent();
                         if (product.length === 0)
-                            throw new Error("The product is not added to the shopping cart");
+                            throw new Error("The product is not added. You can add it by making an http POST request to domain/products");
                         res.status(200).json(product);
                         return [3 /*break*/, 3];
                     case 2:
@@ -99,7 +99,7 @@ var MysqlProducts = /** @class */ (function () {
             });
         });
     };
-    // ADD a new Product
+    // ADD a new Product (POST /:id)
     MysqlProducts.prototype.addProduct = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
             var _a, name_1, description, code, thumbnail, price, stock, newProduct, err_3;
@@ -130,10 +130,10 @@ var MysqlProducts = /** @class */ (function () {
             });
         });
     };
-    // UPDATE a Product
+    // UPDATE a Product (PUT /:id)
     MysqlProducts.prototype.updateProductById = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var _a, name_2, description, code, thumbnail, price, stock, newProduct, asd, err_4;
+            var _a, name_2, description, code, thumbnail, price, stock, newProduct, result, err_4;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
@@ -144,9 +144,11 @@ var MysqlProducts = /** @class */ (function () {
                                 .where({ _id: req.params.id })
                                 .update(newProduct)];
                     case 1:
-                        asd = _b.sent();
-                        console.log(asd);
-                        res.status(200).json({ Status: "Product updated" });
+                        result = _b.sent();
+                        if (result)
+                            res.status(200).json({ Status: "Product updated" });
+                        else
+                            throw new Error("The product could not be updated / The product does not exist in the shopping cart");
                         return [3 /*break*/, 3];
                     case 2:
                         err_4 = _b.sent();
@@ -157,10 +159,10 @@ var MysqlProducts = /** @class */ (function () {
             });
         });
     };
-    // DELETE a Product
+    // DELETE a Product (DELETE /:id)
     MysqlProducts.prototype.deleteProductById = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var asd, err_5;
+            var result, err_5;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -169,9 +171,11 @@ var MysqlProducts = /** @class */ (function () {
                                 .where({ _id: req.params.id })
                                 .del()];
                     case 1:
-                        asd = _a.sent();
-                        console.log(asd);
-                        res.status(200).json({ status: "Product Deleted" });
+                        result = _a.sent();
+                        if (result)
+                            res.status(200).json({ status: "Product Deleted" });
+                        else
+                            throw new Error("The product could not be found / The product does not exist in the shopping cart");
                         return [3 /*break*/, 3];
                     case 2:
                         err_5 = _a.sent();

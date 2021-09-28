@@ -3,7 +3,7 @@ import {connectMySQL} from "../../models/mysql/cart-products";
 import {ICart, IProduct} from "../../utils/modelsInterfaces";
 import {mysqlKnexInstance} from "../../config/mysql.db";
 
-const cartId = "1";
+const cartId = "13";
 
 export class MysqlCart {
   constructor() {
@@ -30,7 +30,11 @@ export class MysqlCart {
         "_id",
         cartId,
       );
-      if (doc.length > 0) cart = doc as unknown as ICart;
+      if (doc.length > 0) {
+        const docCart: ICart = doc[0] as ICart;
+        docCart.products = JSON.parse(docCart.products as unknown as string);
+        cart = docCart;
+      }
     }
     return cart;
   }
@@ -39,7 +43,6 @@ export class MysqlCart {
   async getCart(req: Request, res: Response): Promise<Response | void> {
     try {
       const cart: ICart = await this.getLocalCart(req);
-      console.log(cart);
       if (cart.products.length === 0)
         throw new Error("The shopping cart is empty");
       res.status(200).json(cart);
@@ -56,13 +59,15 @@ export class MysqlCart {
     try {
       const cart: ICart = await this.getLocalCart(req);
       let product: object = {};
+      console.log(cart);
       const productInCart: object | undefined = cart.products.find(
-        (elem) => (elem as IProduct)._id === req.params.id,
+        (elem) => (elem as IProduct)._id === parseInt(req.params.id),
       );
+      console.log(productInCart);
       if (productInCart) product = productInCart;
       else
         throw new Error(
-          `The cart does not have this product added. You can add it by making an http PUT request to domain/cart/${req.params.id}`,
+          `The cart does not have this product added. You can add it by making an http POST request to domain/cart/${req.params.id}`,
         );
       res.status(200).json(product);
     } catch (err) {
@@ -74,19 +79,34 @@ export class MysqlCart {
   async addProduct(req: Request, res: Response): Promise<Response | void> {
     try {
       const cart: ICart = await this.getLocalCart(req);
-      let itemIndex: number = -1;
+      let result: boolean = false; // To see if the request was successful
+      let itemIndex: number = -1; // To manage item units
+
+      // We search our database "products" for the item with the id supplied by (req.params.id) to add it to the cart
+      const products: IProduct[] = await mysqlKnexInstance("products").where(
+        "_id",
+        req.params.id,
+      );
+
+      // In case the product does not exist in the product database
+      if (products.length === 0)
+        throw new Error("No product with that id was found");
+
+      // We extract the properties from the object that the database brings us
       const {_id, timestamp, name, description, code, thumbnail, price, stock} =
-        (await mysqlKnexInstance("products").where(
-          "_id",
-          req.params.id,
-        )) as unknown as IProduct;
+        products[0];
+
+      // We check if it is already added to the shopping cart
       if (cart.products.length > 0)
         itemIndex = cart.products.findIndex(
           (obj) => (obj as IProduct)._id === _id,
         );
+      // If it is already added to the cart, we add a unit
       if (itemIndex !== -1) {
         (cart.products[itemIndex] as IProduct).quantityOnCart!++;
-        await mysqlKnexInstance("carts").where({_id: cartId}).update(cart);
+        result = await mysqlKnexInstance("carts")
+          .where({_id: cartId})
+          .update({products: JSON.stringify(cart.products)});
       } else {
         // This item is extracted from the "products" database
         const newProductInCart: IProduct = {
@@ -101,10 +121,25 @@ export class MysqlCart {
           quantityOnCart: 1,
         };
         cart.products.push(newProductInCart);
-        await mysqlKnexInstance("carts").insert(cart);
+
+        // We check if there is already a cart created so we do not create a duplicate cart
+        if (cart._id)
+          result = await mysqlKnexInstance("carts")
+            .where({_id: cartId})
+            .update({
+              products: JSON.stringify(cart.products),
+            });
+        else
+          result = await mysqlKnexInstance("carts").insert({
+            products: JSON.stringify(cart.products),
+          });
       }
       // cartId = updatedCart._id;
-      res.status(200).json({Status: "Product saved/updated"});
+      if (result) res.status(200).json({Status: "Product saved/updated"});
+      else
+        throw new Error(
+          "The product could not be added / updated, check that the information matches the schema",
+        );
     } catch (err) {
       res.status(500).json(this.defaultError(err as Error));
     }

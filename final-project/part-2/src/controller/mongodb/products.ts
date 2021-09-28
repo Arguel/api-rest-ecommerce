@@ -17,7 +17,7 @@ export class MongodbProducts {
         "We are having problems connecting to the system, please try again later",
     };
   }
-  // GET all Products
+  // GET all Products (GET)
   async getProducts(req: Request, res: Response): Promise<Response | void> {
     try {
       const products: IProduct[] = await ProductModel.find();
@@ -27,7 +27,7 @@ export class MongodbProducts {
     }
   }
 
-  // GET one Product
+  // GET one Product (GET /:id)
   async getProductById(req: Request, res: Response): Promise<Response | void> {
     try {
       const product: IProduct = (await ProductModel.findById(
@@ -39,7 +39,7 @@ export class MongodbProducts {
     }
   }
 
-  // ADD a new Product
+  // ADD a new Product (POST /:id)
   async addProduct(req: Request, res: Response): Promise<Response | void> {
     try {
       const {name, description, code, thumbnail, price, stock} = req.body;
@@ -59,7 +59,7 @@ export class MongodbProducts {
     }
   }
 
-  // UPDATE a Product
+  // UPDATE a Product (PUT /:id)
   async updateProductById(
     req: Request,
     res: Response,
@@ -74,7 +74,7 @@ export class MongodbProducts {
     }
   }
 
-  // DELETE a Product
+  // DELETE a Product (DELETE /:id)
   async deleteProductById(
     req: Request,
     res: Response,
