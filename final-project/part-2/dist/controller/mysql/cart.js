@@ -114,9 +114,7 @@ var MysqlCart = /** @class */ (function () {
                     case 1:
                         cart = _a.sent();
                         product = {};
-                        console.log(cart);
                         productInCart = cart.products.find(function (elem) { return elem._id === parseInt(req.params.id); });
-                        console.log(productInCart);
                         if (productInCart)
                             product = productInCart;
                         else
@@ -218,10 +216,12 @@ var MysqlCart = /** @class */ (function () {
                         return [4 /*yield*/, this.getLocalCart(req)];
                     case 1:
                         cart = _a.sent();
-                        itemIndex = cart.products.findIndex(function (obj) { return obj._id === req.params.id; });
+                        itemIndex = cart.products.findIndex(function (obj) { return obj._id === parseInt(req.params.id); });
                         if (!(itemIndex !== -1)) return [3 /*break*/, 3];
                         cart.products.splice(itemIndex, 1);
-                        return [4 /*yield*/, (0, mysql_db_1.mysqlKnexInstance)("carts").where({ _id: cartId }).update(cart)];
+                        return [4 /*yield*/, (0, mysql_db_1.mysqlKnexInstance)("carts")
+                                .where({ _id: cartId })
+                                .update({ products: JSON.stringify(cart.products) })];
                     case 2:
                         _a.sent();
                         res.status(200).json({ status: "Product Deleted" });

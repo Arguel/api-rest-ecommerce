@@ -137,8 +137,10 @@ var MongodbProducts = /** @class */ (function () {
                         _b.trys.push([0, 2, , 3]);
                         _a = req.body, name_2 = _a.name, description = _a.description, code = _a.code, thumbnail = _a.thumbnail, price = _a.price, stock = _a.stock;
                         newProduct = { name: name_2, description: description, code: code, thumbnail: thumbnail, price: price, stock: stock };
+                        // We update the product if it exists
                         return [4 /*yield*/, products_1.ProductModel.findByIdAndUpdate(req.params.id, newProduct)];
                     case 1:
+                        // We update the product if it exists
                         _b.sent();
                         res.status(200).json({ Status: "Product updated" });
                         return [3 /*break*/, 3];
@@ -159,8 +161,10 @@ var MongodbProducts = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
+                        // We delete the product from the database
                         return [4 /*yield*/, products_1.ProductModel.findByIdAndRemove(req.params.id)];
                     case 1:
+                        // We delete the product from the database
                         _a.sent();
                         res.status(200).json({ status: "Product Deleted" });
                         return [3 /*break*/, 3];

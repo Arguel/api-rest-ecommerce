@@ -42,6 +42,7 @@ export class MongodbProducts {
   // ADD a new Product (POST /:id)
   async addProduct(req: Request, res: Response): Promise<Response | void> {
     try {
+      // We extract the properties from the request body
       const {name, description, code, thumbnail, price, stock} = req.body;
       const newProduct = new ProductModel({
         timestamp: new Date().toString(),
@@ -65,8 +66,10 @@ export class MongodbProducts {
     res: Response,
   ): Promise<Response | void> {
     try {
+      // We extract the properties from the request body
       const {name, description, code, thumbnail, price, stock} = req.body;
       const newProduct = {name, description, code, thumbnail, price, stock};
+      // We update the product if it exists
       await ProductModel.findByIdAndUpdate(req.params.id, newProduct);
       res.status(200).json({Status: "Product updated"});
     } catch (err) {
@@ -80,6 +83,7 @@ export class MongodbProducts {
     res: Response,
   ): Promise<Response | void> {
     try {
+      // We delete the product from the database
       await ProductModel.findByIdAndRemove(req.params.id);
       res.status(200).json({status: "Product Deleted"});
     } catch (err) {

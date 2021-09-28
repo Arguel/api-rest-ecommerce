@@ -27,6 +27,7 @@ export class MongodbCart {
       timestamp: new Date().toString(),
     };
     const localCartId = cartId;
+    // We check if there is a saved id (to load the user's cart)
     if (localCartId) {
       const doc: ICart | null = await CartModel.findById(localCartId);
       if (doc) cart = doc;
@@ -54,6 +55,7 @@ export class MongodbCart {
     try {
       const cart: ICart = await this.getLocalCart();
       let product: object = {};
+      // We search if the item exists in our cart
       const productInCart: object | undefined = cart.products.find(
         (elem) => (elem as IProduct)._id!.toString() === req.params.id,
       );
@@ -72,13 +74,18 @@ export class MongodbCart {
   async addProduct(req: Request, res: Response): Promise<Response | void> {
     try {
       const cart: ICart = await this.getLocalCart();
-      let itemIndex: number = -1;
+      let itemIndex: number = -1; // To manage item units
+
+      // We search our database "products" for the item with the id supplied by (req.params.id) to add it to the cart
       const {_id, timestamp, name, description, code, thumbnail, price, stock} =
         (await ProductModel.findById(req.params.id)) as IProduct;
+
+      // We check if it is already added to the shopping cart
       if (cart.products.length > 0)
         itemIndex = cart.products.findIndex(
           (obj) => (obj as IProduct)._id!.toString() === _id!.toString(),
         );
+      // If it is already added to the cart, we add a unit
       if (itemIndex !== -1) {
         (cart.products[itemIndex] as IProduct).quantityOnCart!++;
       } else {
@@ -96,6 +103,7 @@ export class MongodbCart {
         };
         cart.products.push(newProductInCart);
       }
+
       const updatedCart = new CartModel(cart);
       // cartId = updatedCart._id;
       await updatedCart.save();
@@ -113,9 +121,11 @@ export class MongodbCart {
     try {
       const cart: ICart = await this.getLocalCart();
 
+      // We search if the item exists in our cart
       const itemIndex: number = cart.products.findIndex(
         (obj) => (obj as IProduct)._id!.toString() === req.params.id,
       );
+      // If it exists, we delete it from our local array and upload it to the database
       if (itemIndex !== -1) {
         cart.products.splice(itemIndex, 1);
         const updatedCart = new CartModel(cart);

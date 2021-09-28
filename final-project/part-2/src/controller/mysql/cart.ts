@@ -25,12 +25,14 @@ export class MysqlCart {
       products: [],
     };
     const localCartId = cartId;
+    // We check if there is a saved id (to load the user's cart)
     if (localCartId) {
       const doc: unknown[] = await mysqlKnexInstance("carts").where(
         "_id",
         cartId,
       );
       if (doc.length > 0) {
+        // We convert the database values to a javascript object
         const docCart: ICart = doc[0] as ICart;
         docCart.products = JSON.parse(docCart.products as unknown as string);
         cart = docCart;
@@ -59,11 +61,10 @@ export class MysqlCart {
     try {
       const cart: ICart = await this.getLocalCart(req);
       let product: object = {};
-      console.log(cart);
+      // We search if the item exists in our cart
       const productInCart: object | undefined = cart.products.find(
         (elem) => (elem as IProduct)._id === parseInt(req.params.id),
       );
-      console.log(productInCart);
       if (productInCart) product = productInCart;
       else
         throw new Error(
@@ -153,12 +154,16 @@ export class MysqlCart {
     try {
       const cart: ICart = await this.getLocalCart(req);
 
+      // We search if the item exists in our cart
       const itemIndex: number = cart.products.findIndex(
-        (obj) => (obj as IProduct)._id === req.params.id,
+        (obj) => (obj as IProduct)._id === parseInt(req.params.id),
       );
+      // If it exists, we delete it from our local array and upload it to the database in string format
       if (itemIndex !== -1) {
         cart.products.splice(itemIndex, 1);
-        await mysqlKnexInstance("carts").where({_id: cartId}).update(cart);
+        await mysqlKnexInstance("carts")
+          .where({_id: cartId})
+          .update({products: JSON.stringify(cart.products)});
         res.status(200).json({status: "Product Deleted"});
       } else {
         throw new Error("Product not found");

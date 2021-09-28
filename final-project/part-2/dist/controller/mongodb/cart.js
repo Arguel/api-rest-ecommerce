@@ -144,8 +144,10 @@ var MongodbCart = /** @class */ (function () {
                         return [4 /*yield*/, products_1.ProductModel.findById(req.params.id)];
                     case 2:
                         _a = (_b.sent()), _id_1 = _a._id, timestamp = _a.timestamp, name_1 = _a.name, description = _a.description, code = _a.code, thumbnail = _a.thumbnail, price = _a.price, stock = _a.stock;
+                        // We check if it is already added to the shopping cart
                         if (cart.products.length > 0)
                             itemIndex = cart.products.findIndex(function (obj) { return obj._id.toString() === _id_1.toString(); });
+                        // If it is already added to the cart, we add a unit
                         if (itemIndex !== -1) {
                             cart.products[itemIndex].quantityOnCart++;
                         }

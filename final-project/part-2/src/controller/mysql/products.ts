@@ -50,6 +50,7 @@ export class MysqlProducts {
   // ADD a new Product (POST /:id)
   async addProduct(req: Request, res: Response): Promise<Response | void> {
     try {
+      // We extract the properties from the request body
       const {name, description, code, thumbnail, price, stock} = req.body;
       const newProduct = {
         name,
@@ -72,8 +73,10 @@ export class MysqlProducts {
     res: Response,
   ): Promise<Response | void> {
     try {
+      // We extract the properties from the request body
       const {name, description, code, thumbnail, price, stock} = req.body;
       const newProduct = {name, description, code, thumbnail, price, stock};
+      // We update the product if it exists
       const result = await mysqlKnexInstance("products")
         .where({_id: req.params.id})
         .update(newProduct);
@@ -93,6 +96,7 @@ export class MysqlProducts {
     res: Response,
   ): Promise<Response | void> {
     try {
+      // We delete the product from the database
       const result = await mysqlKnexInstance("products")
         .where({_id: req.params.id})
         .del();
