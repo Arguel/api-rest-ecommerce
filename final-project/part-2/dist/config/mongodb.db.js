@@ -42,6 +42,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.connectMongoDB = void 0;
 var mongoose_1 = __importDefault(require("mongoose"));
 var dotenv_1 = __importDefault(require("dotenv"));
+// Environment Variables
 dotenv_1.default.config();
 function connectMongoDB() {
     return __awaiter(this, void 0, void 0, function () {

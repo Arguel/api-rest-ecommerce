@@ -6,6 +6,7 @@ var cart_2 = require("../mysql/cart");
 var FactoryCart = /** @class */ (function () {
     function FactoryCart() {
     }
+    // The type() method returns our DAO (data access object)
     FactoryCart.prototype.type = function (type) {
         switch (type) {
             case "mongodb":

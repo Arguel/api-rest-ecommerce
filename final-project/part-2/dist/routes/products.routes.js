@@ -15,6 +15,6 @@ router.post("/", auth_1.isAdmin, controller.addProduct.bind(controller));
 router.put("/:id", auth_1.isAdmin, controller.updateProductById.bind(controller));
 // DELETE a Product
 router.delete("/:id", auth_1.isAdmin, controller.deleteProductById.bind(controller));
-// FILTER a product
+// FILTER a Product
 router.post("/filter", controller.filter.bind(controller));
 exports.default = router;

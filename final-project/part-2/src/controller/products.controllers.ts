@@ -10,6 +10,8 @@ export class ProductsController implements ICrudProducts {
   factory: ICrudProducts;
 
   constructor() {
+    /* Depending on the type of persistence selected in "/config/factoryType.ts" we will use
+     * a particular database model or another */
     this.factory = factory.type(persistenceType);
   }
   getProducts(req: Request, res: Response) {

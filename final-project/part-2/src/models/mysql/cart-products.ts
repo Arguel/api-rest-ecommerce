@@ -1,8 +1,12 @@
 import {mysqlKnexInstance} from "../../config/mysql.db";
 
 export async function connectMySQL(): Promise<void> {
+  /* This basically creates the tables if they do not exist in the mysql
+   * database or if they exist it shows a message that they are already
+   * available to be used */
   try {
     const connecedCartScheme = await mysqlKnexInstance.schema.hasTable("carts");
+    // If the carts schema does not exist
     if (!connecedCartScheme) {
       await mysqlKnexInstance.schema.createTable("carts", (t) => {
         t.increments("_id");
@@ -13,9 +17,11 @@ export async function connectMySQL(): Promise<void> {
       });
       console.log("Cart table created");
     }
+
     const connecedProductScheme = await mysqlKnexInstance.schema.hasTable(
       "products",
     );
+    // If the products schema does not exist
     if (!connecedProductScheme) {
       await mysqlKnexInstance.schema.createTable("products", (t) => {
         t.increments("_id");
@@ -31,6 +37,8 @@ export async function connectMySQL(): Promise<void> {
       });
       console.log("Products table created");
     }
+
+    // If both schemes exist
     if (connecedCartScheme && connecedProductScheme)
       console.log("MySQL connection SUCCESS");
   } catch (err) {

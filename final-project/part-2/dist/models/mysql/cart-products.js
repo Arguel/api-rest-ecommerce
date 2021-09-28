@@ -81,6 +81,7 @@ function connectMySQL() {
                     console.log("Products table created");
                     _a.label = 6;
                 case 6:
+                    // If both schemes exist
                     if (connecedCartScheme && connecedProductScheme)
                         console.log("MySQL connection SUCCESS");
                     return [3 /*break*/, 8];

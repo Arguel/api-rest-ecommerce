@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 
+// Environment Variables
 dotenv.config();
 
 export async function connectMongoDB(): Promise<void> {

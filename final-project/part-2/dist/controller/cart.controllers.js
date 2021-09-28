@@ -7,6 +7,8 @@ var cart_1 = require("./factory/cart");
 var factory = new cart_1.FactoryCart();
 var CartController = /** @class */ (function () {
     function CartController() {
+        /* Depending on the type of persistence selected in "/config/factoryType.ts" we will use
+         * a particular database model or another */
         this.factory = factory.type(factoryType_1.persistenceType);
     }
     CartController.prototype.getCart = function (req, res) {

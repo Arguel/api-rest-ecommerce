@@ -7,6 +7,8 @@ var products_1 = require("./factory/products");
 var factory = new products_1.FactoryProducts();
 var ProductsController = /** @class */ (function () {
     function ProductsController() {
+        /* Depending on the type of persistence selected in "/config/factoryType.ts" we will use
+         * a particular database model or another */
         this.factory = factory.type(factoryType_1.persistenceType);
     }
     ProductsController.prototype.getProducts = function (req, res) {

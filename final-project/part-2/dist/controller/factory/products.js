@@ -6,6 +6,7 @@ var products_2 = require("../mysql/products");
 var FactoryProducts = /** @class */ (function () {
     function FactoryProducts() {
     }
+    // The type() method returns our DAO (data access object)
     FactoryProducts.prototype.type = function (type) {
         switch (type) {
             case "mongodb":

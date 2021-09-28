@@ -1,9 +1,15 @@
-// Update with your config settings.
 import dotenv from "dotenv";
 
+// Update with your config settings.
+
+// Environment Variables
 dotenv.config();
 
-export const knexfile = {
+interface KnexConfig {
+  [key: string]: object;
+}
+
+export const knexfile: KnexConfig = {
   development: {
     client: "sqlite3",
     connection: {

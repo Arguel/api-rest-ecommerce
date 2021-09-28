@@ -5,6 +5,7 @@ function userProperties(
   res: express.Response,
   next: express.NextFunction,
 ) {
+  // We add to the request the user field with all its properties
   req.body.user = {
     login: true,
     isAdmin: true,
@@ -18,6 +19,7 @@ function isAdmin(
   next: express.NextFunction,
 ) {
   const user = req.body.user;
+  // We check if the user is admin and if it is not we throw an error
   if (user.isAdmin) next();
   else
     res.status(401).json({
