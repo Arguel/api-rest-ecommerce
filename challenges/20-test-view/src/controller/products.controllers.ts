@@ -32,4 +32,7 @@ export class ProductsController implements ICrudProducts {
   filter(req: Request, res: Response) {
     return this.factory.filter(req, res);
   }
+  viewTest(req: Request, res: Response) {
+    return this.factory.viewTest(req, res);
+  }
 }

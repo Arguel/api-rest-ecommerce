@@ -9,6 +9,9 @@ const router: Router = Router();
 // GET all Products
 router.get("/", controller.getProducts.bind(controller));
 
+// MOCK API
+router.get("/view-test/:qty?", controller.viewTest.bind(controller));
+
 // GET one Product
 router.get("/:id", isAdmin, controller.getProductById.bind(controller));
 

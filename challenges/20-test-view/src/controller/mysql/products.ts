@@ -2,6 +2,7 @@ import {Request, Response} from "express";
 import {connectMySQL} from "../../models/mysql/cart-products";
 import {IProduct} from "../../utils/modelsInterfaces";
 import {mysqlKnexInstance} from "../../config/mysql.db";
+import {gen} from "../../utils/fakerGenerator";
 
 export class MysqlProducts {
   constructor() {
@@ -147,5 +148,29 @@ export class MysqlProducts {
     } catch (err) {
       res.status(500).json(this.defaultError(err as Error));
     }
+  }
+
+  async viewTest(req: Request, res: Response) {
+    const noVerify = parseInt(req.params.qty);
+    if (noVerify)
+      res
+        .status(200)
+        .send(
+          `${gen(noVerify).map(
+            (obj) => `${obj.name}, ${obj.price}, ${obj.thumbnail} \r\n`,
+          )}`,
+        );
+    else if (noVerify === 0)
+      res
+        .status(200)
+        .send("The selected quantity is 0 so no products will be generated");
+    else
+      res
+        .status(200)
+        .send(
+          `${gen(10).map(
+            (obj) => `${obj.name}, ${obj.price}, ${obj.thumbnail} \r\n`,
+          )}`,
+        );
   }
 }
