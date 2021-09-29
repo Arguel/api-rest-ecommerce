@@ -1,11 +1,11 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", {value: true});
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProductsController = void 0;
-const factoryType_1 = require("../config/factoryType");
-const products_1 = require("./factory/products");
+var factoryType_1 = require("../config/factoryType");
+var products_1 = require("./factory/products");
 // Main switch/selector for persistence types
-const factory = new products_1.FactoryProducts();
-const ProductsController = /** @class */ (function () {
+var factory = new products_1.FactoryProducts();
+var ProductsController = /** @class */ (function () {
     function ProductsController() {
         /* Depending on the type of persistence selected in "/config/factoryType.ts" we will use
          * a particular database model or another */

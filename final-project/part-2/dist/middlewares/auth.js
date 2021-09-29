@@ -1,5 +1,5 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", {value: true});
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.isAdmin = exports.userProperties = void 0;
 function userProperties(req, res, next) {
     // We add to the request the user field with all its properties
@@ -11,7 +11,7 @@ function userProperties(req, res, next) {
 }
 exports.userProperties = userProperties;
 function isAdmin(req, res, next) {
-    const user = req.body.user;
+    var user = req.body.user;
     // We check if the user is admin and if it is not we throw an error
     if (user.isAdmin)
         next();
