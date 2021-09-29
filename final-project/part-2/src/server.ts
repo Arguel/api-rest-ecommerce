@@ -3,6 +3,7 @@ import morgan from "morgan";
 import path from "path";
 import productsRoutes from "./routes/products.routes";
 import cartRoutes from "./routes/cart.routes";
+import notFound from "./routes/not-found.routes";
 import {userProperties} from "./middlewares/auth";
 import dotenv from "dotenv";
 
@@ -29,12 +30,7 @@ app.get("/", (req: express.Request, res: express.Response) => {
 app.use("/products", userProperties, productsRoutes);
 app.use("/cart", cartRoutes);
 // This manages the non-existent routes
-app.get("*", (req: express.Request, res: express.Response) => {
-  res.status(404).json({
-    error: 404,
-    description: `Route '${req.originalUrl}' - Method '${req.method}' not found`,
-  });
-});
+app.use("*", notFound);
 
 // Starting the server
 app.listen(app.get("port"), () => {

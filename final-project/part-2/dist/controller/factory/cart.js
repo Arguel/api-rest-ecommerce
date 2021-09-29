@@ -1,9 +1,9 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", {value: true});
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.FactoryCart = void 0;
-const cart_1 = require("../mongodb/cart");
-const cart_2 = require("../mysql/cart");
-const FactoryCart = /** @class */ (function () {
+var cart_1 = require("../mongodb/cart");
+var cart_2 = require("../mysql/cart");
+var FactoryCart = /** @class */ (function () {
     function FactoryCart() {
     }
     // The type() method returns our DAO (data access object)
