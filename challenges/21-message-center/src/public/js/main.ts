@@ -1,21 +1,25 @@
+// import {IMessage} from "../../utils/socketIoInterfaces";
+
 document.addEventListener("DOMContentLoaded", () => {
   const socket = io();
 
   const fragment: DocumentFragment = document.createDocumentFragment();
 
   // Selectors
-  const formMessages = document.getElementById("formMessages") as HTMLElement;
-  const messagesContainer = document.getElementById(
-    "messagesContainer",
-  ) as HTMLElement;
+  const formMessages = document.getElementById(
+    "formMessages",
+  ) as HTMLFormElement;
+  const msgContainer = document.getElementById(
+    "msgContainer",
+  ) as HTMLUListElement;
   const templateMessage = (
     document.getElementById("templateMessage") as HTMLTemplateElement
   ).content;
 
-  socket.on("messages", (messages) => {
-    messagesContainer.innerHTML = "";
+  socket.on("messages", (messages: IMessage[]) => {
+    msgContainer.innerHTML = "";
 
-    messages.forEach((message: object) => {
+    messages.forEach((message: IMessage) => {
       templateMessage.querySelector(
         ".text-primary",
       )!.textContent = `${message.userEmail} `;
@@ -31,21 +35,24 @@ document.addEventListener("DOMContentLoaded", () => {
       fragment.appendChild(clone);
     });
 
-    messagesContainer.appendChild(fragment);
+    msgContainer.appendChild(fragment);
   });
 
   formMessages.addEventListener("submit", (e) => {
     e.preventDefault();
+
+    // Selectors
     const userEmail = (document.getElementById("userEmail") as HTMLInputElement)
       .value;
     const userMessage = document.getElementById(
       "userMessage",
     ) as HTMLInputElement;
-    const newMessage = {
+    const newMessage: IMessage = {
       userEmail,
       messageDate: new Date().toLocaleString(),
       userMessage: userMessage.value,
     };
+
     userMessage.value = "";
     socket.emit("newMessage", newMessage);
   });

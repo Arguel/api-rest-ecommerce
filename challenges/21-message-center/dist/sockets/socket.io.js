@@ -7,7 +7,7 @@ exports.socketIo = void 0;
 var fs_1 = __importDefault(require("fs"));
 // Messages json
 var messagesData = fs_1.default.readFileSync(__dirname + "/userMessages.json", "utf-8");
-var messages = JSON.parse(messagesData.toString("utf-8"));
+var messages = JSON.parse(messagesData.toString());
 var socketIo = function (io) {
     io.on("connection", function (socket) {
         console.log("New connection");

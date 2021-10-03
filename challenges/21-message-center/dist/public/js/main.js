@@ -1,13 +1,14 @@
 "use strict";
+// import {IMessage} from "../../utils/socketIoInterfaces";
 document.addEventListener("DOMContentLoaded", function () {
     var socket = io();
     var fragment = document.createDocumentFragment();
     // Selectors
     var formMessages = document.getElementById("formMessages");
-    var messagesContainer = document.getElementById("messagesContainer");
+    var msgContainer = document.getElementById("msgContainer");
     var templateMessage = document.getElementById("templateMessage").content;
     socket.on("messages", function (messages) {
-        messagesContainer.innerHTML = "";
+        msgContainer.innerHTML = "";
         messages.forEach(function (message) {
             templateMessage.querySelector(".text-primary").textContent = message.userEmail + " ";
             templateMessage.querySelector(".text-danger").textContent = "[" + message.messageDate + "] ";
@@ -16,10 +17,11 @@ document.addEventListener("DOMContentLoaded", function () {
             var clone = templateMessage.cloneNode(true);
             fragment.appendChild(clone);
         });
-        messagesContainer.appendChild(fragment);
+        msgContainer.appendChild(fragment);
     });
     formMessages.addEventListener("submit", function (e) {
         e.preventDefault();
+        // Selectors
         var userEmail = document.getElementById("userEmail")
             .value;
         var userMessage = document.getElementById("userMessage");
