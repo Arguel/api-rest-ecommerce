@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", function () {
             messageDate: new Date().toLocaleString(),
             userMessage: userMessage.value,
         };
-        userMessage.value = "";
         socket.emit("newMessage", newMessage);
+        userMessage.value = "";
     });
 });

@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
       userMessage: userMessage.value,
     };
 
-    userMessage.value = "";
     socket.emit("newMessage", newMessage);
+    userMessage.value = "";
   });
 });
