@@ -1,0 +1,36 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var express_1 = __importDefault(require("express"));
+var morgan_1 = __importDefault(require("morgan"));
+var path_1 = __importDefault(require("path"));
+var products_routes_1 = __importDefault(require("./routes/products.routes"));
+var cart_routes_1 = __importDefault(require("./routes/cart.routes"));
+var not_found_routes_1 = __importDefault(require("./routes/not-found.routes"));
+var auth_1 = require("./middlewares/auth");
+var dotenv_1 = __importDefault(require("dotenv"));
+// Environment Variables
+dotenv_1.default.config();
+// Main application
+var app = (0, express_1.default)();
+// Settings
+app.set("port", process.env.PORT || 8080);
+// Middlewares
+app.use((0, morgan_1.default)("dev"));
+app.use(express_1.default.json());
+// Static files
+app.use(express_1.default.static(path_1.default.join(__dirname, "public")));
+// Routes
+app.get("/", function (req, res) {
+    res.sendFile(path_1.default.join(__dirname, "/public/index.html"));
+});
+app.use("/products", auth_1.userProperties, products_routes_1.default);
+app.use("/cart", cart_routes_1.default);
+// This manages the non-existent routes
+app.use("*", not_found_routes_1.default);
+// Starting the server
+app.listen(app.get("port"), function () {
+    console.log("Example app listening at http://localhost:" + app.get("port"));
+});
