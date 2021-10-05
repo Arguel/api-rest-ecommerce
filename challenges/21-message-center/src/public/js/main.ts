@@ -1,7 +1,8 @@
-// import {IMessage} from "../../utils/socketIoInterfaces";
+// import {IMessage, INormaMsgs} from "../../utils/socketIoInterfaces";
 
 document.addEventListener("DOMContentLoaded", () => {
   const socket = io();
+  const norma = normalizr;
 
   const fragment: DocumentFragment = document.createDocumentFragment();
 
@@ -16,19 +17,31 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("templateMessage") as HTMLTemplateElement
   ).content;
 
-  socket.on("messages", (messages: IMessage[]) => {
+  socket.on("messages", (messages: INormaMsgs) => {
+    const authorSchema = new norma.schema.Entity("authors");
+    const messageSchema = new norma.schema.Entity("messages", {
+      author: authorSchema,
+    });
+    const messagesSchema = new norma.schema.Array(messageSchema);
+
+    const denormalizedData = norma.denormalize(
+      messages.result,
+      messagesSchema,
+      messages.entities,
+    );
+
     msgContainer.innerHTML = "";
 
-    messages.forEach((message: IMessage) => {
+    denormalizedData.forEach((message: IMessage) => {
       templateMessage.querySelector(
         ".text-primary",
-      )!.textContent = `${message.userEmail} `;
+      )!.textContent = `${message.author.id} `;
       templateMessage.querySelector(
         ".text-danger",
-      )!.textContent = `[${message.messageDate}] `;
+      )!.textContent = `[${message.date}] `;
       templateMessage.querySelector(
         ".text-success",
-      )!.textContent = `: ${message.userMessage}`;
+      )!.textContent = `: ${message.text}`;
       formMessages;
 
       const clone = templateMessage.cloneNode(true);
@@ -48,9 +61,16 @@ document.addEventListener("DOMContentLoaded", () => {
       "userMessage",
     ) as HTMLInputElement;
     const newMessage: IMessage = {
-      userEmail,
-      messageDate: new Date().toLocaleString(),
-      userMessage: userMessage.value,
+      author: {
+        id: userEmail, // Email
+        name: "test",
+        surname: "test",
+        age: 7327,
+        alias: "test",
+        avatar: "test",
+      },
+      date: new Date().toLocaleString(),
+      text: userMessage.value,
     };
 
     socket.emit("newMessage", newMessage);

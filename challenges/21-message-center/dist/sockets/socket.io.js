@@ -1,4 +1,15 @@
 "use strict";
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -38,28 +49,31 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.socketIo = void 0;
 var chat_1 = require("../models/mongodb/chat");
+var normalizr_1 = require("normalizr");
 var socketIo = function (io) {
     io.on("connection", function (socket) { return __awaiter(void 0, void 0, void 0, function () {
-        var messages;
+        var messagesMongo, normalizedData;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
                     console.log("New connection");
-                    return [4 /*yield*/, chat_1.ChatModel.find({}).limit(10)];
+                    return [4 /*yield*/, chat_1.ChatModel.find().limit(10)];
                 case 1:
-                    messages = (_a.sent());
-                    io.emit("messages", messages);
-                    socket.on("newMessage", function (message) { return __awaiter(void 0, void 0, void 0, function () {
+                    messagesMongo = (_a.sent());
+                    normalizedData = convertMsgs(messagesMongo);
+                    io.emit("messages", normalizedData);
+                    socket.on("newMessage", function (msg) { return __awaiter(void 0, void 0, void 0, function () {
                         var newMessage;
                         return __generator(this, function (_a) {
                             switch (_a.label) {
                                 case 0:
-                                    newMessage = new chat_1.ChatModel(message);
+                                    newMessage = new chat_1.ChatModel(msg);
                                     return [4 /*yield*/, newMessage.save()];
                                 case 1:
                                     _a.sent();
-                                    messages.push(message);
-                                    io.sockets.emit("messages", messages);
+                                    messagesMongo.push(__assign(__assign({}, msg), { _id: newMessage._id }));
+                                    normalizedData = convertMsgs(messagesMongo);
+                                    io.sockets.emit("messages", normalizedData);
                                     return [2 /*return*/];
                             }
                         });
@@ -70,3 +84,17 @@ var socketIo = function (io) {
     }); });
 };
 exports.socketIo = socketIo;
+function convertMsgs(data) {
+    var newData = data.map(function (msg) { return ({
+        id: msg._id.toString(),
+        author: msg.author,
+        date: msg.date,
+        text: msg.text,
+    }); });
+    var authorSchema = new normalizr_1.schema.Entity("authors");
+    var messageSchema = new normalizr_1.schema.Entity("messages", {
+        author: authorSchema,
+    });
+    var messagesSchema = new normalizr_1.schema.Array(messageSchema);
+    return (0, normalizr_1.normalize)(newData, messagesSchema);
+}

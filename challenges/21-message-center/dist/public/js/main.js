@@ -1,18 +1,25 @@
 "use strict";
-// import {IMessage} from "../../utils/socketIoInterfaces";
+// import {IMessage, INormaMsgs} from "../../utils/socketIoInterfaces";
 document.addEventListener("DOMContentLoaded", function () {
     var socket = io();
+    var norma = normalizr;
     var fragment = document.createDocumentFragment();
     // Selectors
     var formMessages = document.getElementById("formMessages");
     var msgContainer = document.getElementById("msgContainer");
     var templateMessage = document.getElementById("templateMessage").content;
     socket.on("messages", function (messages) {
+        var authorSchema = new norma.schema.Entity("authors");
+        var messageSchema = new norma.schema.Entity("messages", {
+            author: authorSchema,
+        });
+        var messagesSchema = new norma.schema.Array(messageSchema);
+        var denormalizedData = norma.denormalize(messages.result, messagesSchema, messages.entities);
         msgContainer.innerHTML = "";
-        messages.forEach(function (message) {
-            templateMessage.querySelector(".text-primary").textContent = message.userEmail + " ";
-            templateMessage.querySelector(".text-danger").textContent = "[" + message.messageDate + "] ";
-            templateMessage.querySelector(".text-success").textContent = ": " + message.userMessage;
+        denormalizedData.forEach(function (message) {
+            templateMessage.querySelector(".text-primary").textContent = message.author.id + " ";
+            templateMessage.querySelector(".text-danger").textContent = "[" + message.date + "] ";
+            templateMessage.querySelector(".text-success").textContent = ": " + message.text;
             formMessages;
             var clone = templateMessage.cloneNode(true);
             fragment.appendChild(clone);
@@ -26,9 +33,16 @@ document.addEventListener("DOMContentLoaded", function () {
             .value;
         var userMessage = document.getElementById("userMessage");
         var newMessage = {
-            userEmail: userEmail,
-            messageDate: new Date().toLocaleString(),
-            userMessage: userMessage.value,
+            author: {
+                id: userEmail,
+                name: "test",
+                surname: "test",
+                age: 7327,
+                alias: "test",
+                avatar: "test",
+            },
+            date: new Date().toLocaleString(),
+            text: userMessage.value,
         };
         socket.emit("newMessage", newMessage);
         userMessage.value = "";
