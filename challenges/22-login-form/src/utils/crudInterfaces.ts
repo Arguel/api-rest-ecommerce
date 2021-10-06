@@ -19,6 +19,21 @@ export interface ICrudCart {
 export interface IQueryProduct {
   name?: string;
   code?: number;
-  price?: object;
-  stock?: object;
+  price?: {
+    $gte?: number;
+    $lte?: number;
+  };
+  stock?: {
+    $gte?: number;
+    $lte?: number;
+  };
+}
+
+export interface INewProduct {
+  name: string;
+  description: string;
+  code: number;
+  thumbnail: string;
+  price: number;
+  stock: number;
 }

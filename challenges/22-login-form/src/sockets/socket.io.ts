@@ -1,9 +1,9 @@
 import {Server} from "socket.io";
-import {IMessage} from "../utils/socketIoInterfaces";
+import {IMessage, INormaMsgs} from "../utils/socketIoInterfaces";
 import {ChatModel} from "../models/mongodb/chat";
 import {normalize, schema} from "normalizr";
 
-export const socketIo = (io: Server) => {
+export const socketIo = (io: Server): void => {
   io.on("connection", async (socket) => {
     console.log("New connection");
     const messagesMongo = (await ChatModel.find().limit(10)) as IMessage[];
@@ -20,7 +20,7 @@ export const socketIo = (io: Server) => {
   });
 };
 
-function convertMsgs(data: IMessage[]) {
+function convertMsgs(data: IMessage[]): INormaMsgs {
   const newData = data.map((msg) => ({
     id: msg._id!.toString(),
     author: msg.author,

@@ -10,6 +10,7 @@ import {userProperties} from "./middlewares/auth";
 import dotenv from "dotenv";
 import {socketIo} from "./sockets/socket.io";
 import cookieParser from "cookie-parser";
+import session from "express-session";
 
 // Environment Variables
 dotenv.config();
@@ -28,6 +29,14 @@ const io: Server = new Server(httpServer, {
 // Middlewares
 app.use(morgan("dev"));
 app.use(express.json());
+app.use(cookieParser());
+app.use(
+  session({
+    secret: "secreto",
+    resave: true,
+    saveUninitialized: true,
+  }),
+);
 
 // Static files
 app.use(express.static(path.join(__dirname, "public")));

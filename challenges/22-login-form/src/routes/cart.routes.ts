@@ -1,9 +1,9 @@
-import {Router} from "express";
+import {Router, IRouter} from "express";
 import {CartController} from "../controller/cart.controllers";
 
 const controller: CartController = new CartController();
 
-const router: Router = Router();
+const router: IRouter = Router();
 
 // GET all Products
 router.get("/", controller.getCart.bind(controller));

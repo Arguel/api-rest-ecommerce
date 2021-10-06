@@ -1,6 +1,6 @@
-import {Router, Request, Response} from "express";
+import {Router, Request, Response, IRouter} from "express";
 
-const router: Router = Router();
+const router: IRouter = Router();
 
 // In case the routes are not found
 const notFound = (req: Request, res: Response): void => {

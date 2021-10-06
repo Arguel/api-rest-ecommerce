@@ -3,6 +3,7 @@ import {ProductModel} from "../../models/mongodb/products";
 import {CartModel} from "../../models/mongodb/cart";
 import {ICart, IProduct} from "../../utils/modelsInterfaces";
 import {connectMongoDB} from "../../config/mongodb.db";
+import {IControllerError} from "../../utils/errorsInterfaces";
 
 const cartId = "614a4346c63a6bed117cfdbb";
 
@@ -12,7 +13,7 @@ export class MongodbCart {
     connectMongoDB();
   }
   // Default error handler
-  defaultError(err: Error): object {
+  defaultError(err: Error): IControllerError {
     return {
       Error: `${err.message || "Unknown"}`,
       Status:
@@ -36,7 +37,7 @@ export class MongodbCart {
   }
 
   // GET current cart (GET)
-  async getCart(req: Request, res: Response): Promise<Response | void> {
+  async getCart(req: Request, res: Response): Promise<void> {
     try {
       const cart: ICart = await this.getLocalCart();
       if (cart.products.length === 0)
@@ -48,10 +49,7 @@ export class MongodbCart {
   }
 
   // GET one Product (GET /:id)
-  async getCartProductById(
-    req: Request,
-    res: Response,
-  ): Promise<Response | void> {
+  async getCartProductById(req: Request, res: Response): Promise<void> {
     try {
       const cart: ICart = await this.getLocalCart();
       let product: object = {};
@@ -71,7 +69,7 @@ export class MongodbCart {
   }
 
   // ADD a new Product (POST /:id)
-  async addProduct(req: Request, res: Response): Promise<Response | void> {
+  async addProduct(req: Request, res: Response): Promise<void> {
     try {
       const cart: ICart = await this.getLocalCart();
       let itemIndex: number = -1; // To manage item units
@@ -114,10 +112,7 @@ export class MongodbCart {
   }
 
   // DELETE a Product (DELETE /:id)
-  async deleteProductById(
-    req: Request,
-    res: Response,
-  ): Promise<Response | void> {
+  async deleteProductById(req: Request, res: Response): Promise<void> {
     try {
       const cart: ICart = await this.getLocalCart();
 

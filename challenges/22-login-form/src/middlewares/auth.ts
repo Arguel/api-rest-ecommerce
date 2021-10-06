@@ -1,10 +1,6 @@
-import express from "express";
+import {Request, Response, NextFunction} from "express";
 
-function userProperties(
-  req: express.Request,
-  res: express.Response,
-  next: express.NextFunction,
-) {
+function userProperties(req: Request, res: Response, next: NextFunction) {
   // We add to the request the user field with all its properties
   req.body.user = {
     login: true,
@@ -13,11 +9,7 @@ function userProperties(
   next();
 }
 
-function isAdmin(
-  req: express.Request,
-  res: express.Response,
-  next: express.NextFunction,
-) {
+function isAdmin(req: Request, res: Response, next: NextFunction) {
   const user = req.body.user;
   // We check if the user is admin and if it is not we throw an error
   if (user.isAdmin) next();

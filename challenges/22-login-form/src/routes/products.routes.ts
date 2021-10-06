@@ -1,10 +1,10 @@
-import {Router} from "express";
+import {Router, IRouter} from "express";
 import {isAdmin} from "../middlewares/auth";
 import {ProductsController} from "../controller/products.controllers";
 
 const controller: ProductsController = new ProductsController();
 
-const router: Router = Router();
+const router: IRouter = Router();
 
 // GET all Products
 router.get("/", controller.getProducts.bind(controller));

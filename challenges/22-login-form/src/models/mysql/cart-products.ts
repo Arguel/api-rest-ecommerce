@@ -5,7 +5,10 @@ export async function connectMySQL(): Promise<void> {
    * database or if they exist it shows a message that they are already
    * available to be used */
   try {
-    const connecedCartScheme = await mysqlKnexInstance.schema.hasTable("carts");
+    const connecedCartScheme: boolean = await mysqlKnexInstance.schema.hasTable(
+      "carts",
+    );
+
     // If the carts schema does not exist
     if (!connecedCartScheme) {
       await mysqlKnexInstance.schema.createTable("carts", (t) => {
@@ -18,9 +21,9 @@ export async function connectMySQL(): Promise<void> {
       console.log("Cart table created");
     }
 
-    const connecedProductScheme = await mysqlKnexInstance.schema.hasTable(
-      "products",
-    );
+    const connecedProductScheme: boolean =
+      await mysqlKnexInstance.schema.hasTable("products");
+
     // If the products schema does not exist
     if (!connecedProductScheme) {
       await mysqlKnexInstance.schema.createTable("products", (t) => {

@@ -2,7 +2,8 @@ import {Request, Response} from "express";
 import {ProductModel} from "../../models/mongodb/products";
 import {IProduct} from "../../utils/modelsInterfaces";
 import {connectMongoDB} from "../../config/mongodb.db";
-import {IQueryProduct} from "../../utils/crudInterfaces";
+import {INewProduct, IQueryProduct} from "../../utils/crudInterfaces";
+import {IControllerError} from "../../utils/errorsInterfaces";
 
 export class MongodbProducts {
   constructor() {
@@ -11,7 +12,7 @@ export class MongodbProducts {
   }
 
   // Default error handler
-  defaultError(err: Error): object {
+  defaultError(err: Error): IControllerError {
     return {
       Error: `${err.message || "Unknown"}`,
       Status:
@@ -19,7 +20,7 @@ export class MongodbProducts {
     };
   }
   // GET all Products (GET)
-  async getProducts(req: Request, res: Response): Promise<Response | void> {
+  async getProducts(req: Request, res: Response): Promise<void> {
     try {
       const products: IProduct[] = await ProductModel.find();
       res.status(200).json(products);
@@ -29,7 +30,7 @@ export class MongodbProducts {
   }
 
   // GET one Product (GET /:id)
-  async getProductById(req: Request, res: Response): Promise<Response | void> {
+  async getProductById(req: Request, res: Response): Promise<void> {
     try {
       const product: IProduct = (await ProductModel.findById(
         req.params.id,
@@ -41,7 +42,7 @@ export class MongodbProducts {
   }
 
   // ADD a new Product (POST /:id)
-  async addProduct(req: Request, res: Response): Promise<Response | void> {
+  async addProduct(req: Request, res: Response): Promise<void> {
     try {
       // We extract the properties from the request body
       const {name, description, code, thumbnail, price, stock} = req.body;
@@ -62,14 +63,11 @@ export class MongodbProducts {
   }
 
   // UPDATE a Product (PUT /:id)
-  async updateProductById(
-    req: Request,
-    res: Response,
-  ): Promise<Response | void> {
+  async updateProductById(req: Request, res: Response): Promise<void> {
     try {
       // We extract the properties from the request body
       const {name, description, code, thumbnail, price, stock} = req.body;
-      const newProduct: object = {
+      const newProduct: INewProduct = {
         name,
         description,
         code,
@@ -86,10 +84,7 @@ export class MongodbProducts {
   }
 
   // DELETE a Product (DELETE /:id)
-  async deleteProductById(
-    req: Request,
-    res: Response,
-  ): Promise<Response | void> {
+  async deleteProductById(req: Request, res: Response): Promise<void> {
     try {
       // We delete the product from the database
       await ProductModel.findByIdAndRemove(req.params.id);
@@ -100,21 +95,17 @@ export class MongodbProducts {
   }
 
   // Filter the products (POST)
-  async filter(req: Request, res: Response): Promise<Response | void> {
+  async filter(req: Request, res: Response): Promise<void> {
     try {
       // We extract the properties from the request body
       const {name, code, minPrice, maxPrice, minStock, maxStock} = req.body;
       const filters: IQueryProduct = {};
       if (name) filters.name = name;
       if (code) filters.code = code;
-      if (minPrice)
-        filters.price = {...(filters.price as object), $gte: minPrice};
-      if (maxPrice)
-        filters.price = {...(filters.price as object), $lte: maxPrice};
-      if (minStock)
-        filters.stock = {...(filters.stock as object), $gte: minStock};
-      if (maxStock)
-        filters.stock = {...(filters.stock as object), $lte: maxStock};
+      if (minPrice) filters.price = {...filters.price, $gte: minPrice};
+      if (maxPrice) filters.price = {...filters.price, $lte: maxPrice};
+      if (minStock) filters.stock = {...filters.stock, $gte: minStock};
+      if (maxStock) filters.stock = {...filters.stock, $lte: maxStock};
 
       const product: IProduct | null = await ProductModel.findOne(filters);
       if (product) res.status(200).json(product);

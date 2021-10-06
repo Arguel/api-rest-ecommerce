@@ -2,6 +2,7 @@ import {Request, Response} from "express";
 import {connectMySQL} from "../../models/mysql/cart-products";
 import {ICart, IProduct} from "../../utils/modelsInterfaces";
 import {mysqlKnexInstance} from "../../config/mysql.db";
+import {IControllerError} from "../../utils/errorsInterfaces";
 
 const cartId = "13";
 
@@ -11,7 +12,7 @@ export class MysqlCart {
     connectMySQL();
   }
   // Default error handler
-  defaultError(err: Error): object {
+  defaultError(err: Error): IControllerError {
     return {
       Error: `${err.message || "Unknown"}`,
       Status:
@@ -42,7 +43,7 @@ export class MysqlCart {
   }
 
   // GET current cart (GET)
-  async getCart(req: Request, res: Response): Promise<Response | void> {
+  async getCart(req: Request, res: Response): Promise<void> {
     try {
       const cart: ICart = await this.getLocalCart(req);
       if (cart.products.length === 0)
@@ -54,10 +55,7 @@ export class MysqlCart {
   }
 
   // GET one Product (GET /:id)
-  async getCartProductById(
-    req: Request,
-    res: Response,
-  ): Promise<Response | void> {
+  async getCartProductById(req: Request, res: Response): Promise<void> {
     try {
       const cart: ICart = await this.getLocalCart(req);
       let product: object = {};
@@ -77,7 +75,7 @@ export class MysqlCart {
   }
 
   // ADD a new Product (POST /:id)
-  async addProduct(req: Request, res: Response): Promise<Response | void> {
+  async addProduct(req: Request, res: Response): Promise<void> {
     try {
       const cart: ICart = await this.getLocalCart(req);
       let result: boolean = false; // To see if the request was successful
@@ -147,10 +145,7 @@ export class MysqlCart {
   }
 
   // DELETE a Product (DELETE /:id)
-  async deleteProductById(
-    req: Request,
-    res: Response,
-  ): Promise<Response | void> {
+  async deleteProductById(req: Request, res: Response): Promise<void> {
     try {
       const cart: ICart = await this.getLocalCart(req);
 

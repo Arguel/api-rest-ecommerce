@@ -1,9 +1,9 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var express_1 = require("express");
-var cart_controllers_1 = require("../controller/cart.controllers");
-var controller = new cart_controllers_1.CartController();
-var router = (0, express_1.Router)();
+Object.defineProperty(exports, "__esModule", {value: true});
+const express_1 = require("express");
+const cart_controllers_1 = require("../controller/cart.controllers");
+const controller = new cart_controllers_1.CartController();
+const router = (0, express_1.Router)();
 // GET all Products
 router.get("/", controller.getCart.bind(controller));
 // GET one Product

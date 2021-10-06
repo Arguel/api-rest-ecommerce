@@ -2,6 +2,8 @@ import {Request, Response} from "express";
 import {connectMySQL} from "../../models/mysql/cart-products";
 import {IProduct} from "../../utils/modelsInterfaces";
 import {mysqlKnexInstance} from "../../config/mysql.db";
+import {IControllerError} from "../../utils/errorsInterfaces";
+import {INewProduct} from "../../utils/crudInterfaces";
 
 export class MysqlProducts {
   constructor() {
@@ -10,7 +12,7 @@ export class MysqlProducts {
   }
 
   // Default error handler
-  defaultError(err: Error): object {
+  defaultError(err: Error): IControllerError {
     return {
       Error: `${err.message || "Unknown"}`,
       Status:
@@ -18,7 +20,7 @@ export class MysqlProducts {
     };
   }
   // GET all Products (GET)
-  async getProducts(req: Request, res: Response): Promise<Response | void> {
+  async getProducts(req: Request, res: Response): Promise<void> {
     try {
       const products: IProduct[] = await mysqlKnexInstance("products").select(
         "*",
@@ -31,7 +33,7 @@ export class MysqlProducts {
   }
 
   // GET one Product (GET /:id)
-  async getProductById(req: Request, res: Response): Promise<Response | void> {
+  async getProductById(req: Request, res: Response): Promise<void> {
     try {
       const product: IProduct[] = await mysqlKnexInstance("products").where(
         "_id",
@@ -48,7 +50,7 @@ export class MysqlProducts {
   }
 
   // ADD a new Product (POST /:id)
-  async addProduct(req: Request, res: Response): Promise<Response | void> {
+  async addProduct(req: Request, res: Response): Promise<void> {
     try {
       // We extract the properties from the request body
       const {name, description, code, thumbnail, price, stock} = req.body;
@@ -68,14 +70,11 @@ export class MysqlProducts {
   }
 
   // UPDATE a Product (PUT /:id)
-  async updateProductById(
-    req: Request,
-    res: Response,
-  ): Promise<Response | void> {
+  async updateProductById(req: Request, res: Response): Promise<void> {
     try {
       // We extract the properties from the request body
       const {name, description, code, thumbnail, price, stock} = req.body;
-      const newProduct: object = {
+      const newProduct: INewProduct = {
         name,
         description,
         code,
@@ -98,10 +97,7 @@ export class MysqlProducts {
   }
 
   // DELETE a Product (DELETE /:id)
-  async deleteProductById(
-    req: Request,
-    res: Response,
-  ): Promise<Response | void> {
+  async deleteProductById(req: Request, res: Response): Promise<void> {
     try {
       // We delete the product from the database
       const result = await mysqlKnexInstance("products")
@@ -118,7 +114,7 @@ export class MysqlProducts {
   }
 
   // Filter the products (POST)
-  async filter(req: Request, res: Response): Promise<Response | void> {
+  async filter(req: Request, res: Response): Promise<void> {
     try {
       // We extract the properties from the request body
       const {name, code, minPrice, maxPrice, minStock, maxStock} = req.body;
