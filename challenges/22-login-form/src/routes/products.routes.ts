@@ -1,5 +1,5 @@
 import {Router, IRouter} from "express";
-import {isAdmin} from "../middlewares/auth";
+import {isAdmin} from "../middlewares/admin";
 import {ProductsController} from "../controller/products.controllers";
 
 const controller: ProductsController = new ProductsController();

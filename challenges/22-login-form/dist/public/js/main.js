@@ -1,27 +1,27 @@
 "use strict";
 // import {IMessage, INormaMsgs} from "../../utils/socketIoInterfaces";
 document.addEventListener("DOMContentLoaded", function () {
-    const socket = io();
-    const norma = normalizr;
-    const fragment = document.createDocumentFragment();
+    var socket = io();
+    var norma = normalizr;
+    var fragment = document.createDocumentFragment();
     // Selectors
-    const formMessages = document.getElementById("formMessages");
-    const msgContainer = document.getElementById("msgContainer");
-    const templateMessage = document.getElementById("templateMessage").content;
+    var formMessages = document.getElementById("formMessages");
+    var msgContainer = document.getElementById("msgContainer");
+    var templateMessage = document.getElementById("templateMessage").content;
     socket.on("messages", function (messages) {
-        const authorSchema = new norma.schema.Entity("authors");
-        const messageSchema = new norma.schema.Entity("messages", {
+        var authorSchema = new norma.schema.Entity("authors");
+        var messageSchema = new norma.schema.Entity("messages", {
             author: authorSchema,
         });
-        const messagesSchema = new norma.schema.Array(messageSchema);
-        const denormalizedData = norma.denormalize(messages.result, messagesSchema, messages.entities);
+        var messagesSchema = new norma.schema.Array(messageSchema);
+        var denormalizedData = norma.denormalize(messages.result, messagesSchema, messages.entities);
         msgContainer.innerHTML = "";
         denormalizedData.forEach(function (message) {
             templateMessage.querySelector(".text-primary").textContent = message.author.id + " ";
             templateMessage.querySelector(".text-danger").textContent = "[" + message.date + "] ";
             templateMessage.querySelector(".text-success").textContent = ": " + message.text;
             formMessages;
-            const clone = templateMessage.cloneNode(true);
+            var clone = templateMessage.cloneNode(true);
             fragment.appendChild(clone);
         });
         msgContainer.appendChild(fragment);
@@ -29,10 +29,10 @@ document.addEventListener("DOMContentLoaded", function () {
     formMessages.addEventListener("submit", function (e) {
         e.preventDefault();
         // Selectors
-        const userEmail = document.getElementById("userEmail")
+        var userEmail = document.getElementById("userEmail")
             .value;
-        const userMessage = document.getElementById("userMessage");
-        const newMessage = {
+        var userMessage = document.getElementById("userMessage");
+        var newMessage = {
             author: {
                 id: userEmail,
                 name: "test",

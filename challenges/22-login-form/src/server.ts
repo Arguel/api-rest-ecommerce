@@ -6,9 +6,9 @@ import path from "path";
 import productsRoutes from "./routes/products.routes";
 import cartRoutes from "./routes/cart.routes";
 import notFound from "./routes/not-found.routes";
-import {userProperties} from "./middlewares/auth";
+import {userProperties} from "./services/auth/auth";
 import dotenv from "dotenv";
-import {socketIo} from "./sockets/socket.io";
+import {socketIo} from "./services/socket.io";
 import cookieParser from "cookie-parser";
 import session from "express-session";
 

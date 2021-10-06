@@ -1,4 +1,15 @@
 "use strict";
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -35,46 +46,55 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.connectMongoDB = void 0;
-var mongoose_1 = __importDefault(require("mongoose"));
-var dotenv_1 = __importDefault(require("dotenv"));
-// Environment Variables
-dotenv_1.default.config();
-function connectMongoDB() {
-    return __awaiter(this, void 0, void 0, function () {
-        var err_1;
+exports.socketIo = void 0;
+var chat_1 = require("../models/mongodb/chat");
+var normalizr_1 = require("normalizr");
+var socketIo = function (io) {
+    io.on("connection", function (socket) { return __awaiter(void 0, void 0, void 0, function () {
+        var messagesMongo, normalizedData;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    if (!process.env.MONGO_URI) return [3 /*break*/, 5];
-                    _a.label = 1;
+                    console.log("New connection");
+                    return [4 /*yield*/, chat_1.ChatModel.find().limit(10)];
                 case 1:
-                    _a.trys.push([1, 3, , 4]);
-                    return [4 /*yield*/, mongoose_1.default.connect(process.env.MONGO_URI, {
-                            useNewUrlParser: true,
-                            useUnifiedTopology: true,
-                        })];
-                case 2:
-                    _a.sent();
-                    console.log("MongoDB connection SUCCESS");
-                    return [3 /*break*/, 4];
-                case 3:
-                    err_1 = _a.sent();
-                    console.error(err_1.message || "MongoDB connection FAIL");
-                    process.exit(1);
-                    return [3 /*break*/, 4];
-                case 4: return [3 /*break*/, 6];
-                case 5:
-                    console.log("Could not find the file '.env'");
-                    process.exit(1);
-                    _a.label = 6;
-                case 6: return [2 /*return*/];
+                    messagesMongo = (_a.sent());
+                    normalizedData = convertMsgs(messagesMongo);
+                    io.emit("messages", normalizedData);
+                    socket.on("newMessage", function (msg) { return __awaiter(void 0, void 0, void 0, function () {
+                        var newMessage;
+                        return __generator(this, function (_a) {
+                            switch (_a.label) {
+                                case 0:
+                                    newMessage = new chat_1.ChatModel(msg);
+                                    return [4 /*yield*/, newMessage.save()];
+                                case 1:
+                                    _a.sent();
+                                    messagesMongo.push(__assign(__assign({}, msg), { _id: newMessage._id }));
+                                    normalizedData = convertMsgs(messagesMongo);
+                                    io.sockets.emit("messages", normalizedData);
+                                    return [2 /*return*/];
+                            }
+                        });
+                    }); });
+                    return [2 /*return*/];
             }
         });
+    }); });
+};
+exports.socketIo = socketIo;
+function convertMsgs(data) {
+    var newData = data.map(function (msg) { return ({
+        id: msg._id.toString(),
+        author: msg.author,
+        date: msg.date,
+        text: msg.text,
+    }); });
+    var authorSchema = new normalizr_1.schema.Entity("authors");
+    var messageSchema = new normalizr_1.schema.Entity("messages", {
+        author: authorSchema,
     });
+    var messagesSchema = new normalizr_1.schema.Array(messageSchema);
+    return (0, normalizr_1.normalize)(newData, messagesSchema);
 }
-exports.connectMongoDB = connectMongoDB;
