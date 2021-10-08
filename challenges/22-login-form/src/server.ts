@@ -5,8 +5,9 @@ import morgan from "morgan";
 import path from "path";
 import productsRoutes from "./routes/products.routes";
 import cartRoutes from "./routes/cart.routes";
+import viewsRoutes from "./routes/views.routes";
 import notFound from "./routes/not-found.routes";
-import {userProperties} from "./services/auth/auth";
+import {auth} from "./services/auth/auth";
 import dotenv from "dotenv";
 import {socketIo} from "./services/socket.io";
 import cookieParser from "cookie-parser";
@@ -32,9 +33,9 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   session({
-    secret: "secreto",
-    resave: true,
-    saveUninitialized: true,
+    secret: "my_secret",
+    resave: false,
+    saveUninitialized: false,
   }),
 );
 
@@ -42,11 +43,9 @@ app.use(
 app.use(express.static(path.join(__dirname, "public")));
 
 // Routes
-app.get("/", (req: express.Request, res: express.Response) => {
-  res.sendFile(path.join(__dirname, "/public/index.html"));
-});
-app.use("/products", userProperties, productsRoutes);
+app.use("/products", productsRoutes);
 app.use("/cart", cartRoutes);
+app.use("/", auth, viewsRoutes);
 // This manages the non-existent routes
 app.use("*", notFound);
 

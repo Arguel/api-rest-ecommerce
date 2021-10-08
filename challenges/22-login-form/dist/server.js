@@ -29,6 +29,7 @@ var morgan_1 = __importDefault(require("morgan"));
 var path_1 = __importDefault(require("path"));
 var products_routes_1 = __importDefault(require("./routes/products.routes"));
 var cart_routes_1 = __importDefault(require("./routes/cart.routes"));
+var views_routes_1 = __importDefault(require("./routes/views.routes"));
 var not_found_routes_1 = __importDefault(require("./routes/not-found.routes"));
 var auth_1 = require("./services/auth/auth");
 var dotenv_1 = __importDefault(require("dotenv"));
@@ -51,18 +52,16 @@ app.use((0, morgan_1.default)("dev"));
 app.use(express_1.default.json());
 app.use((0, cookie_parser_1.default)());
 app.use((0, express_session_1.default)({
-    secret: "secreto",
-    resave: true,
-    saveUninitialized: true,
+    secret: "my_secret",
+    resave: false,
+    saveUninitialized: false,
 }));
 // Static files
 app.use(express_1.default.static(path_1.default.join(__dirname, "public")));
 // Routes
-app.get("/", function (req, res) {
-    res.sendFile(path_1.default.join(__dirname, "/public/index.html"));
-});
-app.use("/products", auth_1.userProperties, products_routes_1.default);
+app.use("/products", products_routes_1.default);
 app.use("/cart", cart_routes_1.default);
+app.use("/", auth_1.auth, views_routes_1.default);
 // This manages the non-existent routes
 app.use("*", not_found_routes_1.default);
 // Io socket connection

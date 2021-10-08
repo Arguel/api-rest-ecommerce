@@ -20,6 +20,62 @@
   <body>
     <main>
       <section class="container-xxl">
+        <!--Welcome nav-->
+        <div
+          class="
+            m-5
+            p-5
+            bg-warning bg-opacity-25
+            d-flex
+            justify-content-between
+          "
+        >
+          <h1 class="text-success pt-3 mb-3">Welcome {user}</h1>
+          <button class="btn btn-warning fw-bold">Log out</button>
+        </div>
+
+        <!--Message box-->
+        <div class="m-5 p-5 bg-light-2">
+          <h1 class="text-primary pt-3 mb-3">Message center</h1>
+          <div class="w-50 mb-3">
+            <label class="form-label" for="userEmail">Your email</label>
+            <input
+              class="form-control"
+              type="email"
+              name="userEmail"
+              id="userEmail"
+              placeholder="user@gmail.com"
+              value="user@gmail.com"
+            />
+          </div>
+          <hr />
+          <ul class="list-unstyled my-4" id="msgContainer">
+            <li class="text-center">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+            </li>
+          </ul>
+          <hr />
+          <form class="row align-items-end w-50" id="formMessages">
+            <div class="col-9">
+              <label class="form-label" for="userMessage">Your message</label>
+              <input
+                class="form-control"
+                type="text"
+                name="userMessage"
+                id="userMessage"
+                placeholder="Enter a message"
+              />
+            </div>
+            <div class="col-3">
+              <button class="btn btn-success w-100" type="submit">Send</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <section class="container-xxl">
         <!--Main title-->
         <h1 class="bg-secondary text-white p-3 m-0 text-center">
           Final proyect part 1
@@ -449,67 +505,6 @@
             </tr>
           </tbody>
         </table>
-      </section>
-
-      <section class="container-xxl">
-        <!--Logout nav-->
-        <div class="m-5 p-5 bg-light-2">
-          <h1 class="text-primary pt-3 mb-3">See you later {user}</h1>
-        </div>
-
-        <!--Welcome nav-->
-        <div
-          class="
-            m-5
-            p-5
-            bg-warning bg-opacity-25
-            d-flex
-            justify-content-between
-          "
-        >
-          <h1 class="text-success pt-3 mb-3">Welcome {user}</h1>
-          <button class="btn btn-warning">Log out</button>
-        </div>
-
-        <!--Message box-->
-        <div class="m-5 p-5 bg-light-2">
-          <h1 class="text-primary pt-3 mb-3">Message center</h1>
-          <div class="w-50 mb-3">
-            <label class="form-label" for="userEmail">Your email</label>
-            <input
-              class="form-control"
-              type="email"
-              name="userEmail"
-              id="userEmail"
-              placeholder="user@gmail.com"
-              value="user@gmail.com"
-            />
-          </div>
-          <hr />
-          <ul class="list-unstyled my-4" id="msgContainer">
-            <li class="text-center">
-              <div class="spinner-border text-primary" role="status">
-                <span class="visually-hidden">Loading...</span>
-              </div>
-            </li>
-          </ul>
-          <hr />
-          <form class="row align-items-end w-50" id="formMessages">
-            <div class="col-9">
-              <label class="form-label" for="userMessage">Your message</label>
-              <input
-                class="form-control"
-                type="text"
-                name="userMessage"
-                id="userMessage"
-                placeholder="Enter a message"
-              />
-            </div>
-            <div class="col-3">
-              <button class="btn btn-success w-100" type="submit">Send</button>
-            </div>
-          </form>
-        </div>
       </section>
     </main>
 

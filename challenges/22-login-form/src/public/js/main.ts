@@ -1,6 +1,7 @@
 // import {IMessage, INormaMsgs} from "../../utils/socketIoInterfaces";
 
 document.addEventListener("DOMContentLoaded", () => {
+  // ------------------ Web Chat ------------------
   const socket = io();
   const norma = normalizr;
 

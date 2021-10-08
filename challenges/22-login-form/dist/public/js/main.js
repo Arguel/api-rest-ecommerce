@@ -1,6 +1,7 @@
 "use strict";
 // import {IMessage, INormaMsgs} from "../../utils/socketIoInterfaces";
 document.addEventListener("DOMContentLoaded", function () {
+    // ------------------ Web Chat ------------------
     var socket = io();
     var norma = normalizr;
     var fragment = document.createDocumentFragment();
