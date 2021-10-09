@@ -10,6 +10,8 @@ import notFound from "./routes/not-found.routes";
 import dotenv from "dotenv";
 import {socketIo} from "./services/socket.io";
 import session from "express-session";
+import MongoStore from "connect-mongo";
+import {mongoOptions} from "./config/mongodb.db";
 
 // Environment Variables
 dotenv.config();
@@ -31,12 +33,17 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(
   session({
+    store: MongoStore.create({
+      mongoUrl: process.env.MONGO_URI,
+      mongoOptions,
+    }),
     secret: "my_secret",
     resave: false,
-    saveUninitialized: false,
+    saveUninitialized: true,
     cookie: {
-      maxAge: 60000,
+      maxAge: 120 * 1000, // Milliseconds
     },
+    rolling: true,
   }),
 );
 

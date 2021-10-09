@@ -4,13 +4,15 @@ import dotenv from "dotenv";
 // Environment Variables
 dotenv.config();
 
+export const mongoOptions = {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+};
+
 export async function connectMongoDB(): Promise<void> {
   if (process.env.MONGO_URI) {
     try {
-      await mongoose.connect(process.env.MONGO_URI, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-      });
+      await mongoose.connect(process.env.MONGO_URI, mongoOptions);
       console.log("MongoDB connection SUCCESS");
     } catch (err) {
       console.error((err as Error).message || "MongoDB connection FAIL");
