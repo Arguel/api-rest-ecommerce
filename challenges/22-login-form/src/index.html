@@ -20,11 +20,6 @@
   <body>
     <main>
       <section class="container-xxl">
-        <!--Logout nav-->
-        <div class="m-5 p-5 bg-light-2">
-          <h1 class="text-primary pt-3 mb-3">See you later {user}</h1>
-        </div>
-
         <!--Welcome nav-->
         <div
           class="
@@ -35,8 +30,10 @@
             justify-content-between
           "
         >
-          <h1 class="text-success pt-3 mb-3" id="userWelcome">Welcome user</h1>
-          <a href="/logout.html" class="btn btn-warning">Log out</a>
+          <h1 class="text-success pt-3 mb-3" id="userWelcome">
+            Welcome {user}
+          </h1>
+          <a href="/logout" class="btn btn-warning fw-bold">Log out</a>
         </div>
 
         <!--Message box-->

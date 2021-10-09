@@ -7,10 +7,8 @@ import productsRoutes from "./routes/products.routes";
 import cartRoutes from "./routes/cart.routes";
 import viewsRoutes from "./routes/views.routes";
 import notFound from "./routes/not-found.routes";
-import {auth} from "./services/auth/auth";
 import dotenv from "dotenv";
 import {socketIo} from "./services/socket.io";
-import cookieParser from "cookie-parser";
 import session from "express-session";
 
 // Environment Variables
@@ -30,12 +28,15 @@ const io: Server = new Server(httpServer, {
 // Middlewares
 app.use(morgan("dev"));
 app.use(express.json());
-app.use(cookieParser());
+app.use(express.urlencoded({extended: true}));
 app.use(
   session({
     secret: "my_secret",
     resave: false,
     saveUninitialized: false,
+    cookie: {
+      maxAge: 60000,
+    },
   }),
 );
 
@@ -45,7 +46,7 @@ app.use(express.static(path.join(__dirname, "public")));
 // Routes
 app.use("/products", productsRoutes);
 app.use("/cart", cartRoutes);
-app.use("/", auth, viewsRoutes);
+app.use("/", viewsRoutes);
 // This manages the non-existent routes
 app.use("*", notFound);
 
