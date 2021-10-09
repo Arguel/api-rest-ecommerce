@@ -23,7 +23,8 @@ router.get("/logout", (req: Request, res: Response) => {
     if (err)
       res.status(500).json({
         error: 500,
-        description: `Route '${req.originalUrl}' - Method '${req.method}' not found`,
+        description:
+          "Unexpected error on the server side. Please try again later",
       });
     else res.sendFile("logout.html", {root: path.join(".", "src", "views")});
   });
