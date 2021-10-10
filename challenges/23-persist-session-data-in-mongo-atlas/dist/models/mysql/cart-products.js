@@ -35,46 +35,64 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.connectMongoDB = void 0;
-var mongoose_1 = __importDefault(require("mongoose"));
-var dotenv_1 = __importDefault(require("dotenv"));
-// Environment Variables
-dotenv_1.default.config();
-function connectMongoDB() {
+exports.connectMySQL = void 0;
+var mysql_db_1 = require("../../config/mysql.db");
+function connectMySQL() {
     return __awaiter(this, void 0, void 0, function () {
-        var err_1;
+        var connecedCartScheme, connecedProductScheme, err_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    if (!process.env.MONGO_URI) return [3 /*break*/, 5];
-                    _a.label = 1;
+                    _a.trys.push([0, 7, , 8]);
+                    return [4 /*yield*/, mysql_db_1.mysqlKnexInstance.schema.hasTable("carts")];
                 case 1:
-                    _a.trys.push([1, 3, , 4]);
-                    return [4 /*yield*/, mongoose_1.default.connect(process.env.MONGO_URI, {
-                            useNewUrlParser: true,
-                            useUnifiedTopology: true,
+                    connecedCartScheme = _a.sent();
+                    if (!!connecedCartScheme) return [3 /*break*/, 3];
+                    return [4 /*yield*/, mysql_db_1.mysqlKnexInstance.schema.createTable("carts", function (t) {
+                            t.increments("_id");
+                            t.string("products", 20000).notNullable();
+                            t.timestamp("timestamp")
+                                .defaultTo(mysql_db_1.mysqlKnexInstance.fn.now())
+                                .notNullable();
                         })];
                 case 2:
                     _a.sent();
-                    console.log("MongoDB connection SUCCESS");
-                    return [3 /*break*/, 4];
-                case 3:
-                    err_1 = _a.sent();
-                    console.error(err_1.message || "MongoDB connection FAIL");
-                    process.exit(1);
-                    return [3 /*break*/, 4];
-                case 4: return [3 /*break*/, 6];
+                    console.log("Cart table created");
+                    _a.label = 3;
+                case 3: return [4 /*yield*/, mysql_db_1.mysqlKnexInstance.schema.hasTable("products")];
+                case 4:
+                    connecedProductScheme = _a.sent();
+                    if (!!connecedProductScheme) return [3 /*break*/, 6];
+                    return [4 /*yield*/, mysql_db_1.mysqlKnexInstance.schema.createTable("products", function (t) {
+                            t.increments("_id");
+                            t.timestamp("timestamp")
+                                .defaultTo(mysql_db_1.mysqlKnexInstance.fn.now())
+                                .notNullable();
+                            t.string("name").notNullable();
+                            t.string("description", 1000).notNullable();
+                            t.integer("code", 15).notNullable();
+                            t.string("thumbnail", 400).notNullable();
+                            t.integer("price", 15).notNullable();
+                            t.integer("stock", 10).notNullable();
+                        })];
                 case 5:
-                    console.log("Could not find the file '.env'");
-                    process.exit(1);
+                    _a.sent();
+                    console.log("Products table created");
                     _a.label = 6;
-                case 6: return [2 /*return*/];
+                case 6:
+                    // If both schemes exist
+                    if (connecedCartScheme && connecedProductScheme)
+                        console.log("MySQL connection SUCCESS");
+                    return [3 /*break*/, 8];
+                case 7:
+                    err_1 = _a.sent();
+                    console.error(err_1.message || "MySQL connection FAIL");
+                    process.exit(1);
+                    return [3 /*break*/, 8];
+                case 8: return [2 /*return*/];
             }
         });
     });
 }
-exports.connectMongoDB = connectMongoDB;
+exports.connectMySQL = connectMySQL;

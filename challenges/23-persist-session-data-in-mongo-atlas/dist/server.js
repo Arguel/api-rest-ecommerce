@@ -34,6 +34,8 @@ var not_found_routes_1 = __importDefault(require("./routes/not-found.routes"));
 var dotenv_1 = __importDefault(require("dotenv"));
 var socket_io_2 = require("./services/socket.io");
 var express_session_1 = __importDefault(require("express-session"));
+var connect_mongo_1 = __importDefault(require("connect-mongo"));
+var mongodb_db_1 = require("./config/mongodb.db");
 // Environment Variables
 dotenv_1.default.config();
 // Port
@@ -50,12 +52,17 @@ app.use((0, morgan_1.default)("dev"));
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
 app.use((0, express_session_1.default)({
+    store: connect_mongo_1.default.create({
+        mongoUrl: process.env.MONGO_URI,
+        mongoOptions: mongodb_db_1.mongoOptions,
+    }),
     secret: "my_secret",
     resave: false,
-    saveUninitialized: false,
+    saveUninitialized: true,
     cookie: {
-        maxAge: 60000,
+        maxAge: 120 * 1000, // Milliseconds
     },
+    rolling: true,
 }));
 // Static files
 app.use(express_1.default.static(path_1.default.join(__dirname, "public")));

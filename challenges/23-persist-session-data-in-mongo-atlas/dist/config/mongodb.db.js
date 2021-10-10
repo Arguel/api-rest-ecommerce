@@ -39,11 +39,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.connectMongoDB = void 0;
+exports.connectMongoDB = exports.mongoOptions = void 0;
 var mongoose_1 = __importDefault(require("mongoose"));
 var dotenv_1 = __importDefault(require("dotenv"));
 // Environment Variables
 dotenv_1.default.config();
+exports.mongoOptions = {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+};
 function connectMongoDB() {
     return __awaiter(this, void 0, void 0, function () {
         var err_1;
@@ -54,10 +58,7 @@ function connectMongoDB() {
                     _a.label = 1;
                 case 1:
                     _a.trys.push([1, 3, , 4]);
-                    return [4 /*yield*/, mongoose_1.default.connect(process.env.MONGO_URI, {
-                            useNewUrlParser: true,
-                            useUnifiedTopology: true,
-                        })];
+                    return [4 /*yield*/, mongoose_1.default.connect(process.env.MONGO_URI, exports.mongoOptions)];
                 case 2:
                     _a.sent();
                     console.log("MongoDB connection SUCCESS");
