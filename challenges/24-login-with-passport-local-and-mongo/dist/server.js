@@ -57,10 +57,12 @@ app.use((0, express_session_1.default)({
         mongoOptions: mongodb_db_1.mongoOptions,
     }),
     secret: "my_secret",
-    resave: false,
-    saveUninitialized: true,
+    resave: true,
+    saveUninitialized: false,
     cookie: {
-        maxAge: 120 * 1000, // Milliseconds
+        maxAge: 120 * 1000,
+        httpOnly: false,
+        secure: false,
     },
     rolling: true,
 }));

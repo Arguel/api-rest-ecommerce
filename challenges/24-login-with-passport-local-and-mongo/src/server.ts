@@ -38,10 +38,12 @@ app.use(
       mongoOptions,
     }),
     secret: "my_secret",
-    resave: false,
-    saveUninitialized: true,
+    resave: true,
+    saveUninitialized: false,
     cookie: {
       maxAge: 120 * 1000, // Milliseconds
+      httpOnly: false,
+      secure: false,
     },
     rolling: true,
   }),
