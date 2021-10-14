@@ -2,7 +2,7 @@ import {Router, IRouter} from "express";
 import {auth} from "../services/auth/auth";
 import {ViewsController} from "../controller/views.controllers";
 import passport from "passport";
-import LocalStrategy from "passport-local";
+import "../services/auth/strategies/passport.local";
 
 const controller: ViewsController = new ViewsController();
 
@@ -23,6 +23,7 @@ router.get("/register", controller.getRegister.bind(controller));
 router.post(
   "/register",
   passport.authenticate("register", {failureRedirect: "/failregister"}),
+  controller.postRegister.bind(controller),
 );
 
 router.get("/failregister", controller.getFailRegister.bind(controller));

@@ -17,3 +17,9 @@ export interface IProduct {
   stock: number;
   quantityOnCart?: number;
 }
+
+export interface IUser {
+  _id?: Types.ObjectId | object | number | string;
+  username: string;
+  password: string;
+}

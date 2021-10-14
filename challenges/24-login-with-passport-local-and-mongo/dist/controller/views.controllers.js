@@ -12,9 +12,10 @@ var ViewsController = /** @class */ (function () {
         res.sendFile("login.html", { root: path_1.default.join(".", "dist", "views") });
     };
     ViewsController.prototype.postLogin = function (req, res) {
-        var username = req.body.username;
-        if (username) {
+        var _a = req.body, username = _a.username, password = _a.password;
+        if (username && password) {
             req.session.username = username;
+            req.session.password = password;
             res.redirect("/");
         }
         else {
@@ -26,6 +27,9 @@ var ViewsController = /** @class */ (function () {
     };
     ViewsController.prototype.getRegister = function (req, res) {
         res.sendFile("register.html", { root: path_1.default.join(".", "dist", "views") });
+    };
+    ViewsController.prototype.postRegister = function (req, res) {
+        res.redirect("/login");
     };
     ViewsController.prototype.getFailRegister = function (req, res) {
         res.sendFile("registerError.html", { root: path_1.default.join(".", "dist", "views") });

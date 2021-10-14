@@ -53,7 +53,6 @@ app.use((0, morgan_1.default)("dev"));
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
 app.use(passport_1.default.initialize());
-app.use(passport_1.default.session());
 app.use((0, express_session_1.default)({
     store: connect_mongo_1.default.create({
         mongoUrl: process.env.MONGO_URI,
@@ -63,7 +62,7 @@ app.use((0, express_session_1.default)({
     resave: true,
     saveUninitialized: false,
     cookie: {
-        maxAge: 120 * 1000,
+        maxAge: 10 * 60 * 1000,
         httpOnly: false,
         secure: false,
     },

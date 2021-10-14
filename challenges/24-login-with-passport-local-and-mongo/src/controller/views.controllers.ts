@@ -7,9 +7,10 @@ export class ViewsController {
   }
 
   postLogin(req: Request, res: Response): void {
-    const {username} = req.body;
-    if (username) {
+    const {username, password} = req.body;
+    if (username && password) {
       req.session.username = username;
+      req.session.password = password;
       res.redirect("/");
     } else {
       res.send("Invalid data, please enter a valid name");
@@ -22,6 +23,10 @@ export class ViewsController {
 
   getRegister(req: Request, res: Response): void {
     res.sendFile("register.html", {root: path.join(".", "dist", "views")});
+  }
+
+  postRegister(req: Request, res: Response): void {
+    res.redirect("/login");
   }
 
   getFailRegister(req: Request, res: Response): void {

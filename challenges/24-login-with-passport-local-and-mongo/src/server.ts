@@ -33,7 +33,6 @@ app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(passport.initialize());
-app.use(passport.session());
 app.use(
   session({
     store: MongoStore.create({
@@ -44,7 +43,7 @@ app.use(
     resave: true,
     saveUninitialized: false,
     cookie: {
-      maxAge: 120 * 1000, // Milliseconds
+      maxAge: 10 * 60 * 1000, // Milliseconds - (Min * Sec * Mil)
       httpOnly: false,
       secure: false,
     },
