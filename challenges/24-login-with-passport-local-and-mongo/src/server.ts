@@ -12,6 +12,7 @@ import {socketIo} from "./services/socket.io";
 import session from "express-session";
 import MongoStore from "connect-mongo";
 import {mongoOptions} from "./config/mongodb.db";
+import passport from "passport";
 
 // Environment Variables
 dotenv.config();
@@ -31,6 +32,8 @@ const io: Server = new Server(httpServer, {
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(
   session({
     store: MongoStore.create({

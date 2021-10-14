@@ -1,49 +1,34 @@
-import {Router, Request, Response, IRouter} from "express";
+import {Router, IRouter} from "express";
 import {auth} from "../services/auth/auth";
-import path from "path";
+import {ViewsController} from "../controller/views.controllers";
+import passport from "passport";
+import LocalStrategy from "passport-local";
+
+const controller: ViewsController = new ViewsController();
 
 const router: IRouter = Router();
 
-router.get("/login", (req: Request, res: Response) => {
-  res.sendFile("login.html", {root: path.join(".", "dist", "views")});
-});
+router.get("/login", controller.getLogin.bind(controller));
 
-router.post("/login", (req: Request, res: Response) => {
-  const {username} = req.body;
-  if (username) {
-    req.session.username = username;
-    res.redirect("/");
-  } else {
-    res.send("Invalid data, please enter a valid name");
-  }
-});
+router.post(
+  "/login",
+  passport.authenticate("login", {failureRedirect: "/faillogin"}),
+  controller.postLogin.bind(controller),
+);
 
-router.get("/faillogin", (req: Request, res: Response) => {
-  res.sendFile("loginError.html", {root: path.join(".", "dist", "views")});
-});
+router.get("/faillogin", controller.getFailLogin.bind(controller));
 
-router.get("/register", (req: Request, res: Response) => {
-  res.sendFile("register.html", {root: path.join(".", "dist", "views")});
-});
+router.get("/register", controller.getRegister.bind(controller));
 
-router.get("/failregister", (req: Request, res: Response) => {
-  res.sendFile("registerError.html", {root: path.join(".", "dist", "views")});
-});
+router.post(
+  "/register",
+  passport.authenticate("register", {failureRedirect: "/failregister"}),
+);
 
-router.get("/logout", (req: Request, res: Response) => {
-  req.session.destroy((err) => {
-    if (err)
-      res.status(500).json({
-        error: 500,
-        description:
-          "Unexpected error on the server side. Please try again later",
-      });
-    else res.sendFile("logout.html", {root: path.join(".", "dist", "views")});
-  });
-});
+router.get("/failregister", controller.getFailRegister.bind(controller));
 
-router.get("/", auth, (req: Request, res: Response) => {
-  res.sendFile("index.html", {root: path.join(".", "dist")});
-});
+router.get("/logout", controller.getLogout.bind(controller));
+
+router.get("/", auth, controller.getRoot.bind(controller));
 
 export default router;
