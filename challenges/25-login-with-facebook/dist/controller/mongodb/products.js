@@ -48,7 +48,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MongodbProducts = void 0;
-var products_1 = require("../../models/mongodb/products");
+var product_1 = require("../../models/mongodb/product");
 var mongodb_db_1 = require("../../config/mongodb.db");
 var MongodbProducts = /** @class */ (function () {
     function MongodbProducts() {
@@ -70,7 +70,7 @@ var MongodbProducts = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, products_1.ProductModel.find()];
+                        return [4 /*yield*/, product_1.ProductModel.find()];
                     case 1:
                         products = _a.sent();
                         res.status(200).json(products);
@@ -92,7 +92,7 @@ var MongodbProducts = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, products_1.ProductModel.findById(req.params.id)];
+                        return [4 /*yield*/, product_1.ProductModel.findById(req.params.id)];
                     case 1:
                         product = (_a.sent());
                         res.status(200).json(product);
@@ -115,7 +115,7 @@ var MongodbProducts = /** @class */ (function () {
                     case 0:
                         _b.trys.push([0, 2, , 3]);
                         _a = req.body, name_1 = _a.name, description = _a.description, code = _a.code, thumbnail = _a.thumbnail, price = _a.price, stock = _a.stock;
-                        newProduct = new products_1.ProductModel({
+                        newProduct = new product_1.ProductModel({
                             timestamp: new Date().toString(),
                             name: name_1,
                             description: description,
@@ -156,7 +156,7 @@ var MongodbProducts = /** @class */ (function () {
                             stock: stock,
                         };
                         // We update the product if it exists
-                        return [4 /*yield*/, products_1.ProductModel.findByIdAndUpdate(req.params.id, newProduct)];
+                        return [4 /*yield*/, product_1.ProductModel.findByIdAndUpdate(req.params.id, newProduct)];
                     case 1:
                         // We update the product if it exists
                         _b.sent();
@@ -180,7 +180,7 @@ var MongodbProducts = /** @class */ (function () {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
                         // We delete the product from the database
-                        return [4 /*yield*/, products_1.ProductModel.findByIdAndRemove(req.params.id)];
+                        return [4 /*yield*/, product_1.ProductModel.findByIdAndRemove(req.params.id)];
                     case 1:
                         // We delete the product from the database
                         _a.sent();
@@ -217,7 +217,7 @@ var MongodbProducts = /** @class */ (function () {
                             filters.stock = __assign(__assign({}, filters.stock), { $gte: minStock });
                         if (maxStock)
                             filters.stock = __assign(__assign({}, filters.stock), { $lte: maxStock });
-                        return [4 /*yield*/, products_1.ProductModel.findOne(filters)];
+                        return [4 /*yield*/, product_1.ProductModel.findOne(filters)];
                     case 1:
                         product = _b.sent();
                         if (product)

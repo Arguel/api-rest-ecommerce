@@ -1,5 +1,5 @@
 import {Request, Response} from "express";
-import {ProductModel} from "../../models/mongodb/products";
+import {ProductModel} from "../../models/mongodb/product";
 import {CartModel} from "../../models/mongodb/cart";
 import {ICart, IProduct} from "../../utils/modelsInterfaces";
 import {connectMongoDB} from "../../config/mongodb.db";

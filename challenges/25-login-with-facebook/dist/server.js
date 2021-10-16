@@ -58,7 +58,7 @@ app.use((0, express_session_1.default)({
         mongoUrl: process.env.MONGO_URI,
         mongoOptions: mongodb_db_1.mongoOptions,
     }),
-    secret: "my_secret",
+    secret: process.env.SECRET,
     resave: true,
     saveUninitialized: false,
     cookie: {

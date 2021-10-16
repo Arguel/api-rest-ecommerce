@@ -37,7 +37,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MongodbCart = void 0;
-var products_1 = require("../../models/mongodb/products");
+var product_1 = require("../../models/mongodb/product");
 var cart_1 = require("../../models/mongodb/cart");
 var mongodb_db_1 = require("../../config/mongodb.db");
 var cartId = "614a4346c63a6bed117cfdbb";
@@ -141,7 +141,7 @@ var MongodbCart = /** @class */ (function () {
                     case 1:
                         cart = _b.sent();
                         itemIndex = -1;
-                        return [4 /*yield*/, products_1.ProductModel.findById(req.params.id)];
+                        return [4 /*yield*/, product_1.ProductModel.findById(req.params.id)];
                     case 2:
                         _a = (_b.sent()), _id_1 = _a._id, timestamp = _a.timestamp, name_1 = _a.name, description = _a.description, code = _a.code, thumbnail = _a.thumbnail, price = _a.price, stock = _a.stock;
                         // We check if it is already added to the shopping cart

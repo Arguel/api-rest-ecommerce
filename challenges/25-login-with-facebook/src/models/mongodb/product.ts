@@ -1,4 +1,4 @@
-import {Schema, model, Model} from "mongoose";
+import {Schema, model} from "mongoose";
 import {IProduct} from "../../utils/modelsInterfaces";
 
 const productSchema = new Schema<IProduct>({
@@ -11,7 +11,4 @@ const productSchema = new Schema<IProduct>({
   stock: {type: Number, required: true},
 });
 
-export const ProductModel: Model<IProduct> = model<IProduct>(
-  "Product",
-  productSchema,
-);
+export const ProductModel = model<IProduct>("Product", productSchema);

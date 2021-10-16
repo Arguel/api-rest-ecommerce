@@ -39,7 +39,7 @@ app.use(
       mongoUrl: process.env.MONGO_URI,
       mongoOptions,
     }),
-    secret: "my_secret",
+    secret: process.env.SECRET as string,
     resave: true,
     saveUninitialized: false,
     cookie: {

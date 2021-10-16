@@ -1,4 +1,4 @@
-import {Schema, model, Model} from "mongoose";
+import {Schema, model} from "mongoose";
 import {ICart} from "../../utils/modelsInterfaces";
 
 const cartSchema = new Schema<ICart>({
@@ -6,4 +6,4 @@ const cartSchema = new Schema<ICart>({
   timestamp: {type: String, required: true},
 });
 
-export const CartModel: Model<ICart> = model<ICart>("Cart", cartSchema);
+export const CartModel = model<ICart>("Cart", cartSchema);

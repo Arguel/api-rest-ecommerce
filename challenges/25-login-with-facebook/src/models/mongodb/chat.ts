@@ -1,4 +1,4 @@
-import {Schema, model, Model} from "mongoose";
+import {Schema, model} from "mongoose";
 import {IMessage} from "../../utils/socketIoInterfaces";
 
 const chatSchema = new Schema<IMessage>({
@@ -14,4 +14,4 @@ const chatSchema = new Schema<IMessage>({
   text: {type: String, required: true},
 });
 
-export const ChatModel: Model<IMessage> = model<IMessage>("Chat", chatSchema);
+export const ChatModel = model<IMessage>("Chat", chatSchema);
