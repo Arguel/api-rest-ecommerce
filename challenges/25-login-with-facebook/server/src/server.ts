@@ -1,70 +1,58 @@
-import express from "express";
+import {app} from "./app";
 import * as http from "http";
 import {Server} from "socket.io";
-import morgan from "morgan";
-import path from "path";
-import productsRoutes from "./routes/products.routes";
-import cartRoutes from "./routes/cart.routes";
-import viewsRoutes from "./routes/views.routes";
-import notFound from "./routes/not-found.routes";
-import dotenv from "dotenv";
 import {socketIo} from "./services/socket.io";
-import session from "express-session";
-import MongoStore from "connect-mongo";
-import {mongoOptions} from "./config/mongodb.db";
-import passport from "passport";
+import debug from "debug";
 
-// Environment Variables
-dotenv.config();
+debug("http");
 
 // Port
-const port: number = parseInt(process.env.PORT!) || 8080;
+const port = normalizePort(process.env.PORT || "8080");
+app.set("port", port);
 
 // Main application
-const app: express.Application = express();
 const httpServer: http.Server = http.createServer(app);
+
+// Starting the server
+httpServer.listen(port);
+httpServer.on("error", onError);
+httpServer.on("listening", onListening);
+
 // Websockets
 const io: Server = new Server(httpServer, {
   /* options */
 });
 
-// Middlewares
-app.use(morgan("dev"));
-app.use(express.json());
-app.use(express.urlencoded({extended: true}));
-app.use(passport.initialize());
-app.use(
-  session({
-    store: MongoStore.create({
-      mongoUrl: process.env.MONGO_URI,
-      mongoOptions,
-    }),
-    secret: process.env.SECRET as string,
-    resave: true,
-    saveUninitialized: false,
-    cookie: {
-      maxAge: 10 * 60 * 1000, // Milliseconds - (Min * Sec * Mil)
-      httpOnly: false,
-      secure: false,
-    },
-    rolling: true,
-  }),
-);
-
-// Static files
-app.use(express.static(path.join(__dirname, "public")));
-
-// Routes
-app.use("/products", productsRoutes);
-app.use("/cart", cartRoutes);
-app.use("/", viewsRoutes);
-// This manages the non-existent routes
-app.use("*", notFound);
-
 // Io socket connection
 socketIo(io);
 
-// Starting the server
-httpServer.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
-});
+function normalizePort(val: string) {
+  const port = parseInt(val, 10);
+  if (isNaN(port)) return val;
+
+  if (port >= 0) return port;
+
+  return false;
+}
+
+function onError(error: NodeJS.ErrnoException) {
+  if (error.syscall !== "listen") throw error;
+
+  const bind = typeof port === "string" ? "Pipe " + port : "Port " + port;
+  switch (error.code) {
+    case "EACCES":
+      console.error(bind + " requires elevated privileges");
+      process.exit(1);
+    case "EADDRINUSE":
+      console.error(bind + " is already in use");
+      process.exit(1);
+    default:
+      throw error;
+  }
+}
+
+function onListening() {
+  const addr = httpServer.address();
+  const bind = typeof addr === "string" ? "pipe " + addr : "port " + addr!.port;
+  debug("Listening on " + bind);
+}

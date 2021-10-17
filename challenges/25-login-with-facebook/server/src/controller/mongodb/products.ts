@@ -1,9 +1,12 @@
 import {Request, Response} from "express";
 import {ProductModel} from "../../models/mongodb/product";
-import {IProduct} from "../../utils/modelsInterfaces";
-import {connectMongoDB} from "../../config/mongodb.db";
-import {INewProduct, IQueryProduct} from "../../utils/crudInterfaces";
-import {IControllerError} from "../../utils/errorsInterfaces";
+import {IProduct} from "../../libs/interfaces/models.interfaces";
+import {connectMongoDB} from "../../config/database/mongodb.db";
+import {
+  INewProduct,
+  IQueryProduct,
+} from "../../libs/interfaces/crud.interfaces";
+import {IRequestError} from "../../libs/interfaces/errors.interfaces";
 
 export class MongodbProducts {
   constructor() {
@@ -12,10 +15,11 @@ export class MongodbProducts {
   }
 
   // Default error handler
-  defaultError(err: Error): IControllerError {
+  defaultError(err: Error): IRequestError {
     return {
-      Error: `${err.message || "Unknown"}`,
-      Status:
+      name: `${err.name || "Unknown"}`,
+      message: `${err.message || "Unknown"}`,
+      status:
         "We are having problems connecting to the system, please try again later",
     };
   }

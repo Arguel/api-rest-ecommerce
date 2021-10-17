@@ -1,9 +1,9 @@
 import {Request, Response} from "express";
 import {ProductModel} from "../../models/mongodb/product";
 import {CartModel} from "../../models/mongodb/cart";
-import {ICart, IProduct} from "../../utils/modelsInterfaces";
-import {connectMongoDB} from "../../config/mongodb.db";
-import {IControllerError} from "../../utils/errorsInterfaces";
+import {ICart, IProduct} from "../../libs/interfaces/models.interfaces";
+import {connectMongoDB} from "../../config/database/mongodb.db";
+import {IRequestError} from "../../libs/interfaces/errors.interfaces";
 
 const cartId = "614a4346c63a6bed117cfdbb";
 
@@ -13,10 +13,11 @@ export class MongodbCart {
     connectMongoDB();
   }
   // Default error handler
-  defaultError(err: Error): IControllerError {
+  defaultError(err: Error): IRequestError {
     return {
-      Error: `${err.message || "Unknown"}`,
-      Status:
+      name: `${err.name || "Unknown"}`,
+      message: `${err.message || "Unknown"}`,
+      status:
         "We are having problems connecting to the system, please try again later",
     };
   }

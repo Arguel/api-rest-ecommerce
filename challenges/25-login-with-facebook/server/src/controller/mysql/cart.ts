@@ -1,8 +1,8 @@
 import {Request, Response} from "express";
 import {connectMySQL} from "../../models/mysql/cart-products";
-import {ICart, IProduct} from "../../utils/modelsInterfaces";
-import {mysqlKnexInstance} from "../../config/mysql.db";
-import {IControllerError} from "../../utils/errorsInterfaces";
+import {ICart, IProduct} from "../../libs/interfaces/models.interfaces";
+import {mysqlKnexInstance} from "../../config/database/mysql.db";
+import {IRequestError} from "../../libs/interfaces/errors.interfaces";
 
 const cartId = "13";
 
@@ -12,10 +12,11 @@ export class MysqlCart {
     connectMySQL();
   }
   // Default error handler
-  defaultError(err: Error): IControllerError {
+  defaultError(err: Error): IRequestError {
     return {
-      Error: `${err.message || "Unknown"}`,
-      Status:
+      name: `${err.name || "Unknown"}`,
+      message: `${err.message || "Unknown"}`,
+      status:
         "We are having problems connecting to the system, please try again later",
     };
   }
