@@ -55,4 +55,5 @@ function onListening() {
   const addr = httpServer.address();
   const bind = typeof addr === "string" ? "pipe " + addr : "port " + addr!.port;
   debug("Listening on " + bind);
+  console.log(`Example app listening at http://localhost:${port}`);
 }

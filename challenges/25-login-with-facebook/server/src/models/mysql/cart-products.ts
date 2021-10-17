@@ -1,4 +1,4 @@
-import {mysqlKnexInstance} from "../../config/mysql.db";
+import {mysqlKnexInstance} from "../../config/database/mysql.db";
 
 export async function connectMySQL(): Promise<void> {
   /* This basically creates the tables if they do not exist in the mysql

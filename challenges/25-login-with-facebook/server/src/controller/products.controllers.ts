@@ -1,7 +1,7 @@
-import {persistenceType} from "../config/factoryType";
+import {persistenceType} from "../config/database/factoryType";
 import {Request, Response} from "express";
 import {FactoryProducts} from "./factory/products";
-import {ICrudProducts} from "../utils/crudInterfaces";
+import {ICrudProducts} from "../libs/interfaces/crud.interfaces";
 
 // Main switch/selector for persistence types
 const factory = new FactoryProducts();

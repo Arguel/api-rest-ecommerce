@@ -37,7 +37,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.connectMySQL = void 0;
-var mysql_db_1 = require("../../config/mysql.db");
+var mysql_db_1 = require("../../config/database/mysql.db");
 function connectMySQL() {
     return __awaiter(this, void 0, void 0, function () {
         var connecedCartScheme, connecedProductScheme, err_1;

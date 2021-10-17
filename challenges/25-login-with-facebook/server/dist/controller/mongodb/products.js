@@ -49,7 +49,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MongodbProducts = void 0;
 var product_1 = require("../../models/mongodb/product");
-var mongodb_db_1 = require("../../config/mongodb.db");
+var mongodb_db_1 = require("../../config/database/mongodb.db");
 var MongodbProducts = /** @class */ (function () {
     function MongodbProducts() {
         // MongoDB connection
@@ -58,8 +58,9 @@ var MongodbProducts = /** @class */ (function () {
     // Default error handler
     MongodbProducts.prototype.defaultError = function (err) {
         return {
-            Error: "" + (err.message || "Unknown"),
-            Status: "We are having problems connecting to the system, please try again later",
+            name: "" + (err.name || "Unknown"),
+            message: "" + (err.message || "Unknown"),
+            status: "We are having problems connecting to the system, please try again later",
         };
     };
     // GET all Products (GET)

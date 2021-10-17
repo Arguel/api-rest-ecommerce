@@ -38,7 +38,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MysqlProducts = void 0;
 var cart_products_1 = require("../../models/mysql/cart-products");
-var mysql_db_1 = require("../../config/mysql.db");
+var mysql_db_1 = require("../../config/database/mysql.db");
 var MysqlProducts = /** @class */ (function () {
     function MysqlProducts() {
         // MySQL connection
@@ -47,8 +47,9 @@ var MysqlProducts = /** @class */ (function () {
     // Default error handler
     MysqlProducts.prototype.defaultError = function (err) {
         return {
-            Error: "" + (err.message || "Unknown"),
-            Status: "We are having problems connecting to the system, please try again later",
+            name: "" + (err.name || "Unknown"),
+            message: "" + (err.message || "Unknown"),
+            status: "We are having problems connecting to the system, please try again later",
         };
     };
     // GET all Products (GET)

@@ -1,5 +1,5 @@
 import {Server} from "socket.io";
-import {IMessage, INormaMsgs} from "../utils/socketIoInterfaces";
+import {IMessage, INormaMsgs} from "../libs/interfaces/socketIo.interfaces";
 import {ChatModel} from "../models/mongodb/chat";
 import {normalize, schema} from "normalizr";
 

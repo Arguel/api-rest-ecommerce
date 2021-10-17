@@ -1,5 +1,5 @@
 import {Schema, model, Model} from "mongoose";
-import {IUser} from "../../utils/modelsInterfaces";
+import {IUser} from "../../libs/interfaces/models.interfaces";
 import {Types} from "mongoose";
 import bcrypt from "bcryptjs";
 

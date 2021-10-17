@@ -9,7 +9,9 @@ var ViewsController = /** @class */ (function () {
     function ViewsController() {
     }
     ViewsController.prototype.getLogin = function (req, res) {
-        res.sendFile("login.html", { root: path_1.default.join(".", "dist", "views") });
+        res.sendFile("login.html", {
+            root: path_1.default.join(__dirname, "..", "..", "dist", "views"),
+        });
     };
     ViewsController.prototype.postLogin = function (req, res) {
         var _a = req.body, username = _a.username, password = _a.password;
@@ -23,16 +25,22 @@ var ViewsController = /** @class */ (function () {
         }
     };
     ViewsController.prototype.getFailLogin = function (req, res) {
-        res.sendFile("loginError.html", { root: path_1.default.join(".", "dist", "views") });
+        res.sendFile("loginError.html", {
+            root: path_1.default.join(__dirname, "..", "..", "dist", "views"),
+        });
     };
     ViewsController.prototype.getRegister = function (req, res) {
-        res.sendFile("register.html", { root: path_1.default.join(".", "dist", "views") });
+        res.sendFile("register.html", {
+            root: path_1.default.join(__dirname, "..", "..", "dist", "views"),
+        });
     };
     ViewsController.prototype.postRegister = function (req, res) {
         res.redirect("/login");
     };
     ViewsController.prototype.getFailRegister = function (req, res) {
-        res.sendFile("registerError.html", { root: path_1.default.join(".", "dist", "views") });
+        res.sendFile("registerError.html", {
+            root: path_1.default.join(__dirname, "..", "..", "dist", "views"),
+        });
     };
     ViewsController.prototype.getLogout = function (req, res) {
         req.session.destroy(function (err) {
@@ -42,11 +50,15 @@ var ViewsController = /** @class */ (function () {
                     description: "Unexpected error on the server side. Please try again later",
                 });
             else
-                res.sendFile("logout.html", { root: path_1.default.join(".", "dist", "views") });
+                res.sendFile("logout.html", {
+                    root: path_1.default.join(__dirname, "..", "..", "dist", "views"),
+                });
         });
     };
     ViewsController.prototype.getRoot = function (req, res) {
-        res.sendFile("index.html", { root: path_1.default.join(".", "dist") });
+        res.sendFile("index.html", {
+            root: path_1.default.join(__dirname, "..", "..", "dist", "views"),
+        });
     };
     return ViewsController;
 }());

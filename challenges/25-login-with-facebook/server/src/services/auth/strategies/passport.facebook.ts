@@ -1,7 +1,7 @@
 import passport from "passport";
 import {Strategy as FacebookStrategy} from "passport-facebook";
 import {UserModel} from "../../../models/mongodb/user";
-import {IUser} from "../../../utils/modelsInterfaces";
+import {IUser} from "../../../libs/interfaces/models.interfaces";
 import dotenv from "dotenv";
 
 // Environment Variables

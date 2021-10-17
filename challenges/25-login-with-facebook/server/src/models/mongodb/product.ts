@@ -1,5 +1,5 @@
 import {Schema, model} from "mongoose";
-import {IProduct} from "../../utils/modelsInterfaces";
+import {IProduct} from "../../libs/interfaces/models.interfaces";
 
 const productSchema = new Schema<IProduct>({
   timestamp: {type: String, required: true},

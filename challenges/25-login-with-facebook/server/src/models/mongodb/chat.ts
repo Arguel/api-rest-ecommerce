@@ -1,5 +1,5 @@
 import {Schema, model} from "mongoose";
-import {IMessage} from "../../utils/socketIoInterfaces";
+import {IMessage} from "../../libs/interfaces/socketIo.interfaces";
 
 const chatSchema = new Schema<IMessage>({
   author: {

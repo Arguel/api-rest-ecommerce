@@ -22,63 +22,53 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var express_1 = __importDefault(require("express"));
+var app_1 = require("./app");
 var http = __importStar(require("http"));
 var socket_io_1 = require("socket.io");
-var morgan_1 = __importDefault(require("morgan"));
-var path_1 = __importDefault(require("path"));
-var products_routes_1 = __importDefault(require("./routes/products.routes"));
-var cart_routes_1 = __importDefault(require("./routes/cart.routes"));
-var views_routes_1 = __importDefault(require("./routes/views.routes"));
-var not_found_routes_1 = __importDefault(require("./routes/not-found.routes"));
-var dotenv_1 = __importDefault(require("dotenv"));
 var socket_io_2 = require("./services/socket.io");
-var express_session_1 = __importDefault(require("express-session"));
-var connect_mongo_1 = __importDefault(require("connect-mongo"));
-var mongodb_db_1 = require("./config/mongodb.db");
-var passport_1 = __importDefault(require("passport"));
-// Environment Variables
-dotenv_1.default.config();
+var debug_1 = __importDefault(require("debug"));
+(0, debug_1.default)("http");
 // Port
-var port = parseInt(process.env.PORT) || 8080;
+var port = normalizePort(process.env.PORT || "8080");
+app_1.app.set("port", port);
 // Main application
-var app = (0, express_1.default)();
-var httpServer = http.createServer(app);
+var httpServer = http.createServer(app_1.app);
+// Starting the server
+httpServer.listen(port);
+httpServer.on("error", onError);
+httpServer.on("listening", onListening);
 // Websockets
 var io = new socket_io_1.Server(httpServer, {
 /* options */
 });
-// Middlewares
-app.use((0, morgan_1.default)("dev"));
-app.use(express_1.default.json());
-app.use(express_1.default.urlencoded({ extended: true }));
-app.use(passport_1.default.initialize());
-app.use((0, express_session_1.default)({
-    store: connect_mongo_1.default.create({
-        mongoUrl: process.env.MONGO_URI,
-        mongoOptions: mongodb_db_1.mongoOptions,
-    }),
-    secret: process.env.SECRET,
-    resave: true,
-    saveUninitialized: false,
-    cookie: {
-        maxAge: 10 * 60 * 1000,
-        httpOnly: false,
-        secure: false,
-    },
-    rolling: true,
-}));
-// Static files
-app.use(express_1.default.static(path_1.default.join(__dirname, "public")));
-// Routes
-app.use("/products", products_routes_1.default);
-app.use("/cart", cart_routes_1.default);
-app.use("/", views_routes_1.default);
-// This manages the non-existent routes
-app.use("*", not_found_routes_1.default);
 // Io socket connection
 (0, socket_io_2.socketIo)(io);
-// Starting the server
-httpServer.listen(port, function () {
+function normalizePort(val) {
+    var port = parseInt(val, 10);
+    if (isNaN(port))
+        return val;
+    if (port >= 0)
+        return port;
+    return false;
+}
+function onError(error) {
+    if (error.syscall !== "listen")
+        throw error;
+    var bind = typeof port === "string" ? "Pipe " + port : "Port " + port;
+    switch (error.code) {
+        case "EACCES":
+            console.error(bind + " requires elevated privileges");
+            process.exit(1);
+        case "EADDRINUSE":
+            console.error(bind + " is already in use");
+            process.exit(1);
+        default:
+            throw error;
+    }
+}
+function onListening() {
+    var addr = httpServer.address();
+    var bind = typeof addr === "string" ? "pipe " + addr : "port " + addr.port;
+    (0, debug_1.default)("Listening on " + bind);
     console.log("Example app listening at http://localhost:" + port);
-});
+}
