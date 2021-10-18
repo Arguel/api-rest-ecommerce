@@ -1,11 +1,8 @@
 import {Request, Response} from "express";
-import path from "path";
 
 export class ViewsController {
   getLogin(req: Request, res: Response): void {
-    res.sendFile("login.html", {
-      root: path.join(__dirname, "..", "..", "dist", "views"),
-    });
+    res.render("login", {});
   }
 
   postLogin(req: Request, res: Response): void {
@@ -20,15 +17,11 @@ export class ViewsController {
   }
 
   getFailLogin(req: Request, res: Response): void {
-    res.sendFile("loginError.html", {
-      root: path.join(__dirname, "..", "..", "dist", "views"),
-    });
+    res.render("loginError");
   }
 
   getRegister(req: Request, res: Response): void {
-    res.sendFile("register.html", {
-      root: path.join(__dirname, "..", "..", "dist", "views"),
-    });
+    res.render("register");
   }
 
   postRegister(req: Request, res: Response): void {
@@ -36,9 +29,7 @@ export class ViewsController {
   }
 
   getFailRegister(req: Request, res: Response): void {
-    res.sendFile("registerError.html", {
-      root: path.join(__dirname, "..", "..", "dist", "views"),
-    });
+    res.render("registerError");
   }
 
   getLogout(req: Request, res: Response): void {
@@ -49,16 +40,11 @@ export class ViewsController {
           description:
             "Unexpected error on the server side. Please try again later",
         });
-      else
-        res.sendFile("logout.html", {
-          root: path.join(__dirname, "..", "..", "dist", "views"),
-        });
+      else res.render("logout");
     });
   }
 
   getRoot(req: Request, res: Response): void {
-    res.sendFile("index.html", {
-      root: path.join(__dirname, "..", "..", "dist", "views"),
-    });
+    res.render("index");
   }
 }

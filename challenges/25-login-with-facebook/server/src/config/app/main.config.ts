@@ -6,6 +6,7 @@ import MongoStore from "connect-mongo";
 import {mongoOptions} from "../database/mongodb.db";
 import passport from "passport";
 import express from "express";
+import handlebars from "express-handlebars";
 
 // Environment Variables
 dotenv.config();
@@ -14,8 +15,10 @@ const defaultMain = (app: express.Application) => {
   // Middlewares
   if (process.env.NODE_ENV !== "test") app.use(morgan("dev"));
 
+  app.use(express.text());
   app.use(express.json());
   app.use(express.urlencoded({extended: true}));
+
   app.use(passport.initialize());
   app.use(
     session({
@@ -34,6 +37,21 @@ const defaultMain = (app: express.Application) => {
       rolling: true,
     }),
   );
+
+  // Handlebars
+  app.engine(
+    "hbs",
+    handlebars({
+      extname: ".hbs",
+      defaultLayout: "main.hbs",
+      layoutsDir: path.join(__dirname, "..", "..", "views", "layouts"),
+      partialsDir: path.join(__dirname, "..", "..", "views", "partials"),
+    }),
+  );
+
+  // Engines
+  app.set("view engine", "hbs");
+  app.set("views", path.join(__dirname, "..", "..", "views"));
 
   // Static files
   app.use(express.static(path.join(__dirname, "..", "..", "public")));
