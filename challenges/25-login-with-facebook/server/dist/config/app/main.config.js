@@ -37,6 +37,7 @@ var defaultMain = function (app) {
         },
         rolling: true,
     }));
+    app.use(passport_1.default.session());
     // Handlebars
     app.engine("hbs", (0, express_handlebars_1.default)({
         extname: ".hbs",

@@ -20,5 +20,5 @@ router.get("/faillogin", controller.getFailLogin.bind(controller));
 router.get("/register", controller.getRegister.bind(controller));
 router.get("/failregister", controller.getFailRegister.bind(controller));
 router.get("/logout", controller.getLogout.bind(controller));
-router.get("/", auth_1.auth, controller.getRoot.bind(controller));
+router.get("/", auth_1.isAuthenticated, controller.getRoot.bind(controller));
 exports.default = router;

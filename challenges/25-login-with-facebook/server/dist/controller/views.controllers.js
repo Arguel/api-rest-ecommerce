@@ -5,28 +5,31 @@ var ViewsController = /** @class */ (function () {
     function ViewsController() {
     }
     ViewsController.prototype.getLogin = function (req, res) {
-        res.render("login", {});
+        res.render("login");
     };
-    ViewsController.prototype.postLogin = function (req, res) {
-        var _a = req.body, username = _a.username, password = _a.password;
-        if (username && password) {
-            req.session.username = username;
-            req.session.password = password;
-            res.redirect("/");
-        }
-        else {
-            res.send("Invalid data, please enter a valid name");
-        }
-    };
+    /*
+     *postLogin(req: Request, res: Response): void {
+     *  const {username, password} = req.body;
+     *  if (username && password) {
+     *    req.session.username = username;
+     *    req.session.password = password;
+     *    res.redirect("/");
+     *  } else {
+     *    res.send("Invalid data, please enter a valid name");
+     *  }
+     *}
+     */
     ViewsController.prototype.getFailLogin = function (req, res) {
         res.render("loginError");
     };
     ViewsController.prototype.getRegister = function (req, res) {
         res.render("register");
     };
-    ViewsController.prototype.postRegister = function (req, res) {
-        res.redirect("/login");
-    };
+    /*
+     *postRegister(req: Request, res: Response): void {
+     *  res.redirect("/login");
+     *}
+     */
     ViewsController.prototype.getFailRegister = function (req, res) {
         res.render("registerError");
     };
@@ -42,7 +45,8 @@ var ViewsController = /** @class */ (function () {
         });
     };
     ViewsController.prototype.getRoot = function (req, res) {
-        res.render("index");
+        var _a = req.session, name = _a.name, email = _a.email, picture = _a.picture;
+        res.render("index", { name: name, email: email, picture: picture });
     };
     return ViewsController;
 }());

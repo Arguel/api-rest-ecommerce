@@ -37,6 +37,7 @@ const defaultMain = (app: express.Application) => {
       rolling: true,
     }),
   );
+  app.use(passport.session());
 
   // Handlebars
   app.engine(

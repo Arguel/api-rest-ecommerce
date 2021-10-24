@@ -1,5 +1,5 @@
 import {Router, IRouter} from "express";
-import {auth} from "../services/auth/auth";
+import {isAuthenticated} from "../services/auth/auth";
 import {ViewsController} from "../controller/views.controllers";
 import passport from "passport";
 import "../services/auth/strategies/passport.facebook";
@@ -28,6 +28,6 @@ router.get("/failregister", controller.getFailRegister.bind(controller));
 
 router.get("/logout", controller.getLogout.bind(controller));
 
-router.get("/", auth, controller.getRoot.bind(controller));
+router.get("/", isAuthenticated, controller.getRoot.bind(controller));
 
 export default router;

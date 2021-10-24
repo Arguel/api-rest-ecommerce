@@ -2,19 +2,21 @@ import {Request, Response} from "express";
 
 export class ViewsController {
   getLogin(req: Request, res: Response): void {
-    res.render("login", {});
+    res.render("login");
   }
 
-  postLogin(req: Request, res: Response): void {
-    const {username, password} = req.body;
-    if (username && password) {
-      req.session.username = username;
-      req.session.password = password;
-      res.redirect("/");
-    } else {
-      res.send("Invalid data, please enter a valid name");
-    }
-  }
+  /*
+   *postLogin(req: Request, res: Response): void {
+   *  const {username, password} = req.body;
+   *  if (username && password) {
+   *    req.session.username = username;
+   *    req.session.password = password;
+   *    res.redirect("/");
+   *  } else {
+   *    res.send("Invalid data, please enter a valid name");
+   *  }
+   *}
+   */
 
   getFailLogin(req: Request, res: Response): void {
     res.render("loginError");
@@ -24,9 +26,11 @@ export class ViewsController {
     res.render("register");
   }
 
-  postRegister(req: Request, res: Response): void {
-    res.redirect("/login");
-  }
+  /*
+   *postRegister(req: Request, res: Response): void {
+   *  res.redirect("/login");
+   *}
+   */
 
   getFailRegister(req: Request, res: Response): void {
     res.render("registerError");
@@ -45,6 +49,7 @@ export class ViewsController {
   }
 
   getRoot(req: Request, res: Response): void {
-    res.render("index");
+    const {name, email, picture} = req.session;
+    res.render("index", {name, email, picture});
   }
 }

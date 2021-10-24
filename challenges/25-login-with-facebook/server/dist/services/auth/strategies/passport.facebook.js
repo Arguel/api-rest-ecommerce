@@ -11,7 +11,7 @@ var dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 passport_1.default.use(new passport_facebook_1.Strategy({
     clientID: process.env.FACEBOOK_APP_ID,
-    clientSecret: process.env.FACEBOOK_APP_SECRET,
+    clientSecret: process.env.FACEBOOK_APP_SECRET_KEY,
     callbackURL: "asd",
 }, function (accessToken, refreshToken, profile, done) {
     user_1.UserModel.findOrCreate(profile.id, function (err, user) {
