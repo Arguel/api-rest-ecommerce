@@ -45,8 +45,12 @@ var ViewsController = /** @class */ (function () {
         });
     };
     ViewsController.prototype.getRoot = function (req, res) {
-        var _a = req.session, name = _a.name, email = _a.email, picture = _a.picture;
-        res.render("index", { name: name, email: email, picture: picture });
+        var _a = req.user, displayName = _a.displayName, emails = _a.emails, photos = _a.photos;
+        res.render("index", {
+            name: displayName,
+            email: emails[0].value,
+            picture: photos[0].value,
+        });
     };
     return ViewsController;
 }());

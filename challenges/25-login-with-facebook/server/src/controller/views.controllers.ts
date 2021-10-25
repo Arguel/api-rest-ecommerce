@@ -1,5 +1,20 @@
 import {Request, Response} from "express";
 
+interface IEmail {
+  value?: string;
+  type?: string;
+}
+
+interface IPhoto {
+  value: string;
+}
+
+interface IExpressUser extends Express.User {
+  displayName?: string;
+  emails?: IEmail[];
+  photos?: IPhoto[];
+}
+
 export class ViewsController {
   getLogin(req: Request, res: Response): void {
     res.render("login");
@@ -49,7 +64,11 @@ export class ViewsController {
   }
 
   getRoot(req: Request, res: Response): void {
-    const {name, email, picture} = req.session;
-    res.render("index", {name, email, picture});
+    const {displayName, emails, photos} = req.user as IExpressUser;
+    res.render("index", {
+      name: displayName,
+      email: emails[0].value,
+      picture: photos[0].value,
+    });
   }
 }
