@@ -1,11 +1,16 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ViewsController = void 0;
+var child_process_1 = require("child_process");
+var path_1 = __importDefault(require("path"));
 var ViewsController = /** @class */ (function () {
     function ViewsController() {
     }
     ViewsController.prototype.getLogin = function (req, res) {
-        res.render("login");
+        res.status(200).render("login");
     };
     /*
      *postLogin(req: Request, res: Response): void {
@@ -20,10 +25,10 @@ var ViewsController = /** @class */ (function () {
      *}
      */
     ViewsController.prototype.getFailLogin = function (req, res) {
-        res.render("loginError");
+        res.status(200).render("loginError");
     };
     ViewsController.prototype.getRegister = function (req, res) {
-        res.render("register");
+        res.status(200).render("register");
     };
     /*
      *postRegister(req: Request, res: Response): void {
@@ -31,7 +36,7 @@ var ViewsController = /** @class */ (function () {
      *}
      */
     ViewsController.prototype.getFailRegister = function (req, res) {
-        res.render("registerError");
+        res.status(200).render("registerError");
     };
     ViewsController.prototype.getLogout = function (req, res) {
         req.session.destroy(function (err) {
@@ -41,15 +46,40 @@ var ViewsController = /** @class */ (function () {
                     description: "Unexpected error on the server side. Please try again later",
                 });
             else
-                res.render("logout");
+                res.status(200).render("logout");
         });
     };
     ViewsController.prototype.getRoot = function (req, res) {
         var _a = req.user, displayName = _a.displayName, emails = _a.emails, photos = _a.photos;
-        res.render("index", {
+        res.status(200).render("index", {
             name: displayName,
             email: emails[0].value,
             picture: photos[0].value,
+        });
+    };
+    ViewsController.prototype.getInfo = function (req, res) {
+        res.status(200).json({
+            Input_arguments: process.argv,
+            Platform_name: process.platform,
+            Node_js_version: process.version,
+            Memory_usage: process.memoryUsage(),
+            Execution_path: process.execPath,
+            Process_id: process.pid,
+            Current_folder: process.cwd(),
+        });
+    };
+    ViewsController.prototype.getRandoms = function (req, res) {
+        var defaultNumber = 100000000;
+        var qty = req.query.qty;
+        var forked = (0, child_process_1.fork)(path_1.default.join("server", "dist", "libs", "helpers", "calculate.js"));
+        if (qty)
+            forked.send(qty);
+        else
+            forked.send(defaultNumber);
+        forked.on("message", function (result) {
+            res.status(200).json({
+                result: result,
+            });
         });
     };
     return ViewsController;

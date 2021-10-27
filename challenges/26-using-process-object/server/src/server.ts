@@ -6,8 +6,10 @@ import debug from "debug";
 
 debug("http");
 
+const customPort = process.argv[2];
+
 // Port
-const port = normalizePort(process.env.PORT || "8080");
+const port = normalizePort(customPort || process.env.PORT || "8080");
 app.set("port", port);
 
 // Main application
@@ -57,3 +59,7 @@ function onListening() {
   debug("Listening on " + bind);
   console.log(`Example app listening at http://localhost:${port}`);
 }
+
+process.on("exit", (code) => {
+  console.log(`About to exit with code: ${code}`);
+});

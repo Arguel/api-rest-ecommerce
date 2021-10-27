@@ -28,8 +28,9 @@ var socket_io_1 = require("socket.io");
 var socket_io_2 = require("./services/socket.io");
 var debug_1 = __importDefault(require("debug"));
 (0, debug_1.default)("http");
+var customPort = process.argv[2];
 // Port
-var port = normalizePort(process.env.PORT || "8080");
+var port = normalizePort(customPort || process.env.PORT || "8080");
 app_1.app.set("port", port);
 // Main application
 var httpServer = http.createServer(app_1.app);
@@ -72,3 +73,6 @@ function onListening() {
     (0, debug_1.default)("Listening on " + bind);
     console.log("Example app listening at http://localhost:" + port);
 }
+process.on("exit", function (code) {
+    console.log("About to exit with code: " + code);
+});

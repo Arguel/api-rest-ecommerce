@@ -28,6 +28,10 @@ router.get("/failregister", controller.getFailRegister.bind(controller));
 
 router.get("/logout", controller.getLogout.bind(controller));
 
+router.get("/info", controller.getInfo.bind(controller));
+
+router.get("/randoms", controller.getRandoms.bind(controller));
+
 router.get("/", isAuthenticated, controller.getRoot.bind(controller));
 
 export default router;

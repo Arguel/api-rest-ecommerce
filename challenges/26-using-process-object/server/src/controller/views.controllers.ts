@@ -1,4 +1,6 @@
 import {Request, Response} from "express";
+import {fork} from "child_process";
+import path from "path";
 
 interface IEmail {
   value?: string;
@@ -17,7 +19,7 @@ interface IExpressUser extends Express.User {
 
 export class ViewsController {
   getLogin(req: Request, res: Response): void {
-    res.render("login");
+    res.status(200).render("login");
   }
 
   /*
@@ -34,11 +36,11 @@ export class ViewsController {
    */
 
   getFailLogin(req: Request, res: Response): void {
-    res.render("loginError");
+    res.status(200).render("loginError");
   }
 
   getRegister(req: Request, res: Response): void {
-    res.render("register");
+    res.status(200).render("register");
   }
 
   /*
@@ -48,7 +50,7 @@ export class ViewsController {
    */
 
   getFailRegister(req: Request, res: Response): void {
-    res.render("registerError");
+    res.status(200).render("registerError");
   }
 
   getLogout(req: Request, res: Response): void {
@@ -59,16 +61,45 @@ export class ViewsController {
           description:
             "Unexpected error on the server side. Please try again later",
         });
-      else res.render("logout");
+      else res.status(200).render("logout");
     });
   }
 
   getRoot(req: Request, res: Response): void {
     const {displayName, emails, photos} = req.user as IExpressUser;
-    res.render("index", {
+    res.status(200).render("index", {
       name: displayName,
       email: emails[0].value,
       picture: photos[0].value,
+    });
+  }
+
+  getInfo(req: Request, res: Response): void {
+    res.status(200).json({
+      Input_arguments: process.argv,
+      Platform_name: process.platform,
+      Node_js_version: process.version,
+      Memory_usage: process.memoryUsage(),
+      Execution_path: process.execPath,
+      Process_id: process.pid,
+      Current_folder: process.cwd(),
+    });
+  }
+
+  getRandoms(req: Request, res: Response): void {
+    const defaultNumber = 100000000;
+    const {qty} = req.query;
+
+    const forked = fork(
+      path.join("server", "dist", "libs", "helpers", "calculate.js"),
+    );
+    if (qty) forked.send(qty as string);
+    else forked.send(defaultNumber);
+
+    forked.on("message", (result) => {
+      res.status(200).json({
+        result,
+      });
     });
   }
 }
