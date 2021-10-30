@@ -9,7 +9,8 @@
     "tsw": "npx tsc -p ./tsconfig.json -w",
     "lint": "eslint .",
     "lintfix": "npm run lint -- --fix",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "prod": "forever start server/dist/server.js"
   },
   "repository": {
     "type": "git",
@@ -52,6 +53,7 @@
     "express": "^4.17.1",
     "express-handlebars": "^5.3.4",
     "express-session": "^1.17.2",
+    "forever": "^4.0.1",
     "jsonwebtoken": "^8.5.1",
     "knex": "^0.95.11",
     "mongoose": "^6.0.5",

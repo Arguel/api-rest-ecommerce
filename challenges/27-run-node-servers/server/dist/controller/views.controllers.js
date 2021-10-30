@@ -6,6 +6,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ViewsController = void 0;
 var child_process_1 = require("child_process");
 var path_1 = __importDefault(require("path"));
+var os_1 = __importDefault(require("os"));
+var calculations_1 = require("../libs/helpers/calculations");
 var ViewsController = /** @class */ (function () {
     function ViewsController() {
     }
@@ -66,21 +68,27 @@ var ViewsController = /** @class */ (function () {
             Execution_path: process.execPath,
             Process_id: process.pid,
             Current_folder: process.cwd(),
+            NumCPUs: os_1.default.cpus().length,
         });
     };
     ViewsController.prototype.getRandoms = function (req, res) {
         var defaultNumber = 100000000;
         var qty = req.query.qty;
-        var forked = (0, child_process_1.fork)(path_1.default.join("server", "dist", "libs", "helpers", "calculate.js"));
-        if (qty)
-            forked.send(qty);
-        else
-            forked.send(defaultNumber);
-        forked.on("message", function (result) {
-            res.status(200).json({
-                result: result,
+        var startMode = process.argv[5];
+        if (startMode === "cluster") {
+            var totalNumbers = (0, calculations_1.randomNum)(qty);
+            res.status(200).json({ totalNumbers: totalNumbers });
+        }
+        else {
+            var forked = (0, child_process_1.fork)(path_1.default.join("server", "dist", "libs", "helpers", "calculate.js"));
+            if (qty)
+                forked.send(qty);
+            else
+                forked.send(defaultNumber);
+            forked.on("message", function (result) {
+                res.status(200).json({ result: result });
             });
-        });
+        }
     };
     return ViewsController;
 }());

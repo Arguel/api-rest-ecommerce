@@ -1,6 +1,8 @@
 import {Request, Response} from "express";
 import {fork} from "child_process";
 import path from "path";
+import os from "os";
+import {randomNum} from "../libs/helpers/calculations";
 
 interface IEmail {
   value?: string;
@@ -83,23 +85,28 @@ export class ViewsController {
       Execution_path: process.execPath,
       Process_id: process.pid,
       Current_folder: process.cwd(),
+      NumCPUs: os.cpus().length,
     });
   }
 
   getRandoms(req: Request, res: Response): void {
     const defaultNumber = 100000000;
     const {qty} = req.query;
+    const startMode = process.argv[5];
 
-    const forked = fork(
-      path.join("server", "dist", "libs", "helpers", "calculate.js"),
-    );
-    if (qty) forked.send(qty as string);
-    else forked.send(defaultNumber);
+    if (startMode === "cluster") {
+      const totalNumbers = randomNum(qty as string);
+      res.status(200).json({totalNumbers});
+    } else {
+      const forked = fork(
+        path.join("server", "dist", "libs", "helpers", "calculate.js"),
+      );
+      if (qty) forked.send(qty as string);
+      else forked.send(defaultNumber);
 
-    forked.on("message", (result) => {
-      res.status(200).json({
-        result,
+      forked.on("message", (result) => {
+        res.status(200).json({result});
       });
-    });
+    }
   }
 }

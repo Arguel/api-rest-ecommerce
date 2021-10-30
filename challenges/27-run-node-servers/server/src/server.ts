@@ -3,10 +3,14 @@ import * as http from "http";
 import {Server} from "socket.io";
 import {socketIo} from "./services/socket.io";
 import debug from "debug";
+import os from "os";
+import cluster from "cluster";
 
 debug("http");
 
 const customPort = process.argv[2];
+const startMode = process.argv[5];
+const numCPUs = os.cpus().length;
 
 // Port
 const port = normalizePort(customPort || process.env.PORT || "8080");
@@ -15,10 +19,22 @@ app.set("port", port);
 // Main application
 const httpServer: http.Server = http.createServer(app);
 
-// Starting the server
-httpServer.listen(port);
-httpServer.on("error", onError);
-httpServer.on("listening", onListening);
+if (startMode === "cluster" && cluster.isMaster) {
+  for (let i = 0; i < numCPUs; i++) cluster.fork();
+
+  cluster.on("exit", (worker, code, signal) => {
+    console.log(
+      `worker ${worker.process.pid} died, code - ${code}, signal - ${signal}`,
+    );
+  });
+} else {
+  // Starting the server
+  httpServer.listen(port);
+  httpServer.on("error", onError);
+  httpServer.on("listening", onListening);
+
+  console.log(`Worker ${process.pid} started`);
+}
 
 // Websockets
 const io: Server = new Server(httpServer, {
@@ -58,6 +74,13 @@ function onListening() {
   const bind = typeof addr === "string" ? "pipe " + addr : "port " + addr!.port;
   debug("Listening on " + bind);
   console.log(`Example app listening at http://localhost:${port}`);
+  console.log(`Optional launch parameters (the application already has default values): {
+
+  node server/dist/server.js {PORT - 2} {FACEBOOK_CLIENT_ID - 3} {FACEBOOK_CLIENT_SECRET - 4} {START_MODE (FORK/CLUSTER) - 5}
+
+  Example: node server/dist/server.js 8080 39402342342 3bsj32n2bs352 
+}
+`);
 }
 
 process.on("exit", (code) => {
