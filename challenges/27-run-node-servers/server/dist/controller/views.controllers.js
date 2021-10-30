@@ -69,6 +69,7 @@ var ViewsController = /** @class */ (function () {
             Process_id: process.pid,
             Current_folder: process.cwd(),
             NumCPUs: os_1.default.cpus().length,
+            asd: 4,
         });
     };
     ViewsController.prototype.getRandoms = function (req, res) {

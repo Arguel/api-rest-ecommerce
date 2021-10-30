@@ -86,6 +86,7 @@ export class ViewsController {
       Process_id: process.pid,
       Current_folder: process.cwd(),
       NumCPUs: os.cpus().length,
+      asd: 4,
     });
   }
 

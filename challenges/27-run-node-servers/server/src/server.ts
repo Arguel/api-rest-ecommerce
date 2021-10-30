@@ -10,6 +10,7 @@ debug("http");
 
 const customPort = process.argv[2];
 const startMode = process.argv[5];
+const initiator = process.argv[6];
 const numCPUs = os.cpus().length;
 
 // Port
@@ -19,7 +20,7 @@ app.set("port", port);
 // Main application
 const httpServer: http.Server = http.createServer(app);
 
-if (startMode === "cluster" && cluster.isMaster) {
+if (startMode === "cluster" && initiator !== "pm2" && cluster.isMaster) {
   for (let i = 0; i < numCPUs; i++) cluster.fork();
 
   cluster.on("exit", (worker, code, signal) => {
@@ -76,7 +77,7 @@ function onListening() {
   console.log(`Example app listening at http://localhost:${port}`);
   console.log(`Optional launch parameters (the application already has default values): {
 
-  node server/dist/server.js {PORT - 2} {FACEBOOK_CLIENT_ID - 3} {FACEBOOK_CLIENT_SECRET - 4} {START_MODE (FORK/CLUSTER) - 5}
+  node server/dist/server.js {PORT - 2} {FACEBOOK_CLIENT_ID - 3} {FACEBOOK_CLIENT_SECRET - 4} {START_MODE (FORK/CLUSTER) - 5} {INITIATOR (FOREVER/PM2) - 6}
 
   Example: node server/dist/server.js 8080 39402342342 3bsj32n2bs352 
 }
