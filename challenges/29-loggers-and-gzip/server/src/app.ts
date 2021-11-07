@@ -1,13 +1,15 @@
 import express from "express";
-import appConfig from "./config/app/main.config";
+import mainConfig from "./config/app/main.config";
 import routeConfig from "./config/app/route.config";
 import errorConfig from "./config/app/error.config";
+import loggerConfig from "./config/app/logger.config";
 
 // Main application
 const app: express.Application = express();
 
 // Config
-appConfig(app);
+mainConfig(app);
+loggerConfig(app);
 routeConfig(app);
 errorConfig(app);
 

@@ -7,6 +7,7 @@ import {mongoOptions} from "../database/mongodb.db";
 import passport from "passport";
 import express from "express";
 import handlebars from "express-handlebars";
+import compression from "compression";
 
 // Environment Variables
 dotenv.config();
@@ -38,6 +39,7 @@ const defaultMain = (app: express.Application) => {
     }),
   );
   app.use(passport.session());
+  app.use(compression());
 
   // Handlebars
   app.engine(

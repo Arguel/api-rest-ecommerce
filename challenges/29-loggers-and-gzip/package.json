@@ -32,6 +32,7 @@
   "homepage": "https://github.com/Arguel/api-rest-ecommerce#readme",
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",
+    "@types/compression": "^1.7.2",
     "@types/debug": "^4.1.7",
     "@types/express": "^4.17.13",
     "@types/express-handlebars": "^5.3.1",
@@ -50,12 +51,14 @@
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "compression": "^1.7.4",
     "connect-mongo": "^4.6.0",
     "debug": "^4.3.2",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "express-handlebars": "^5.3.4",
     "express-session": "^1.17.2",
+    "express-winston": "^4.2.0",
     "forever": "^4.0.1",
     "jsonwebtoken": "^8.5.1",
     "knex": "^0.95.11",
@@ -66,7 +69,8 @@
     "passport": "^0.5.0",
     "passport-facebook": "^3.0.0",
     "pm2": "^5.1.2",
-    "socket.io": "^4.2.0"
+    "socket.io": "^4.2.0",
+    "winston": "^3.3.3"
   },
   "engines": {
     "node": ">=14.0.0",

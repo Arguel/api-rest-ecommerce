@@ -12,6 +12,7 @@ var mongodb_db_1 = require("../database/mongodb.db");
 var passport_1 = __importDefault(require("passport"));
 var express_1 = __importDefault(require("express"));
 var express_handlebars_1 = __importDefault(require("express-handlebars"));
+var compression_1 = __importDefault(require("compression"));
 // Environment Variables
 dotenv_1.default.config();
 var defaultMain = function (app) {
@@ -38,6 +39,7 @@ var defaultMain = function (app) {
         rolling: true,
     }));
     app.use(passport_1.default.session());
+    app.use((0, compression_1.default)());
     // Handlebars
     app.engine("hbs", (0, express_handlebars_1.default)({
         extname: ".hbs",
