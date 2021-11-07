@@ -9,7 +9,7 @@ module.exports = {
       max_restarts: 10,
       autorestart: true,
       intances: "max",
-      args: "8080 null null cluster pm2",
+      args: "--port 8081 --facebookClientId null --facebookClientSecret null --startMode cluster --initiator pm2",
     },
     {
       name: "are-fork", // api-rest-ecommerce

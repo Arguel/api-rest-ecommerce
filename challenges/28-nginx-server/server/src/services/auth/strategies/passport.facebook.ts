@@ -4,9 +4,9 @@ import {UserModel} from "../../../models/mongodb/user";
 import {IUser} from "../../../libs/interfaces/models.interfaces";
 import dotenv from "dotenv";
 import {CallbackError} from "mongoose";
+import args from "args";
 
-const customClientId = process.argv[3];
-const customClientSecret = process.argv[4];
+const nodeArgv = args.parse(process.argv);
 
 // Environment Variables
 dotenv.config();
@@ -14,9 +14,11 @@ dotenv.config();
 passport.use(
   new FacebookStrategy(
     {
-      clientID: customClientId || (process.env.FACEBOOK_APP_ID as string),
+      clientID:
+        nodeArgv.facebookClientId || (process.env.FACEBOOK_APP_ID as string),
       clientSecret:
-        customClientSecret || (process.env.FACEBOOK_APP_SECRET_KEY as string),
+        nodeArgv.facebookClientSecret ||
+        (process.env.FACEBOOK_APP_SECRET_KEY as string),
       callbackURL: "/auth/facebook/callback",
     },
     function (accessToken, refreshToken, profile, done) {
