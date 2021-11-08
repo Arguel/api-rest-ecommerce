@@ -1,7 +1,7 @@
 import {Request, Response} from "express";
 import {ProductModel} from "../../models/mongodb/product";
 import {IProduct} from "../../libs/interfaces/models.interfaces";
-import {connectMongoDB} from "../../config/database/mongodb.db";
+import {connectMongoDB} from "../../database/mongodb.db";
 import {
   INewProduct,
   IQueryProduct,

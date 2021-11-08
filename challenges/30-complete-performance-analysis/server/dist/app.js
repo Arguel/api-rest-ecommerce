@@ -5,10 +5,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.app = void 0;
 var express_1 = __importDefault(require("express"));
-var main_config_1 = __importDefault(require("./config/app/main.config"));
-var route_config_1 = __importDefault(require("./config/app/route.config"));
-var error_config_1 = __importDefault(require("./config/app/error.config"));
-var logger_config_1 = __importDefault(require("./config/app/logger.config"));
+var main_config_1 = __importDefault(require("./app/main.config"));
+var route_config_1 = __importDefault(require("./app/route.config"));
+var error_config_1 = __importDefault(require("./app/error.config"));
+var logger_config_1 = __importDefault(require("./app/logger.config"));
 // Main application
 var app = (0, express_1.default)();
 exports.app = app;

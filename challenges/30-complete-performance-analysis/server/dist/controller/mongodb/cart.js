@@ -39,7 +39,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.MongodbCart = void 0;
 var product_1 = require("../../models/mongodb/product");
 var cart_1 = require("../../models/mongodb/cart");
-var mongodb_db_1 = require("../../config/database/mongodb.db");
+var mongodb_db_1 = require("../../database/mongodb.db");
 var cartId = "614a4346c63a6bed117cfdbb";
 var MongodbCart = /** @class */ (function () {
     function MongodbCart() {

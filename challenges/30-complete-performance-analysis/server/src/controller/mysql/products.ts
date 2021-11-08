@@ -1,7 +1,7 @@
 import {Request, Response} from "express";
 import {connectMySQL} from "../../models/mysql/cart-products";
 import {IProduct} from "../../libs/interfaces/models.interfaces";
-import {mysqlKnexInstance} from "../../config/database/mysql.db";
+import {mysqlKnexInstance} from "../../database/mysql.db";
 import {IRequestError} from "../../libs/interfaces/errors.interfaces";
 import {INewProduct} from "../../libs/interfaces/crud.interfaces";
 

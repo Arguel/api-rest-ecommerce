@@ -1,7 +1,7 @@
-import productsRoutes from "../../routes/products.routes";
-import cartRoutes from "../../routes/cart.routes";
-import viewsRoutes from "../../routes/views.routes";
-import notFound from "../../routes/not-found.routes";
+import productsRoutes from "../routes/products.routes";
+import cartRoutes from "../routes/cart.routes";
+import viewsRoutes from "../routes/views.routes";
+import notFound from "../routes/not-found.routes";
 import {Application} from "express";
 
 const defaultRoute = (app: Application) => {

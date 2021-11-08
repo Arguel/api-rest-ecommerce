@@ -1,4 +1,4 @@
-import {persistenceType} from "../config/database/factoryType";
+import {persistenceType} from "../database/factoryType";
 import {Request, Response} from "express";
 import {FactoryProducts} from "./factory/products";
 import {ICrudProducts} from "../libs/interfaces/crud.interfaces";

@@ -2,7 +2,7 @@ import {Request, Response} from "express";
 import {ProductModel} from "../../models/mongodb/product";
 import {CartModel} from "../../models/mongodb/cart";
 import {ICart, IProduct} from "../../libs/interfaces/models.interfaces";
-import {connectMongoDB} from "../../config/database/mongodb.db";
+import {connectMongoDB} from "../../database/mongodb.db";
 import {IRequestError} from "../../libs/interfaces/errors.interfaces";
 
 const cartId = "614a4346c63a6bed117cfdbb";

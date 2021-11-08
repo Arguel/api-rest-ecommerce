@@ -1,5 +1,5 @@
 import {Application, Request, Response, NextFunction} from "express";
-import {IRequestError} from "../../libs/interfaces/errors.interfaces";
+import {IRequestError} from "../libs/interfaces/errors.interfaces";
 
 const defaultError = (app: Application) => {
   // Catch 404 and forward to error handler

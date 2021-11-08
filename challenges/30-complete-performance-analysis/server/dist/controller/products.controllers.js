@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProductsController = void 0;
-var factoryType_1 = require("../config/database/factoryType");
+var factoryType_1 = require("../database/factoryType");
 var products_1 = require("./factory/products");
 // Main switch/selector for persistence types
 var factory = new products_1.FactoryProducts();

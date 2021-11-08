@@ -49,7 +49,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MongodbProducts = void 0;
 var product_1 = require("../../models/mongodb/product");
-var mongodb_db_1 = require("../../config/database/mongodb.db");
+var mongodb_db_1 = require("../../database/mongodb.db");
 var MongodbProducts = /** @class */ (function () {
     function MongodbProducts() {
         // MongoDB connection
