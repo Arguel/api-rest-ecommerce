@@ -4,7 +4,8 @@
   "description": "Rest api using Node.js and MongoDB",
   "main": "index.js",
   "scripts": {
-    "start": "node server/dist/server.js",
+    "test": "node benchmark.js",
+    "start": "0x server/dist/server.js",
     "ts": "npx tsc -p ./tsconfig.json",
     "tsw": "npx tsc -p ./tsconfig.json -w",
     "lint": "eslint .",
@@ -51,6 +52,7 @@
   },
   "dependencies": {
     "@types/config": "^0.0.40",
+    "autocannon": "^7.5.0",
     "bcryptjs": "^2.4.3",
     "compression": "^1.7.4",
     "config": "^3.3.6",

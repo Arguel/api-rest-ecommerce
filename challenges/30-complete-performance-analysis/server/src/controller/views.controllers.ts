@@ -77,7 +77,7 @@ export class ViewsController {
   }
 
   getInfo(req: Request, res: Response): void {
-    res.status(200).json({
+    const info = {
       Input_arguments: process.argv,
       Platform_name: process.platform,
       Node_js_version: process.version,
@@ -87,7 +87,9 @@ export class ViewsController {
       Current_folder: process.cwd(),
       NumCPUs: os.cpus().length,
       asd: 4,
-    });
+    };
+    console.log(info);
+    res.status(200).json(info);
   }
 
   getRandoms(req: Request, res: Response): void {
@@ -99,15 +101,16 @@ export class ViewsController {
       const totalNumbers = randomNum(qty as string);
       res.status(200).json({totalNumbers});
     } else {
-      const forked = fork(
-        path.join("server", "dist", "libs", "helpers", "calculate.js"),
-      );
-      if (qty) forked.send(qty as string);
-      else forked.send(defaultNumber);
+      //const forked = fork(
+      //path.join("server", "dist", "libs", "helpers", "calculate.js"),
+      //);
+      //if (qty) forked.send(qty as string);
+      //else forked.send(defaultNumber);
 
-      forked.on("message", (result) => {
-        res.status(200).json({result});
-      });
+      //forked.on("message", (result) => {
+      //res.status(200).json({result});
+      //});
+      res.status(200).json({Status: "randoms"});
     }
   }
 }

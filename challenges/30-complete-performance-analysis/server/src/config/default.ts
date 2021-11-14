@@ -36,7 +36,7 @@ export interface IConfigDefault extends IConfig {
 const config = {
   app: {
     port: port || process.env.PORT || "8080",
-    startMode: startMode || "fork",
+    startMode: "fork" || startMode || "fork",
     initiator: initiator || "forever",
     secretKey: process.env.SECRET_KEY,
   },

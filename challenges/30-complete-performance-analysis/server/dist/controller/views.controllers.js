@@ -4,8 +4,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ViewsController = void 0;
-var child_process_1 = require("child_process");
-var path_1 = __importDefault(require("path"));
 var os_1 = __importDefault(require("os"));
 var calculations_1 = require("../libs/helpers/calculations");
 var ViewsController = /** @class */ (function () {
@@ -60,7 +58,7 @@ var ViewsController = /** @class */ (function () {
         });
     };
     ViewsController.prototype.getInfo = function (req, res) {
-        res.status(200).json({
+        var info = {
             Input_arguments: process.argv,
             Platform_name: process.platform,
             Node_js_version: process.version,
@@ -70,7 +68,9 @@ var ViewsController = /** @class */ (function () {
             Current_folder: process.cwd(),
             NumCPUs: os_1.default.cpus().length,
             asd: 4,
-        });
+        };
+        console.log(info);
+        res.status(200).json(info);
     };
     ViewsController.prototype.getRandoms = function (req, res) {
         var defaultNumber = 100000000;
@@ -81,14 +81,15 @@ var ViewsController = /** @class */ (function () {
             res.status(200).json({ totalNumbers: totalNumbers });
         }
         else {
-            var forked = (0, child_process_1.fork)(path_1.default.join("server", "dist", "libs", "helpers", "calculate.js"));
-            if (qty)
-                forked.send(qty);
-            else
-                forked.send(defaultNumber);
-            forked.on("message", function (result) {
-                res.status(200).json({ result: result });
-            });
+            //const forked = fork(
+            //path.join("server", "dist", "libs", "helpers", "calculate.js"),
+            //);
+            //if (qty) forked.send(qty as string);
+            //else forked.send(defaultNumber);
+            //forked.on("message", (result) => {
+            //res.status(200).json({result});
+            //});
+            res.status(200).json({ Status: "randoms" });
         }
     };
     return ViewsController;
