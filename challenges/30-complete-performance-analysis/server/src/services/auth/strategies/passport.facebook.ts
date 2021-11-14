@@ -2,21 +2,21 @@ import passport from "passport";
 import {Strategy as FacebookStrategy} from "passport-facebook";
 import {UserModel} from "../../../models/mongodb/user";
 import {IUser} from "../../../libs/interfaces/models.interfaces";
-import dotenv from "dotenv";
 import {CallbackError} from "mongoose";
+import {IConfigDefault} from "../../../config/default";
+import config from "config";
 
-const customClientId = process.argv[3];
-const customClientSecret = process.argv[4];
-
-// Environment Variables
-dotenv.config();
+const {
+  default: {
+    facebookApp: {appId, appSecret},
+  },
+} = config as IConfigDefault;
 
 passport.use(
   new FacebookStrategy(
     {
-      clientID: customClientId || (process.env.FACEBOOK_APP_ID as string),
-      clientSecret:
-        customClientSecret || (process.env.FACEBOOK_APP_SECRET_KEY as string),
+      clientID: appId,
+      clientSecret: appSecret,
       callbackURL: "/auth/facebook/callback",
     },
     function (accessToken, refreshToken, profile, done) {

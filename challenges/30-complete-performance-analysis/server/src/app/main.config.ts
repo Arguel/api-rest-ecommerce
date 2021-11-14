@@ -1,6 +1,5 @@
 import path from "path";
 import morgan from "morgan";
-import dotenv from "dotenv";
 import session from "express-session";
 import MongoStore from "connect-mongo";
 import {mongoOptions} from "../database/mongodb.db";
@@ -8,9 +7,17 @@ import passport from "passport";
 import express from "express";
 import handlebars from "express-handlebars";
 import compression from "compression";
+import config from "config";
+import {IConfigDefault} from "../config/default";
 
-// Environment Variables
-dotenv.config();
+const {
+  default: {
+    app: {secretKey},
+    db: {
+      mongodb: {connectionString},
+    },
+  },
+} = config as IConfigDefault;
 
 const defaultMain = (app: express.Application) => {
   // Middlewares
@@ -24,10 +31,10 @@ const defaultMain = (app: express.Application) => {
   app.use(
     session({
       store: MongoStore.create({
-        mongoUrl: process.env.MONGO_URI,
+        mongoUrl: connectionString,
         mongoOptions,
       }),
-      secret: process.env.SECRET_KEY as string,
+      secret: secretKey,
       resave: false,
       saveUninitialized: true,
       cookie: {
@@ -47,17 +54,17 @@ const defaultMain = (app: express.Application) => {
     handlebars({
       extname: ".hbs",
       defaultLayout: "main.hbs",
-      layoutsDir: path.join(__dirname, "..", "..", "views", "layouts"),
-      partialsDir: path.join(__dirname, "..", "..", "views", "partials"),
+      layoutsDir: path.join(__dirname, "..", "views", "layouts"),
+      partialsDir: path.join(__dirname, "..", "views", "partials"),
     }),
   );
 
   // Engines
   app.set("view engine", "hbs");
-  app.set("views", path.join(__dirname, "..", "..", "views"));
+  app.set("views", path.join(__dirname, "..", "views"));
 
   // Static files
-  app.use(express.static(path.join(__dirname, "..", "..", "public")));
+  app.use(express.static(path.join(__dirname, "..", "public")));
 };
 
 export default defaultMain;

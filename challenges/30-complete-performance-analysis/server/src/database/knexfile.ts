@@ -1,9 +1,15 @@
-import dotenv from "dotenv";
+import config from "config";
+import {IConfigDefault} from "../config/default";
 
 // Update with your config settings.
 
-// Environment Variables
-dotenv.config();
+const {
+  default: {
+    db: {
+      mysql: {connectionString},
+    },
+  },
+} = config as IConfigDefault;
 
 interface KnexConfig {
   [key: string]: object;
@@ -51,7 +57,7 @@ export const knexfile: KnexConfig = {
 
   mysql: {
     client: "mysql",
-    connection: process.env.MYSQL_URI,
+    connection: connectionString,
     pool: {min: 2, max: 10},
   },
 };

@@ -1,8 +1,14 @@
 import mongoose from "mongoose";
-import dotenv from "dotenv";
+import config from "config";
+import {IConfigDefault} from "../config/default";
 
-// Environment Variables
-dotenv.config();
+const {
+  default: {
+    db: {
+      mongodb: {connectionString},
+    },
+  },
+} = config as IConfigDefault;
 
 export const mongoOptions = {
   useNewUrlParser: true,
@@ -12,7 +18,7 @@ export const mongoOptions = {
 export async function connectMongoDB(): Promise<void> {
   if (process.env.MONGO_URI) {
     try {
-      await mongoose.connect(process.env.MONGO_URI, mongoOptions);
+      await mongoose.connect(connectionString, mongoOptions);
       console.log("MongoDB connection SUCCESS");
     } catch (err) {
       console.error((err as Error).message || "MongoDB connection FAIL");

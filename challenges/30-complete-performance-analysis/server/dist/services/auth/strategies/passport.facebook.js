@@ -6,14 +6,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var passport_1 = __importDefault(require("passport"));
 var passport_facebook_1 = require("passport-facebook");
 var user_1 = require("../../../models/mongodb/user");
-var dotenv_1 = __importDefault(require("dotenv"));
-var customClientId = process.argv[3];
-var customClientSecret = process.argv[4];
-// Environment Variables
-dotenv_1.default.config();
+var config_1 = __importDefault(require("config"));
+var _a = config_1.default.default.facebookApp, appId = _a.appId, appSecret = _a.appSecret;
 passport_1.default.use(new passport_facebook_1.Strategy({
-    clientID: customClientId || process.env.FACEBOOK_APP_ID,
-    clientSecret: customClientSecret || process.env.FACEBOOK_APP_SECRET_KEY,
+    clientID: appId,
+    clientSecret: appSecret,
     callbackURL: "/auth/facebook/callback",
 }, function (accessToken, refreshToken, profile, done) {
     user_1.UserModel.findOne({ "facebook.id": profile.id }, function (err, user) {

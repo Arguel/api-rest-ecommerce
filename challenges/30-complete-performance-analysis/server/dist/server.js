@@ -22,20 +22,22 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var app_1 = require("./app");
 var http = __importStar(require("http"));
 var socket_io_1 = require("socket.io");
 var socket_io_2 = require("./services/socket.io");
 var debug_1 = __importDefault(require("debug"));
 var os_1 = __importDefault(require("os"));
 var cluster_1 = __importDefault(require("cluster"));
+var path_1 = __importDefault(require("path"));
+// For the "config" module to correctly detect our configuration folder ("config/")
+process.env["NODE_CONFIG_DIR"] = path_1.default.join(__dirname, "/config/");
+var config_1 = __importDefault(require("config"));
+var app_1 = require("./app");
+var _a = config_1.default.default.app, appPort = _a.port, startMode = _a.startMode, initiator = _a.initiator;
 (0, debug_1.default)("http");
-var customPort = process.argv[2];
-var startMode = process.argv[5];
-var initiator = process.argv[6];
 var numCPUs = os_1.default.cpus().length;
 // Port
-var port = normalizePort(customPort || process.env.PORT || "8080");
+var port = normalizePort(appPort);
 app_1.app.set("port", port);
 // Main application
 var httpServer = http.createServer(app_1.app);
@@ -87,7 +89,7 @@ function onListening() {
     var bind = typeof addr === "string" ? "pipe " + addr : "port " + addr.port;
     (0, debug_1.default)("Listening on " + bind);
     console.log("Example app listening at http://localhost:" + port);
-    console.log("Optional launch parameters (the application already has default values): {\n\n  node server/dist/server.js {PORT - 2} {FACEBOOK_CLIENT_ID - 3} {FACEBOOK_CLIENT_SECRET - 4} {START_MODE (FORK/CLUSTER) - 5} {INITIATOR (FOREVER/PM2) - 6}\n\n  Example: node server/dist/server.js 8080 39402342342 3bsj32n2bs352 \n}\n");
+    console.log("Optional launch parameters (the application already has default values): {\n\n  node server/dist/server.js {PORT - 2} {FACEBOOK_CLIENT_ID - 3} {FACEBOOK_CLIENT_SECRET - 4} {START_MODE (FORK/CLUSTER) - 5} {INITIATOR (FOREVER/PM2) - 6}\n\n  Example: node server/dist/server.js 8080 39402342342 3bsj32n2bs352 \n}");
 }
 process.on("exit", function (code) {
     console.log("About to exit with code: " + code);

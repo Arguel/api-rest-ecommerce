@@ -1,20 +1,29 @@
-import {app} from "./app";
 import * as http from "http";
 import {Server} from "socket.io";
 import {socketIo} from "./services/socket.io";
 import debug from "debug";
 import os from "os";
 import cluster from "cluster";
+import path from "path";
+
+// For the "config" module to correctly detect our configuration folder ("config/")
+process.env["NODE_CONFIG_DIR"] = path.join(__dirname, "/config/");
+import config from "config";
+import {IConfigDefault} from "./config/default";
+import {app} from "./app";
+
+const {
+  default: {
+    app: {port: appPort, startMode, initiator},
+  },
+} = config as IConfigDefault;
 
 debug("http");
 
-const customPort = process.argv[2];
-const startMode = process.argv[5];
-const initiator = process.argv[6];
 const numCPUs = os.cpus().length;
 
 // Port
-const port = normalizePort(customPort || process.env.PORT || "8080");
+const port = normalizePort(appPort);
 app.set("port", port);
 
 // Main application
@@ -80,8 +89,7 @@ function onListening() {
   node server/dist/server.js {PORT - 2} {FACEBOOK_CLIENT_ID - 3} {FACEBOOK_CLIENT_SECRET - 4} {START_MODE (FORK/CLUSTER) - 5} {INITIATOR (FOREVER/PM2) - 6}
 
   Example: node server/dist/server.js 8080 39402342342 3bsj32n2bs352 
-}
-`);
+}`);
 }
 
 process.on("exit", (code) => {

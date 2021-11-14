@@ -4,10 +4,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.knexfile = void 0;
-var dotenv_1 = __importDefault(require("dotenv"));
+var config_1 = __importDefault(require("config"));
 // Update with your config settings.
-// Environment Variables
-dotenv_1.default.config();
+var connectionString = config_1.default.default.db.mysql.connectionString;
 exports.knexfile = {
     development: {
         client: "sqlite3",
@@ -47,7 +46,7 @@ exports.knexfile = {
     },
     mysql: {
         client: "mysql",
-        connection: process.env.MYSQL_URI,
+        connection: connectionString,
         pool: { min: 2, max: 10 },
     },
 };

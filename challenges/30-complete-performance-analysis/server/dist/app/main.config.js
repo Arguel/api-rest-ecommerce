@@ -5,7 +5,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var path_1 = __importDefault(require("path"));
 var morgan_1 = __importDefault(require("morgan"));
-var dotenv_1 = __importDefault(require("dotenv"));
 var express_session_1 = __importDefault(require("express-session"));
 var connect_mongo_1 = __importDefault(require("connect-mongo"));
 var mongodb_db_1 = require("../database/mongodb.db");
@@ -13,8 +12,8 @@ var passport_1 = __importDefault(require("passport"));
 var express_1 = __importDefault(require("express"));
 var express_handlebars_1 = __importDefault(require("express-handlebars"));
 var compression_1 = __importDefault(require("compression"));
-// Environment Variables
-dotenv_1.default.config();
+var config_1 = __importDefault(require("config"));
+var _a = config_1.default.default, secretKey = _a.app.secretKey, connectionString = _a.db.mongodb.connectionString;
 var defaultMain = function (app) {
     // Middlewares
     if (process.env.NODE_ENV !== "test")
@@ -25,10 +24,10 @@ var defaultMain = function (app) {
     app.use(passport_1.default.initialize());
     app.use((0, express_session_1.default)({
         store: connect_mongo_1.default.create({
-            mongoUrl: process.env.MONGO_URI,
+            mongoUrl: connectionString,
             mongoOptions: mongodb_db_1.mongoOptions,
         }),
-        secret: process.env.SECRET_KEY,
+        secret: secretKey,
         resave: false,
         saveUninitialized: true,
         cookie: {
@@ -44,13 +43,13 @@ var defaultMain = function (app) {
     app.engine("hbs", (0, express_handlebars_1.default)({
         extname: ".hbs",
         defaultLayout: "main.hbs",
-        layoutsDir: path_1.default.join(__dirname, "..", "..", "views", "layouts"),
-        partialsDir: path_1.default.join(__dirname, "..", "..", "views", "partials"),
+        layoutsDir: path_1.default.join(__dirname, "..", "views", "layouts"),
+        partialsDir: path_1.default.join(__dirname, "..", "views", "partials"),
     }));
     // Engines
     app.set("view engine", "hbs");
-    app.set("views", path_1.default.join(__dirname, "..", "..", "views"));
+    app.set("views", path_1.default.join(__dirname, "..", "views"));
     // Static files
-    app.use(express_1.default.static(path_1.default.join(__dirname, "..", "..", "public")));
+    app.use(express_1.default.static(path_1.default.join(__dirname, "..", "public")));
 };
 exports.default = defaultMain;
