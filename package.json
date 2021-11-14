@@ -1,0 +1,21 @@
+{
+  "name": "api-rest-ecommerce",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "start": "cd challenges/31-implement-our-project-in-heroku && npm install && npm start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Arguel/api-rest-ecommerce.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Arguel/api-rest-ecommerce/issues"
+  },
+  "homepage": "https://github.com/Arguel/api-rest-ecommerce#readme"
+}
