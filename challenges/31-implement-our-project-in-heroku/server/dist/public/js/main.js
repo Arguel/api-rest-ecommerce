@@ -1,4 +1,5 @@
 "use strict";
+// @ts-nocheck
 // import {IMessage, INormaMsgs} from "../../utils/socketIoInterfaces";
 document.addEventListener("DOMContentLoaded", function () {
     // ------------------ Web Chat ------------------

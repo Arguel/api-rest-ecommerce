@@ -28,7 +28,7 @@ passport.use(
           if (!user) {
             const newUser = new UserModel({
               name: profile.displayName,
-              email: profile.emails[0].value,
+              email: profile.emails![0].value,
               username: profile.username,
               provider: "facebook",
               facebook: profile._json,

@@ -71,8 +71,8 @@ export class ViewsController {
     const {displayName, emails, photos} = req.user as IExpressUser;
     res.status(200).render("index", {
       name: displayName,
-      email: emails[0].value,
-      picture: photos[0].value,
+      email: emails![0].value,
+      picture: photos![0].value,
     });
   }
 

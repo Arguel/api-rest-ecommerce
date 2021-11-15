@@ -33,7 +33,7 @@ var path_1 = __importDefault(require("path"));
 process.env["NODE_CONFIG_DIR"] = path_1.default.join(__dirname, "/config/");
 var config_1 = __importDefault(require("config"));
 var app_1 = require("./app");
-var _a = config_1.default.default.app, appPort = _a.port, startMode = _a.startMode, initiator = _a.initiator;
+var _a = config_1.default.default.app, host = _a.host, appPort = _a.port, startMode = _a.startMode, initiator = _a.initiator, startMsg = _a.startMsg;
 (0, debug_1.default)("http");
 var numCPUs = os_1.default.cpus().length;
 // Port
@@ -88,7 +88,9 @@ function onListening() {
     var addr = httpServer.address();
     var bind = typeof addr === "string" ? "pipe " + addr : "port " + addr.port;
     (0, debug_1.default)("Listening on " + bind);
-    console.log("Example app listening at http://localhost:" + port);
+    var url = "http://" + host + ":" + httpServer.address().port;
+    var message = startMsg.replace(/\{0}/g, url);
+    console.log(message);
     console.log("Optional launch parameters (the application already has default values): {\n\n  node server/dist/server.js {PORT - 2} {FACEBOOK_CLIENT_ID - 3} {FACEBOOK_CLIENT_SECRET - 4} {START_MODE (FORK/CLUSTER) - 5} {INITIATOR (FOREVER/PM2) - 6}\n\n  Example: node server/dist/server.js 8080 39402342342 3bsj32n2bs352 \n}");
 }
 process.on("exit", function (code) {

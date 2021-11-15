@@ -40,9 +40,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.connectMongoDB = exports.mongoOptions = void 0;
-var mongoose_1 = __importDefault(require("mongoose"));
+var mongoose_1 = require("mongoose");
 var config_1 = __importDefault(require("config"));
-var connectionString = config_1.default.default.db.mongodb.connectionString;
+var mongoUri = config_1.default.default.db.mongodb.mongoUri;
 exports.mongoOptions = {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -57,7 +57,7 @@ function connectMongoDB() {
                     _a.label = 1;
                 case 1:
                     _a.trys.push([1, 3, , 4]);
-                    return [4 /*yield*/, mongoose_1.default.connect(connectionString, exports.mongoOptions)];
+                    return [4 /*yield*/, (0, mongoose_1.connect)(mongoUri, exports.mongoOptions)];
                 case 2:
                     _a.sent();
                     console.log("MongoDB connection SUCCESS");
@@ -65,12 +65,10 @@ function connectMongoDB() {
                 case 3:
                     err_1 = _a.sent();
                     console.error(err_1.message || "MongoDB connection FAIL");
-                    process.exit(1);
                     return [3 /*break*/, 4];
                 case 4: return [3 /*break*/, 6];
                 case 5:
                     console.log("Could not find the file '.env'");
-                    process.exit(1);
                     _a.label = 6;
                 case 6: return [2 /*return*/];
             }

@@ -12,20 +12,25 @@ const initiator: string = process.argv[6];
 
 export interface IConfigDefault extends IConfig {
   default: {
+    // Used on the express server
     app: {
+      host: string;
       port: string;
       startMode: "cluster" | "fork";
       initiator: "forever" | "pm2";
+      startMsg: string;
       secretKey: string;
     };
+    // Used on the database server
     db: {
       mongodb: {
-        connectionString: string;
+        mongoUri: string;
       };
       mysql: {
-        connectionString: string;
+        mysqlUri: string;
       };
     };
+    // Used on the facebook application
     facebookApp: {
       appId: string;
       appSecret: string;
@@ -34,20 +39,25 @@ export interface IConfigDefault extends IConfig {
 }
 
 const config = {
+  // Used on the express server
   app: {
-    port: port || process.env.PORT || "8080",
+    host: process.env.HOST || process.env.CUSTOM_HOST || "0.0.0.0",
+    port: port || process.env.PORT || process.env.CUSTOM_PORT || "8080",
     startMode: startMode || "fork",
     initiator: initiator || "forever",
+    startMsg: "Example app listening at {0}", // {0} = placeholder
     secretKey: process.env.SECRET_KEY,
   },
+  // Used on the database server
   db: {
     mongodb: {
-      connectionString: process.env.MONGO_URI,
+      mongoUri: process.env.MONGO_URI,
     },
     mysql: {
-      connectionString: process.env.MYSQL_URI,
+      mysqlUri: process.env.MYSQL_URI,
     },
   },
+  // Used on the facebook application
   facebookApp: {
     appId: appId || process.env.FACEBOOK_APP_ID,
     appSecret: appSecret || process.env.FACEBOOK_APP_SECRET,

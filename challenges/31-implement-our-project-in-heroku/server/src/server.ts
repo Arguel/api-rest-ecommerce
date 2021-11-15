@@ -5,6 +5,7 @@ import debug from "debug";
 import os from "os";
 import cluster from "cluster";
 import path from "path";
+import {httpServerAddress} from "./libs/interfaces/app.interfaces";
 
 // For the "config" module to correctly detect our configuration folder ("config/")
 process.env["NODE_CONFIG_DIR"] = path.join(__dirname, "/config/");
@@ -14,7 +15,7 @@ import {app} from "./app";
 
 const {
   default: {
-    app: {port: appPort, startMode, initiator},
+    app: {host, port: appPort, startMode, initiator, startMsg},
   },
 } = config as IConfigDefault;
 
@@ -83,7 +84,13 @@ function onListening() {
   const addr = httpServer.address();
   const bind = typeof addr === "string" ? "pipe " + addr : "port " + addr!.port;
   debug("Listening on " + bind);
-  console.log(`Example app listening at http://localhost:${port}`);
+
+  const url = `http://${host}:${
+    (httpServer.address() as httpServerAddress).port
+  }`;
+  const message = startMsg.replace(/\{0}/g, url);
+  console.log(message);
+
   console.log(`Optional launch parameters (the application already has default values): {
 
   node server/dist/server.js {PORT - 2} {FACEBOOK_CLIENT_ID - 3} {FACEBOOK_CLIENT_SECRET - 4} {START_MODE (FORK/CLUSTER) - 5} {INITIATOR (FOREVER/PM2) - 6}

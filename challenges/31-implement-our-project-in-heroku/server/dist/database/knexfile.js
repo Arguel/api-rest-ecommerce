@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.knexfile = void 0;
 var config_1 = __importDefault(require("config"));
 // Update with your config settings.
-var connectionString = config_1.default.default.db.mysql.connectionString;
+var mysqlUri = config_1.default.default.db.mysql.mysqlUri;
 exports.knexfile = {
     development: {
         client: "sqlite3",
@@ -46,7 +46,7 @@ exports.knexfile = {
     },
     mysql: {
         client: "mysql",
-        connection: connectionString,
+        connection: mysqlUri,
         pool: { min: 2, max: 10 },
     },
 };

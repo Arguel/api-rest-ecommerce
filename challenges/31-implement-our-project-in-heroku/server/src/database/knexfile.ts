@@ -6,7 +6,7 @@ import {IConfigDefault} from "../config/default";
 const {
   default: {
     db: {
-      mysql: {connectionString},
+      mysql: {mysqlUri},
     },
   },
 } = config as IConfigDefault;
@@ -57,7 +57,7 @@ export const knexfile: KnexConfig = {
 
   mysql: {
     client: "mysql",
-    connection: connectionString,
+    connection: mysqlUri,
     pool: {min: 2, max: 10},
   },
 };

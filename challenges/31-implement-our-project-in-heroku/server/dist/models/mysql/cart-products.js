@@ -88,7 +88,6 @@ function connectMySQL() {
                 case 7:
                     err_1 = _a.sent();
                     console.error(err_1.message || "MySQL connection FAIL");
-                    process.exit(1);
                     return [3 /*break*/, 8];
                 case 8: return [2 /*return*/];
             }

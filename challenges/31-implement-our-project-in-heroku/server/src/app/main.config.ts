@@ -14,7 +14,7 @@ const {
   default: {
     app: {secretKey},
     db: {
-      mongodb: {connectionString},
+      mongodb: {mongoUri},
     },
   },
 } = config as IConfigDefault;
@@ -31,7 +31,7 @@ const defaultMain = (app: express.Application) => {
   app.use(
     session({
       store: MongoStore.create({
-        mongoUrl: connectionString,
+        mongoUrl: mongoUri,
         mongoOptions,
       }),
       secret: secretKey,

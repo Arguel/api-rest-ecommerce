@@ -13,7 +13,7 @@ var express_1 = __importDefault(require("express"));
 var express_handlebars_1 = __importDefault(require("express-handlebars"));
 var compression_1 = __importDefault(require("compression"));
 var config_1 = __importDefault(require("config"));
-var _a = config_1.default.default, secretKey = _a.app.secretKey, connectionString = _a.db.mongodb.connectionString;
+var _a = config_1.default.default, secretKey = _a.app.secretKey, mongoUri = _a.db.mongodb.mongoUri;
 var defaultMain = function (app) {
     // Middlewares
     if (process.env.NODE_ENV !== "test")
@@ -24,7 +24,7 @@ var defaultMain = function (app) {
     app.use(passport_1.default.initialize());
     app.use((0, express_session_1.default)({
         store: connect_mongo_1.default.create({
-            mongoUrl: connectionString,
+            mongoUrl: mongoUri,
             mongoOptions: mongodb_db_1.mongoOptions,
         }),
         secret: secretKey,

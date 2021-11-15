@@ -46,6 +46,5 @@ export async function connectMySQL(): Promise<void> {
       console.log("MySQL connection SUCCESS");
   } catch (err) {
     console.error((err as Error).message || "MySQL connection FAIL");
-    process.exit(1);
   }
 }
