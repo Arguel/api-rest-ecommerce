@@ -1,5 +1,5 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", {value: true});
 exports.isAuthenticated = void 0;
 function isAuthenticated(req, res, next) {
     if (req.isAuthenticated())

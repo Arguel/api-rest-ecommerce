@@ -1,9 +1,9 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", {value: true});
 exports.FactoryProducts = void 0;
-var products_1 = require("../mongodb/products");
-var products_2 = require("../mysql/products");
-var FactoryProducts = /** @class */ (function () {
+const products_1 = require("../mongodb/products");
+const products_2 = require("../mysql/products");
+const FactoryProducts = /** @class */ (function () {
     function FactoryProducts() {
     }
     // The type() method returns our DAO (data access object)

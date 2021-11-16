@@ -30,7 +30,7 @@ app.set("port", port);
 // Main application
 const httpServer: http.Server = http.createServer(app);
 
-if (startMode === "cluster" && initiator !== "pm2" && cluster.isMaster) {
+if (startMode === "cluster" && initiator !== "pm2" && cluster.isPrimary) {
   for (let i = 0; i < numCPUs; i++) cluster.fork();
 
   cluster.on("exit", (worker, code, signal) => {

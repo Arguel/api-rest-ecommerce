@@ -44,7 +44,6 @@ document.addEventListener("DOMContentLoaded", () => {
       templateMessage.querySelector(
         ".text-success",
       )!.textContent = `: ${message.text}`;
-      formMessages;
 
       const clone = templateMessage.cloneNode(true);
       fragment.appendChild(clone);

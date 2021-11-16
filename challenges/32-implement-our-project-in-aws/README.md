@@ -18,11 +18,11 @@ Normally the main file is in the <code>dist/</code> folder with the name of <cod
    - <pre><code>git init</code></pre>
    - <pre><code>npm install</code></pre>
 
-3. And then you only need to start the server, and for that there are 2 options:
+3. Then you only need to start the server, and for that there are 2 options:
 
    - using the <code>npm start</code> command (may fail depending on the challenge)
 
-   - running the <b>"server.js"</b> file with node, you can use the following command <code>node server.js</code> (first you have to position yourself in the appropriate folder, which is usually <code>challenges/X-challenge/server/dist</code>
+   - running the <b>"server.js"</b> file with node, you can use the following command <code>node server.js</code> (first you have to position yourself in the appropriate folder, which is usually <code>challenges/X-challenge/server/dist</code>)
 
 In case of errors with the dependencies you can uninstall the following:
 
