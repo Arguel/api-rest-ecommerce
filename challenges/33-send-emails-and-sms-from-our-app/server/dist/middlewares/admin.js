@@ -1,5 +1,5 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", {value: true});
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.isAdmin = void 0;
 function isAdmin(req, res, next) {
     // We check if the user is admin and if it is not we throw an error

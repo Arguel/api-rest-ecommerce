@@ -1,17 +1,17 @@
 "use strict";
-const __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : {"default": mod};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-Object.defineProperty(exports, "__esModule", {value: true});
-const dotenv_1 = __importDefault(require("dotenv"));
+Object.defineProperty(exports, "__esModule", { value: true });
+var dotenv_1 = __importDefault(require("dotenv"));
 // Environment Variables
 dotenv_1.default.config();
-const port = process.argv[2];
-const appId = process.argv[3];
-const appSecret = process.argv[4];
-const startMode = process.argv[5];
-const initiator = process.argv[6];
-const config = {
+var port = process.argv[2];
+var appId = process.argv[3];
+var appSecret = process.argv[4];
+var startMode = process.argv[5];
+var initiator = process.argv[6];
+var config = {
     // Used on the express server
     app: {
         host: process.env.HOST || process.env.CUSTOM_HOST || "0.0.0.0",

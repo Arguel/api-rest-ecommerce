@@ -1,10 +1,10 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", {value: true});
-const express_1 = require("express");
-const auth_1 = require("../services/auth/auth");
-const views_controllers_1 = require("../controller/views.controllers");
-const controller = new views_controllers_1.ViewsController();
-const router = (0, express_1.Router)();
+Object.defineProperty(exports, "__esModule", { value: true });
+var express_1 = require("express");
+var auth_1 = require("../services/auth/auth");
+var views_controllers_1 = require("../controller/views.controllers");
+var controller = new views_controllers_1.ViewsController();
+var router = (0, express_1.Router)();
 router.get("/info", controller.getInfo.bind(controller));
 router.get("/randoms", controller.getRandoms.bind(controller));
 router.get("/", auth_1.isAuthenticated, controller.getRoot.bind(controller));

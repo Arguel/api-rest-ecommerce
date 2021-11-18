@@ -1,35 +1,41 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", {value: true});
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthController = void 0;
-const AuthController = /** @class */ (function () {
+var ethereal_1 = require("../services/mailer/ethereal");
+var AuthController = /** @class */ (function () {
     function AuthController() {
     }
     AuthController.prototype.getLogin = function (req, res) {
         res.status(200).render("login");
     };
-    /*
-     *postLogin(req: Request, res: Response): void {
-     *  const {username, password} = req.body;
-     *  if (username && password) {
-     *    req.session.username = username;
-     *    req.session.password = password;
-     *    res.redirect("/");
-     *  } else {
-     *    res.send("Invalid data, please enter a valid name");
-     *  }
-     *}
-     */
+    AuthController.prototype.postLogin = function (req, res) {
+        // const {username, password} = req.body;
+        if (req.isAuthenticated()) {
+            // req.session.username = username;
+            // req.session.password = password;
+            ethereal_1.mailOptions.subject = "Login";
+            ethereal_1.transporter.sendMail(ethereal_1.mailOptions, function (err, info) {
+                if (err) {
+                    console.log(err);
+                    return err;
+                }
+                console.log(info);
+            });
+            res.redirect("/api/");
+        }
+        else {
+            res.send("Invalid data, please enter a valid name");
+        }
+    };
     AuthController.prototype.getFailLogin = function (req, res) {
         res.status(200).render("loginError");
     };
     AuthController.prototype.getRegister = function (req, res) {
         res.status(200).render("register");
     };
-    /*
-     *postRegister(req: Request, res: Response): void {
-     *  res.redirect("/login");
-     *}
-     */
+    AuthController.prototype.postRegister = function (req, res) {
+        res.redirect("/api/auth/login");
+    };
     AuthController.prototype.getFailRegister = function (req, res) {
         res.status(200).render("registerError");
     };

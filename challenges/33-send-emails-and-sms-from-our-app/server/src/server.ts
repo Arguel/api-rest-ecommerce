@@ -87,7 +87,7 @@ function onListening() {
 
   const url = `http://${host}:${
     (httpServer.address() as httpServerAddress).port
-  }`;
+  }/api/`;
   const message = startMsg.replace(/\{0}/g, url);
   console.log(message);
 

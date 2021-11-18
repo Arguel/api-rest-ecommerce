@@ -1,11 +1,11 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", {value: true});
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.CartController = void 0;
-const factoryType_1 = require("../database/factoryType");
-const cart_1 = require("./factory/cart");
+var factoryType_1 = require("../database/factoryType");
+var cart_1 = require("./factory/cart");
 // Main switch/selector for persistence types
-const factory = new cart_1.FactoryCart();
-const CartController = /** @class */ (function () {
+var factory = new cart_1.FactoryCart();
+var CartController = /** @class */ (function () {
     function CartController() {
         /* Depending on the type of persistence selected in "/config/factoryType.ts" we will use
          * a particular database model or another */

@@ -1,10 +1,10 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", {value: true});
-const express_1 = require("express");
-const admin_1 = require("../middlewares/admin");
-const products_controllers_1 = require("../controller/products.controllers");
-const controller = new products_controllers_1.ProductsController();
-const router = (0, express_1.Router)();
+Object.defineProperty(exports, "__esModule", { value: true });
+var express_1 = require("express");
+var admin_1 = require("../middlewares/admin");
+var products_controllers_1 = require("../controller/products.controllers");
+var controller = new products_controllers_1.ProductsController();
+var router = (0, express_1.Router)();
 // GET all Products
 router.get("/", controller.getProducts.bind(controller));
 // GET one Product

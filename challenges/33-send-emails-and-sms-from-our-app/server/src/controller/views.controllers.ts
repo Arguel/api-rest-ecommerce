@@ -22,10 +22,11 @@ interface IExpressUser extends Express.User {
 export class ViewsController {
   getRoot(req: Request, res: Response): void {
     const {displayName, emails, photos} = req.user as IExpressUser;
+    console.log(req.user);
     res.status(200).render("index", {
-      name: displayName,
-      email: emails![0].value,
-      picture: photos![0].value,
+      name: displayName ? displayName : "undefined",
+      email: emails && emails[0].value ? emails[0].value : "undefined",
+      picture: photos && photos[0].value ? photos[0].value : "undefined",
     });
   }
 

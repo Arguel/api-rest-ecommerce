@@ -1,23 +1,23 @@
 "use strict";
-const __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : {"default": mod};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-Object.defineProperty(exports, "__esModule", {value: true});
-const passport_1 = __importDefault(require("passport"));
-const passport_facebook_1 = require("passport-facebook");
-const user_1 = require("../../../models/mongodb/user");
-const config_1 = __importDefault(require("config"));
-const _a = config_1.default.default.facebookApp; const appId = _a.appId; const appSecret = _a.appSecret;
+Object.defineProperty(exports, "__esModule", { value: true });
+var passport_1 = __importDefault(require("passport"));
+var passport_facebook_1 = require("passport-facebook");
+var user_1 = require("../../../models/mongodb/user");
+var config_1 = __importDefault(require("config"));
+var _a = config_1.default.default.facebookApp, appId = _a.appId, appSecret = _a.appSecret;
 passport_1.default.use(new passport_facebook_1.Strategy({
     clientID: appId,
     clientSecret: appSecret,
     callbackURL: "/auth/facebook/callback",
 }, function (accessToken, refreshToken, profile, done) {
-    user_1.UserModel.findOne({"facebook.id": profile.id}, function (err, user) {
+    user_1.UserModel.findOne({ "facebook.id": profile.id }, function (err, user) {
         if (err)
             return done(err);
         if (!user) {
-            const newUser = new user_1.UserModel({
+            var newUser = new user_1.UserModel({
                 name: profile.displayName,
                 email: profile.emails[0].value,
                 username: profile.username,

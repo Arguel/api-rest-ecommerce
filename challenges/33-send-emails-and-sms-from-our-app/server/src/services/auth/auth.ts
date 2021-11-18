@@ -6,6 +6,6 @@ export function isAuthenticated(
   next: NextFunction,
 ) {
   if (req.isAuthenticated()) next();
-  else res.redirect(308, "/login");
+  else res.redirect(308, "/api/auth/login");
   // else res.send("First you need to log into your account");
 }

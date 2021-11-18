@@ -1,5 +1,4 @@
 import {Request, Response, NextFunction} from "express";
-import {Express} from "express";
 
 interface IUser extends Express.User {
   isAdmin: boolean;

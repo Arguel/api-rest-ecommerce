@@ -1,5 +1,5 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", {value: true});
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.randomNum = exports.getRandomInt = void 0;
 process.on("message", function (qty) {
     if (process.send)
@@ -10,9 +10,9 @@ function getRandomInt(min, max) {
 }
 exports.getRandomInt = getRandomInt;
 function randomNum(qty) {
-    const totalNumbers = {};
-    for (let i = 0; i < parseInt(qty); i++) {
-        const random = getRandomInt(1, 1000);
+    var totalNumbers = {};
+    for (var i = 0; i < parseInt(qty); i++) {
+        var random = getRandomInt(1, 1000);
         if (random in totalNumbers)
             totalNumbers[random] = totalNumbers[random] + 1;
         else

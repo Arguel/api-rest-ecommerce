@@ -10,7 +10,7 @@ interface IUserModel extends Model<IUser> {
 
 const userSchema = new Schema<IUser, IUserModel>(
   {
-    username: {type: String, required: true, unique: true},
+    displayName: {type: String, required: true, unique: true},
     password: {type: String, required: true},
     roles: [
       {
@@ -18,6 +18,8 @@ const userSchema = new Schema<IUser, IUserModel>(
         type: Types.ObjectId,
       },
     ],
+    photos: {type: String, required: false},
+    emails: {type: String, required: false},
   },
   {
     timestamps: true,

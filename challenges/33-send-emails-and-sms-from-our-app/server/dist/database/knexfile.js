@@ -1,12 +1,12 @@
 "use strict";
-const __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : {"default": mod};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-Object.defineProperty(exports, "__esModule", {value: true});
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.knexfile = void 0;
-const config_1 = __importDefault(require("config"));
+var config_1 = __importDefault(require("config"));
 // Update with your config settings.
-const mysqlUri = config_1.default.default.db.mysql.mysqlUri;
+var mysqlUri = config_1.default.default.db.mysql.mysqlUri;
 exports.knexfile = {
     development: {
         client: "sqlite3",
@@ -47,6 +47,6 @@ exports.knexfile = {
     mysql: {
         client: "mysql",
         connection: mysqlUri,
-        pool: {min: 2, max: 10},
+        pool: { min: 2, max: 10 },
     },
 };

@@ -20,9 +20,11 @@ export interface IProduct {
 
 export interface IUser {
   _id?: Types.ObjectId | object | number | string;
-  username: string;
+  displayName: string;
   password: string;
   roles: IRole[];
+  photos?: String[];
+  emails?: String[];
 }
 
 export interface IRole {
