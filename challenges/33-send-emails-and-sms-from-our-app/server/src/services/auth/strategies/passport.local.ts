@@ -41,7 +41,6 @@ passport.use(
           return done(null, false);
         } else {
           const newUser = new UserModel({
-            username,
             displayName: username,
             password: UserModel.encryptPassword(password),
           });

@@ -5,17 +5,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserModel = void 0;
 var mongoose_1 = require("mongoose");
-var mongoose_2 = require("mongoose");
+/*
+ *import {Types} from "mongoose";
+ */
 var bcryptjs_1 = __importDefault(require("bcryptjs"));
 var userSchema = new mongoose_1.Schema({
     displayName: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    roles: [
-        {
-            ref: "Role",
-            type: mongoose_2.Types.ObjectId,
-        },
-    ],
+    /*
+     *roles: [
+     *  {
+     *    ref: "Role",
+     *    type: Types.ObjectId,
+     *  },
+     *],
+     */
     photos: { type: String, required: false },
     emails: { type: String, required: false },
 }, {

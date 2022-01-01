@@ -1,6 +1,8 @@
 import {Schema, model, Model} from "mongoose";
 import {IUser} from "../../libs/interfaces/models.interfaces";
-import {Types} from "mongoose";
+/*
+ *import {Types} from "mongoose";
+ */
 import bcrypt from "bcryptjs";
 
 interface IUserModel extends Model<IUser> {
@@ -12,12 +14,14 @@ const userSchema = new Schema<IUser, IUserModel>(
   {
     displayName: {type: String, required: true, unique: true},
     password: {type: String, required: true},
-    roles: [
-      {
-        ref: "Role",
-        type: Types.ObjectId,
-      },
-    ],
+    /*
+     *roles: [
+     *  {
+     *    ref: "Role",
+     *    type: Types.ObjectId,
+     *  },
+     *],
+     */
     photos: {type: String, required: false},
     emails: {type: String, required: false},
   },

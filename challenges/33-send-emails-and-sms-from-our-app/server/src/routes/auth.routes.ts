@@ -34,7 +34,6 @@ router.post(
     failureRedirect: "/api/auth/failregister",
   }),
   controller.postLogin.bind(controller),
-  // controller.postRegister.bind(controller),
 );
 
 router.get("/failregister", controller.getFailRegister.bind(controller));

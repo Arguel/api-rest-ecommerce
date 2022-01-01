@@ -22,7 +22,9 @@ export interface IUser {
   _id?: Types.ObjectId | object | number | string;
   displayName: string;
   password: string;
-  roles: IRole[];
+  /*
+   *roles: IRole[];
+   */
   photos?: String[];
   emails?: String[];
 }

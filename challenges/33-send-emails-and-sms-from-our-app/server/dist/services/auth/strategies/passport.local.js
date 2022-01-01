@@ -31,7 +31,6 @@ passport_1.default.use("register", new passport_local_1.Strategy({ passReqToCall
         }
         else {
             var newUser_1 = new user_1.UserModel({
-                username: username,
                 displayName: username,
                 password: user_1.UserModel.encryptPassword(password),
             });

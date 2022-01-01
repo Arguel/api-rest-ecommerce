@@ -30,10 +30,6 @@ var AuthController = /** @class */ (function () {
     AuthController.prototype.getRegister = function (req, res) {
         res.status(200).render("register");
     };
-    AuthController.prototype.postRegister = function (req, res) {
-        // res.redirect("/api/auth/login");
-        res.redirect("/api/");
-    };
     AuthController.prototype.getFailRegister = function (req, res) {
         res.status(200).render("registerError");
     };

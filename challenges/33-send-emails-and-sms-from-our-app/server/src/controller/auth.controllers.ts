@@ -38,11 +38,6 @@ export class AuthController {
     res.status(200).render("register");
   }
 
-  postRegister(req: Request, res: Response): void {
-    // res.redirect("/api/auth/login");
-    res.redirect("/api/");
-  }
-
   getFailRegister(req: Request, res: Response): void {
     res.status(200).render("registerError");
   }
