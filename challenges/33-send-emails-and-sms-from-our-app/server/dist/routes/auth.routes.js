@@ -13,15 +13,12 @@ var router = (0, express_1.Router)();
 router.get("/login", controller.getLogin.bind(controller));
 router.post("/login", passport_1.default.authenticate("login", { failureRedirect: "/api/auth/faillogin" }), controller.postLogin.bind(controller));
 router.get("/facebook", passport_1.default.authenticate("facebook"));
-router.get("/facebook/callback", passport_1.default.authenticate("facebook", {
-    successRedirect: "/api/",
-    failureRedirect: "/api/auth/login",
-}));
+router.get("/facebook/callback", passport_1.default.authenticate("facebook", { failureRedirect: "/api/auth/login" }), controller.postLogin.bind(controller));
 router.get("/faillogin", controller.getFailLogin.bind(controller));
 router.get("/register", controller.getRegister.bind(controller));
 router.post("/register", passport_1.default.authenticate("register", {
     failureRedirect: "/api/auth/failregister",
-}), controller.postRegister.bind(controller));
+}), controller.postLogin.bind(controller));
 router.get("/failregister", controller.getFailRegister.bind(controller));
 router.get("/logout", controller.getLogout.bind(controller));
 exports.default = router;

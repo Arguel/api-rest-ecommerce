@@ -6,13 +6,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var passport_1 = __importDefault(require("passport"));
 var passport_local_1 = require("passport-local");
 var user_1 = require("../../../models/mongodb/user");
-var bcryptjs_1 = __importDefault(require("bcryptjs"));
-var isValidPassword = function (user, password) {
-    return bcryptjs_1.default.compareSync(password, user.password);
-};
-var createHash = function (password) {
-    return bcryptjs_1.default.hashSync(password, bcryptjs_1.default.genSaltSync(10));
-};
 passport_1.default.use("login", new passport_local_1.Strategy(function (username, password, done) {
     user_1.UserModel.findOne({ displayName: username }, function (err, user) {
         if (err)
@@ -21,7 +14,7 @@ passport_1.default.use("login", new passport_local_1.Strategy(function (username
             console.log("User not found with displayName" + username);
             return done(null, false);
         }
-        if (!isValidPassword(user, password)) {
+        if (!user_1.UserModel.comparePassword(password, user.password)) {
             console.log("Invalid password");
             return done(null, false);
         }
@@ -38,8 +31,9 @@ passport_1.default.use("register", new passport_local_1.Strategy({ passReqToCall
         }
         else {
             var newUser_1 = new user_1.UserModel({
+                username: username,
                 displayName: username,
-                password: createHash(password),
+                password: user_1.UserModel.encryptPassword(password),
             });
             newUser_1.save(function (err) {
                 if (err) {
@@ -50,7 +44,6 @@ passport_1.default.use("register", new passport_local_1.Strategy({ passReqToCall
                 return done(null, newUser_1);
             });
         }
-        return done(null, user);
     });
 }));
 passport_1.default.serializeUser(function (user, done) {

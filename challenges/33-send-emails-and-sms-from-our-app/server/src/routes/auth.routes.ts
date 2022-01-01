@@ -20,10 +20,8 @@ router.get("/facebook", passport.authenticate("facebook"));
 
 router.get(
   "/facebook/callback",
-  passport.authenticate("facebook", {
-    successRedirect: "/api/",
-    failureRedirect: "/api/auth/login",
-  }),
+  passport.authenticate("facebook", {failureRedirect: "/api/auth/login"}),
+  controller.postLogin.bind(controller),
 );
 
 router.get("/faillogin", controller.getFailLogin.bind(controller));
@@ -35,7 +33,8 @@ router.post(
   passport.authenticate("register", {
     failureRedirect: "/api/auth/failregister",
   }),
-  controller.postRegister.bind(controller),
+  controller.postLogin.bind(controller),
+  // controller.postRegister.bind(controller),
 );
 
 router.get("/failregister", controller.getFailRegister.bind(controller));

@@ -9,12 +9,9 @@ var AuthController = /** @class */ (function () {
         res.status(200).render("login");
     };
     AuthController.prototype.postLogin = function (req, res) {
-        // const {username, password} = req.body;
         if (req.isAuthenticated()) {
-            // req.session.username = username;
-            // req.session.password = password;
-            ethereal_1.mailOptions.subject = "Login";
-            ethereal_1.transporter.sendMail(ethereal_1.mailOptions, function (err, info) {
+            ethereal_1.etherealMailer.mailOptions.subject = "log in " + req.user.displayName + " - date: " + new Date().toString();
+            ethereal_1.etherealMailer.transporter.sendMail(ethereal_1.etherealMailer.mailOptions, function (err, info) {
                 if (err) {
                     console.log(err);
                     return err;
@@ -34,12 +31,22 @@ var AuthController = /** @class */ (function () {
         res.status(200).render("register");
     };
     AuthController.prototype.postRegister = function (req, res) {
-        res.redirect("/api/auth/login");
+        // res.redirect("/api/auth/login");
+        res.redirect("/api/");
     };
     AuthController.prototype.getFailRegister = function (req, res) {
         res.status(200).render("registerError");
     };
     AuthController.prototype.getLogout = function (req, res) {
+        ethereal_1.etherealMailer.mailOptions.subject = "log out " + req.user.displayName + " - date: " + new Date().toString();
+        ethereal_1.etherealMailer.transporter.sendMail(ethereal_1.etherealMailer.mailOptions, function (err, info) {
+            if (err) {
+                console.log(err);
+                return err;
+            }
+            console.log(info);
+        });
+        var displayName = req.user.displayName;
         req.session.destroy(function (err) {
             if (err)
                 res.status(500).json({
@@ -47,7 +54,7 @@ var AuthController = /** @class */ (function () {
                     description: "Unexpected error on the server side. Please try again later",
                 });
             else
-                res.status(200).render("logout");
+                res.status(200).render("logout", { displayName: displayName });
         });
     };
     return AuthController;

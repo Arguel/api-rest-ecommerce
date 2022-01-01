@@ -1,5 +1,6 @@
 import {Request, Response} from "express";
-import {transporter, mailOptions} from "../services/mailer/ethereal";
+import {etherealMailer} from "../services/mailer/ethereal";
+import {IExpressUser} from "../libs/interfaces/app.interfaces";
 
 export class AuthController {
   getLogin(req: Request, res: Response): void {
@@ -7,19 +8,21 @@ export class AuthController {
   }
 
   postLogin(req: Request, res: Response): void {
-    // const {username, password} = req.body;
     if (req.isAuthenticated()) {
-      // req.session.username = username;
-      // req.session.password = password;
+      etherealMailer.mailOptions.subject = `log in ${
+        (req.user as IExpressUser).displayName
+      } - date: ${new Date().toString()}`;
 
-      mailOptions.subject = "Login";
-      transporter.sendMail(mailOptions, (err, info) => {
-        if (err) {
-          console.log(err);
-          return err;
-        }
-        console.log(info);
-      });
+      etherealMailer.transporter.sendMail(
+        etherealMailer.mailOptions,
+        (err, info) => {
+          if (err) {
+            console.log(err);
+            return err;
+          }
+          console.log(info);
+        },
+      );
 
       res.redirect("/api/");
     } else {
@@ -36,7 +39,8 @@ export class AuthController {
   }
 
   postRegister(req: Request, res: Response): void {
-    res.redirect("/api/auth/login");
+    // res.redirect("/api/auth/login");
+    res.redirect("/api/");
   }
 
   getFailRegister(req: Request, res: Response): void {
@@ -44,6 +48,22 @@ export class AuthController {
   }
 
   getLogout(req: Request, res: Response): void {
+    etherealMailer.mailOptions.subject = `log out ${
+      (req.user as IExpressUser).displayName
+    } - date: ${new Date().toString()}`;
+
+    etherealMailer.transporter.sendMail(
+      etherealMailer.mailOptions,
+      (err, info) => {
+        if (err) {
+          console.log(err);
+          return err;
+        }
+        console.log(info);
+      },
+    );
+
+    const {displayName} = req.user as IExpressUser;
     req.session.destroy((err) => {
       if (err)
         res.status(500).json({
@@ -51,7 +71,7 @@ export class AuthController {
           description:
             "Unexpected error on the server side. Please try again later",
         });
-      else res.status(200).render("logout");
+      else res.status(200).render("logout", {displayName});
     });
   }
 }

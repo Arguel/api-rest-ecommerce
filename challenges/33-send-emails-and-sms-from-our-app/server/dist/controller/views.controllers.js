@@ -8,6 +8,8 @@ var child_process_1 = require("child_process");
 var path_1 = __importDefault(require("path"));
 var os_1 = __importDefault(require("os"));
 var calculations_1 = require("../libs/helpers/calculations");
+var config_1 = __importDefault(require("config"));
+var startMode = config_1.default.default.app.startMode;
 var ViewsController = /** @class */ (function () {
     function ViewsController() {
     }
@@ -36,7 +38,6 @@ var ViewsController = /** @class */ (function () {
     ViewsController.prototype.getRandoms = function (req, res) {
         var defaultNumber = 100000000;
         var qty = req.query.qty;
-        var startMode = process.argv[5];
         if (startMode === "cluster") {
             var totalNumbers = (0, calculations_1.randomNum)(qty);
             res.status(200).json({ totalNumbers: totalNumbers });

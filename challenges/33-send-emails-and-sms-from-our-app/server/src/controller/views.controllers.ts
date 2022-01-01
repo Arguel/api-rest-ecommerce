@@ -3,21 +3,15 @@ import {fork} from "child_process";
 import path from "path";
 import os from "os";
 import {randomNum} from "../libs/helpers/calculations";
+import {IExpressUser} from "../libs/interfaces/app.interfaces";
+import config from "config";
+import {IConfigDefault} from "../config/default";
 
-interface IEmail {
-  value?: string;
-  type?: string;
-}
-
-interface IPhoto {
-  value: string;
-}
-
-interface IExpressUser extends Express.User {
-  displayName?: string;
-  emails?: IEmail[];
-  photos?: IPhoto[];
-}
+const {
+  default: {
+    app: {startMode},
+  },
+} = config as IConfigDefault;
 
 export class ViewsController {
   getRoot(req: Request, res: Response): void {
@@ -47,7 +41,6 @@ export class ViewsController {
   getRandoms(req: Request, res: Response): void {
     const defaultNumber = 100000000;
     const {qty} = req.query;
-    const startMode = process.argv[5];
 
     if (startMode === "cluster") {
       const totalNumbers = randomNum(qty as string);
