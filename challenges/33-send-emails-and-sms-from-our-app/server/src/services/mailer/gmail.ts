@@ -1,26 +1,33 @@
 import nodemailer from "nodemailer";
+import config from "config";
+import {IConfigDefault} from "../../config/default";
 
-const transporter = nodemailer.createTransport({
+const {
+  default: {
+    mailer: {
+      gmail: {email, pass},
+    },
+  },
+} = config as IConfigDefault;
+
+export const gmailTsp = nodemailer.createTransport({
   service: "gmail",
   auth: {
-    user: "cursonodeav@gmail.com",
-    pass: "ppppppppppppppppp",
+    user: email,
+    pass: pass,
   },
 });
 
-const mailOptions = {
+export const gmailMailOpt = {
   from: "Servidor Node.js",
-  to: "cursonodeav@gmail.com",
+  to: email,
   subject: "Mail de prueba desde Node.js",
   html: "<h1>Test Node.js - Nodemailer</h1>",
-  attachments: [
-    {
-      path: "",
-    },
-  ],
-};
-
-export const gmailMailer = {
-  transporter,
-  mailOptions,
+  /*
+   *attachments: [
+   *  {
+   *    path: "",
+   *  },
+   *],
+   */
 };

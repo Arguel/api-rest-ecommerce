@@ -1,33 +1,33 @@
 import {Request, Response} from "express";
-import {etherealMailer} from "../services/mailer/ethereal";
+import {etherealTsp, etherealMailOpt} from "../services/mailer/ethereal";
+import {gmailTsp, gmailMailOpt} from "../services/mailer/gmail";
 import {IExpressUser} from "../libs/interfaces/app.interfaces";
 
 export class AuthController {
+  genSubject(msg: string, req: Request): string {
+    return `${
+      msg + (req.user as IExpressUser).displayName
+    } - date: ${new Date().toString()}`;
+  }
+
   getLogin(req: Request, res: Response): void {
     res.status(200).render("login");
   }
 
-  postLogin(req: Request, res: Response): void {
-    if (req.isAuthenticated()) {
-      etherealMailer.mailOptions.subject = `log in ${
-        (req.user as IExpressUser).displayName
-      } - date: ${new Date().toString()}`;
+  async postLogin(req: Request, res: Response): Promise<void> {
+    if (req.isAuthenticated())
+      try {
+        etherealMailOpt.subject = this.genSubject("log in", req);
+        await etherealTsp.sendMail(etherealMailOpt);
 
-      etherealMailer.transporter.sendMail(
-        etherealMailer.mailOptions,
-        (err, info) => {
-          if (err) {
-            console.log(err);
-            return err;
-          }
-          console.log(info);
-        },
-      );
+        gmailMailOpt.subject = this.genSubject("log in", req);
+        await gmailTsp.sendMail(gmailMailOpt);
 
-      res.redirect("/api/");
-    } else {
-      res.send("Invalid data, please enter a valid name");
-    }
+        res.redirect("/api/");
+      } catch (err) {
+        console.log(err);
+      }
+    else res.send("Invalid data, please enter a valid name");
   }
 
   getFailLogin(req: Request, res: Response): void {
@@ -42,21 +42,9 @@ export class AuthController {
     res.status(200).render("registerError");
   }
 
-  getLogout(req: Request, res: Response): void {
-    etherealMailer.mailOptions.subject = `log out ${
-      (req.user as IExpressUser).displayName
-    } - date: ${new Date().toString()}`;
-
-    etherealMailer.transporter.sendMail(
-      etherealMailer.mailOptions,
-      (err, info) => {
-        if (err) {
-          console.log(err);
-          return err;
-        }
-        console.log(info);
-      },
-    );
+  async getLogout(req: Request, res: Response): Promise<void> {
+    etherealMailOpt.subject = this.genSubject("log out", req);
+    await etherealTsp.sendMail(etherealMailOpt);
 
     const {displayName} = req.user as IExpressUser;
     req.session.destroy((err) => {

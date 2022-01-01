@@ -35,6 +35,24 @@ export interface IConfigDefault extends IConfig {
       appId: string;
       appSecret: string;
     };
+    // Used in email services
+    mailer: {
+      gmail: {
+        email: string;
+        pass: string;
+      };
+      ethereal: {
+        email: string;
+        pass: string;
+      };
+    };
+    // Used in telephone services
+    twilio: {
+      accountSid: string;
+      authToken: string;
+      twilioNumber: string;
+      myNumber: string;
+    };
   };
 }
 
@@ -61,6 +79,22 @@ const config = {
   facebookApp: {
     appId: appId || process.env.FACEBOOK_APP_ID,
     appSecret: appSecret || process.env.FACEBOOK_APP_SECRET,
+  },
+  mailer: {
+    gmail: {
+      email: process.env.GMAIL_EMAIL,
+      pass: process.env.GMAIL_PASS,
+    },
+    ethereal: {
+      email: process.env.ETHEREAL_EMAIL,
+      pass: process.env.ETHEREAL_PASS,
+    },
+  },
+  twilio: {
+    accountSid: process.env.TWILIO_ACCOUNT_SID,
+    authToken: process.env.TWILIO_AUTH_TOKEN,
+    twilioNumber: process.env.TWILIO_PHONE_NUMBER,
+    myNumber: process.env.MY_NUMBER,
   },
 };
 

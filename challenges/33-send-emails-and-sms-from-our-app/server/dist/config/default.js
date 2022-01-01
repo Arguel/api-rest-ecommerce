@@ -35,5 +35,21 @@ var config = {
         appId: appId || process.env.FACEBOOK_APP_ID,
         appSecret: appSecret || process.env.FACEBOOK_APP_SECRET,
     },
+    mailer: {
+        gmail: {
+            email: process.env.GMAIL_EMAIL,
+            pass: process.env.GMAIL_PASS,
+        },
+        ethereal: {
+            email: process.env.ETHEREAL_EMAIL,
+            pass: process.env.ETHEREAL_PASS,
+        },
+    },
+    twilio: {
+        accountSid: process.env.TWILIO_ACCOUNT_SID,
+        authToken: process.env.TWILIO_AUTH_TOKEN,
+        twilioNumber: process.env.TWILIO_PHONE_NUMBER,
+        myNumber: process.env.MY_NUMBER,
+    },
 };
 exports.default = config;

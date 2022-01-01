@@ -1,22 +1,27 @@
 import nodemailer from "nodemailer";
+import config from "config";
+import {IConfigDefault} from "../../config/default";
 
-const transporter = nodemailer.createTransport({
+const {
+  default: {
+    mailer: {
+      ethereal: {email, pass},
+    },
+  },
+} = config as IConfigDefault;
+
+export const etherealTsp = nodemailer.createTransport({
   host: "smtp.ethereal.email",
   port: 587,
   auth: {
-    user: "manuel.koelpin1@ethereal.email",
-    pass: "pURfNkY811KMwYxZX9",
+    user: email,
+    pass: pass,
   },
 });
 
-const mailOptions = {
+export const etherealMailOpt = {
   from: "Servidor Node.js",
   to: "ford.blanda@ethereal.email",
   subject: "Mail de prueba desde Node.js",
   html: "<h1>Test Node.js - Nodemailer</h1>",
-};
-
-export const etherealMailer = {
-  transporter,
-  mailOptions,
 };
