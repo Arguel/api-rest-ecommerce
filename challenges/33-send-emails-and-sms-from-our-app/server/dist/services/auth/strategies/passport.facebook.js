@@ -11,28 +11,32 @@ var _a = config_1.default.default.facebookApp, appId = _a.appId, appSecret = _a.
 passport_1.default.use(new passport_facebook_1.Strategy({
     clientID: appId,
     clientSecret: appSecret,
-    callbackURL: "/auth/facebook/callback",
+    callbackURL: "http://localhost:8080/api/auth/facebook/callback",
+    profileFields: ["id", "displayName", "name", "picture", "email"],
 }, function (accessToken, refreshToken, profile, done) {
+    console.log("perfil", profile);
     user_1.UserModel.findOne({ "facebook.id": profile.id }, function (err, user) {
         if (err)
             return done(err);
         if (!user) {
-            var newUser = new user_1.UserModel({
-                name: profile.displayName,
-                email: profile.emails[0].value,
-                username: profile.username,
-                provider: "facebook",
-                facebook: profile._json,
+            console.log(profile);
+            var id = profile.id, displayName = profile.displayName, _json = profile._json;
+            var newUser_1 = new user_1.UserModel({
+                displayName: displayName,
+                password: user_1.UserModel.encryptPassword(Math.random().toString(16)),
+                facebook: { id: id, displayName: displayName, _json: _json },
             });
-            newUser.save(function (err) {
+            newUser_1.save(function (err) {
                 if (err) {
                     console.log("Error in saving user: " + err);
                     throw err;
                 }
-                return done(null, user);
+                return done(null, newUser_1);
             });
         }
-        return done(null, user);
+        else {
+            return done(null, user);
+        }
     });
 }));
 passport_1.default.serializeUser(function (user, done) {

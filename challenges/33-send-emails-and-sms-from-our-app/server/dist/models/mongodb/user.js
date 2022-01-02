@@ -12,6 +12,14 @@ var bcryptjs_1 = __importDefault(require("bcryptjs"));
 var userSchema = new mongoose_1.Schema({
     displayName: { type: String, required: true, unique: true },
     password: { type: String, required: true },
+    facebook: {
+        type: {
+            id: { type: String, required: true },
+            displayName: { type: String, required: true },
+            _json: { type: Object, required: true },
+        },
+        required: false,
+    },
     /*
      *roles: [
      *  {
@@ -20,8 +28,18 @@ var userSchema = new mongoose_1.Schema({
      *  },
      *],
      */
-    photos: { type: String, required: false },
-    emails: { type: String, required: false },
+    photos: [
+        {
+            type: String,
+            required: false,
+        },
+    ],
+    emails: [
+        {
+            type: String,
+            required: false,
+        },
+    ],
 }, {
     timestamps: true,
 });

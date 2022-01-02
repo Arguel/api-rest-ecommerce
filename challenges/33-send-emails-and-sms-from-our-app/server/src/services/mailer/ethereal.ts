@@ -21,7 +21,7 @@ export const etherealTsp = nodemailer.createTransport({
 
 export const etherealMailOpt = {
   from: "Servidor Node.js",
-  to: "ford.blanda@ethereal.email",
+  to: "jane.windler45@ethereal.email",
   subject: "Mail de prueba desde Node.js",
   html: "<h1>Test Node.js - Nodemailer</h1>",
 };

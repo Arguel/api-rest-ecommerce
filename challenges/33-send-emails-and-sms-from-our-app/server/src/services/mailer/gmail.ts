@@ -23,7 +23,13 @@ interface IGmailMailOpt {
   to: string;
   subject?: string;
   html: string;
-  attachments?: [{path?: string}];
+  attachments?: [
+    {
+      path?: string;
+      href?: string;
+    },
+  ];
+  text?: string;
 }
 
 export const gmailMailOpt: IGmailMailOpt = {

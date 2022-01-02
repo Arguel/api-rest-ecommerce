@@ -6,9 +6,9 @@ const controller: ViewsController = new ViewsController();
 
 const router: IRouter = Router();
 
-router.get("/info", controller.getInfo.bind(controller));
+router.get("api/info", controller.getInfo.bind(controller));
 
-router.get("/randoms", controller.getRandoms.bind(controller));
+router.get("api/randoms", controller.getRandoms.bind(controller));
 
 router.get("/", isAuthenticated, controller.getRoot.bind(controller));
 

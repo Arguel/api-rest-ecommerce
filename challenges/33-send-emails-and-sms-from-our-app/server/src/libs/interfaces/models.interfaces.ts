@@ -22,6 +22,11 @@ export interface IUser {
   _id?: Types.ObjectId | object | number | string;
   displayName: string;
   password: string;
+  facebook?: {
+    id: string;
+    displayName: string;
+    _json: object;
+  };
   /*
    *roles: IRole[];
    */

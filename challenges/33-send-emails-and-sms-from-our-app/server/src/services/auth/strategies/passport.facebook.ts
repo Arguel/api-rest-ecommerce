@@ -17,32 +17,35 @@ passport.use(
     {
       clientID: appId,
       clientSecret: appSecret,
-      callbackURL: "/auth/facebook/callback",
+      callbackURL: "http://localhost:8080/api/auth/facebook/callback",
+      profileFields: ["id", "displayName", "name", "picture", "email"],
     },
     function (accessToken, refreshToken, profile, done) {
+      console.log("perfil", profile);
       UserModel.findOne(
         {"facebook.id": profile.id},
         function (err: Error, user: IUser) {
           if (err) return done(err);
 
           if (!user) {
+            console.log(profile);
+            const {id, displayName, _json} = profile;
+
             const newUser = new UserModel({
-              name: profile.displayName,
-              email: profile.emails![0].value,
-              username: profile.username,
-              provider: "facebook",
-              facebook: profile._json,
+              displayName,
+              password: UserModel.encryptPassword(Math.random().toString(16)),
+              facebook: {id, displayName, _json},
             });
             newUser.save(function (err: CallbackError) {
               if (err) {
                 console.log("Error in saving user: " + err);
                 throw err;
               }
-              return done(null, user);
+              return done(null, newUser);
             });
+          } else {
+            return done(null, user);
           }
-
-          return done(null, user);
         },
       );
     },

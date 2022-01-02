@@ -21,12 +21,15 @@ export class AuthController {
         await etherealTsp.sendMail(etherealMailOpt);
 
         gmailMailOpt.subject = this.genSubject("A new login of the", req);
-        const {photos} = req.user as IExpressUser;
-        if (photos) gmailMailOpt.attachments = [{path: photos[0].value}];
+        if ((req.user as IExpressUser).facebook) {
+          const picture: string = (req.user as IExpressUser).facebook._json
+            .picture.data.url;
+          if (picture) gmailMailOpt.subject = picture;
+        }
 
         await gmailTsp.sendMail(gmailMailOpt);
 
-        res.redirect("/api/");
+        res.redirect("/");
       } catch (err) {
         console.log(err);
       }

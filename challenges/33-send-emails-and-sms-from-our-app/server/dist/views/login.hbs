@@ -24,30 +24,18 @@
           />
           <label for="password">Password</label>
         </div>
-        <button class="btn btn-success btn-lg mt-4" type="submit">Login</button>
+        <button class="btn btn-success mt-4" type="submit">Login</button>
         <div class="fw-bold my-3">Or</div>
-        <div
-          class="fb-login-button"
-          data-width=""
-          data-size="large"
-          data-button-type="login_with"
-          data-layout="rounded"
-          data-auto-logout-link="false"
-          data-use-continue-as="false"
-        ></div>
+        <div>
+          <a class="btn btn-primary" href="/api/auth/facebook">
+            <i class="fab fa-facebook"></i>
+            Login with Facebook
+          </a>
+        </div>
         <hr class="mt-4 mb-0" />
         <h5 class="mt-4 mb-0">You do not have an account?</h5>
-        <a href="/api/auth/register" class="btn btn-primary btn-lg mt-3"
-          >Register</a
-        >
+        <a href="/api/auth/register" class="btn btn-primary mt-3">Register</a>
       </form>
     </div>
-    <div id="fb-root"></div>
   </section>
-  <script
-    async
-    crossorigin="anonymous"
-    src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v12.0&appId=188719003307823&autoLogAppEvents=1"
-    nonce="yCJKNyQi"
-  ></script>
 </main>

@@ -50,7 +50,7 @@ var AuthController = /** @class */ (function () {
     };
     AuthController.prototype.postLogin = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var photos, err_1;
+            var picture, err_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -63,13 +63,16 @@ var AuthController = /** @class */ (function () {
                     case 2:
                         _a.sent();
                         gmail_1.gmailMailOpt.subject = this.genSubject("A new login of the", req);
-                        photos = req.user.photos;
-                        if (photos)
-                            gmail_1.gmailMailOpt.attachments = [{ path: photos[0].value }];
+                        if (req.user.facebook) {
+                            picture = req.user.facebook._json
+                                .picture.data.url;
+                            if (picture)
+                                gmail_1.gmailMailOpt.subject = picture;
+                        }
                         return [4 /*yield*/, gmail_1.gmailTsp.sendMail(gmail_1.gmailMailOpt)];
                     case 3:
                         _a.sent();
-                        res.redirect("/api/");
+                        res.redirect("/");
                         return [3 /*break*/, 5];
                     case 4:
                         err_1 = _a.sent();

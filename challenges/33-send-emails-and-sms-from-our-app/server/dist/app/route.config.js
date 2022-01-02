@@ -13,7 +13,7 @@ var defaultRoute = function (app) {
     app.use("/api/products", products_routes_1.default);
     app.use("/api/cart", cart_routes_1.default);
     app.use("/api/auth", auth_routes_1.default);
-    app.use("/api", views_routes_1.default);
+    app.use("/", views_routes_1.default);
     // This manages the non-existent routes
     app.use("*", not_found_routes_1.default);
 };

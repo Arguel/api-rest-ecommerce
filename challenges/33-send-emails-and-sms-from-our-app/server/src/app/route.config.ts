@@ -10,7 +10,7 @@ const defaultRoute = (app: Application) => {
   app.use("/api/products", productsRoutes);
   app.use("/api/cart", cartRoutes);
   app.use("/api/auth", authRoutes);
-  app.use("/api", viewsRoutes);
+  app.use("/", viewsRoutes);
   // This manages the non-existent routes
   app.use("*", notFound);
 };

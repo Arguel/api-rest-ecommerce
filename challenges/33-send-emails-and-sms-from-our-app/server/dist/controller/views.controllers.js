@@ -14,12 +14,13 @@ var ViewsController = /** @class */ (function () {
     function ViewsController() {
     }
     ViewsController.prototype.getRoot = function (req, res) {
+        console.log(req.user);
         var _a = req.user, displayName = _a.displayName, emails = _a.emails, photos = _a.photos;
         console.log(req.user);
         res.status(200).render("index", {
             name: displayName ? displayName : "undefined",
-            email: emails && emails[0].value ? emails[0].value : "undefined",
-            picture: photos && photos[0].value ? photos[0].value : "undefined",
+            email: emails && emails.length >= 1 ? emails[0].value : "undefined",
+            picture: photos && photos.length >= 1 ? photos[0].value : "undefined",
         });
     };
     ViewsController.prototype.getInfo = function (req, res) {

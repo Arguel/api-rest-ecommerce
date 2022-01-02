@@ -14,6 +14,14 @@ const userSchema = new Schema<IUser, IUserModel>(
   {
     displayName: {type: String, required: true, unique: true},
     password: {type: String, required: true},
+    facebook: {
+      type: {
+        id: {type: String, required: true},
+        displayName: {type: String, required: true},
+        _json: {type: Object, required: true},
+      },
+      required: false,
+    },
     /*
      *roles: [
      *  {
@@ -22,8 +30,18 @@ const userSchema = new Schema<IUser, IUserModel>(
      *  },
      *],
      */
-    photos: {type: String, required: false},
-    emails: {type: String, required: false},
+    photos: [
+      {
+        type: String,
+        required: false,
+      },
+    ],
+    emails: [
+      {
+        type: String,
+        required: false,
+      },
+    ],
   },
   {
     timestamps: true,
