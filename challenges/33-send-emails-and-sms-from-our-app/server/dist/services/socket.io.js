@@ -50,6 +50,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.socketIo = void 0;
 var chat_1 = require("../models/mongodb/chat");
 var normalizr_1 = require("normalizr");
+var messaging_1 = require("./twilio/messaging");
+var validPhoneNumber = function (txt) {
+    var regex = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,8}$/im;
+    return txt.match(regex) ? true : false;
+};
 var socketIo = function (io) {
     io.on("connection", function (socket) { return __awaiter(void 0, void 0, void 0, function () {
         var messagesMongo, normalizedData;
@@ -63,18 +68,50 @@ var socketIo = function (io) {
                     normalizedData = convertMsgs(messagesMongo);
                     io.emit("messages", normalizedData);
                     socket.on("newMessage", function (msg) { return __awaiter(void 0, void 0, void 0, function () {
-                        var newMessage;
+                        var msgText, index, phoneNumber, err_1, newMessage;
                         return __generator(this, function (_a) {
                             switch (_a.label) {
                                 case 0:
+                                    msgText = msg.text.trim();
+                                    if (!(msgText.substr(0, 6) === "/admin")) return [3 /*break*/, 9];
+                                    msgText = msgText.substr(7);
+                                    index = msgText.indexOf(" ");
+                                    if (!(index !== -1)) return [3 /*break*/, 7];
+                                    phoneNumber = msgText.substr(0, index);
+                                    msgText = msgText.substr(index + 1);
+                                    if (!validPhoneNumber(phoneNumber)) return [3 /*break*/, 5];
+                                    messaging_1.clientOpt.to = phoneNumber;
+                                    messaging_1.clientOpt.body = msgText;
+                                    _a.label = 1;
+                                case 1:
+                                    _a.trys.push([1, 3, , 4]);
+                                    return [4 /*yield*/, messaging_1.client.messages.create(messaging_1.clientOpt)];
+                                case 2:
+                                    _a.sent();
+                                    return [3 /*break*/, 4];
+                                case 3:
+                                    err_1 = _a.sent();
+                                    console.log(err_1);
+                                    return [3 /*break*/, 4];
+                                case 4: return [3 /*break*/, 6];
+                                case 5:
+                                    console.log("Please enter a valid phone number");
+                                    _a.label = 6;
+                                case 6: return [3 /*break*/, 8];
+                                case 7:
+                                    console.log("Please enter a phone number");
+                                    _a.label = 8;
+                                case 8: return [3 /*break*/, 11];
+                                case 9:
                                     newMessage = new chat_1.ChatModel(msg);
                                     return [4 /*yield*/, newMessage.save()];
-                                case 1:
+                                case 10:
                                     _a.sent();
                                     messagesMongo.push(__assign(__assign({}, msg), { _id: newMessage._id }));
                                     normalizedData = convertMsgs(messagesMongo);
                                     io.sockets.emit("messages", normalizedData);
-                                    return [2 /*return*/];
+                                    _a.label = 11;
+                                case 11: return [2 /*return*/];
                             }
                         });
                     }); });

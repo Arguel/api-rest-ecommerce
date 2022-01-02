@@ -1,17 +1,17 @@
 import * as http from "http";
 import {Server} from "socket.io";
-import {socketIo} from "./services/socket.io";
 import debug from "debug";
 import os from "os";
 import cluster from "cluster";
 import path from "path";
-import {httpServerAddress} from "./libs/interfaces/app.interfaces";
 
 // For the "config" module to correctly detect our configuration folder ("config/")
 process.env["NODE_CONFIG_DIR"] = path.join(__dirname, "/config/");
 import config from "config";
 import {IConfigDefault} from "./config/default";
 import {app} from "./app";
+import {socketIo} from "./services/socket.io";
+import {httpServerAddress} from "./libs/interfaces/app.interfaces";
 
 const {
   default: {

@@ -24,7 +24,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var http = __importStar(require("http"));
 var socket_io_1 = require("socket.io");
-var socket_io_2 = require("./services/socket.io");
 var debug_1 = __importDefault(require("debug"));
 var os_1 = __importDefault(require("os"));
 var cluster_1 = __importDefault(require("cluster"));
@@ -33,6 +32,7 @@ var path_1 = __importDefault(require("path"));
 process.env["NODE_CONFIG_DIR"] = path_1.default.join(__dirname, "/config/");
 var config_1 = __importDefault(require("config"));
 var app_1 = require("./app");
+var socket_io_2 = require("./services/socket.io");
 var _a = config_1.default.default.app, host = _a.host, appPort = _a.port, startMode = _a.startMode, initiator = _a.initiator, startMsg = _a.startMsg;
 (0, debug_1.default)("http");
 var numCPUs = os_1.default.cpus().length;

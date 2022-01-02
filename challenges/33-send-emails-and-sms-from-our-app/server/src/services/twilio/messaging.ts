@@ -10,12 +10,8 @@ const {
 
 export const client = new Twilio(accountSid, authToken);
 
-/*
- *client.messages
- *  .create({
- *    body: "Hello from Node",
- *    to: myNumber, // Text this number
- *    from: twilioNumber, // From a valid Twilio number
- *  })
- *  .then((message) => console.log(message.sid));
- */
+export const clientOpt = {
+  body: "Hello from Node",
+  to: myNumber, // Text this number
+  from: twilioNumber, // From a valid Twilio number
+};

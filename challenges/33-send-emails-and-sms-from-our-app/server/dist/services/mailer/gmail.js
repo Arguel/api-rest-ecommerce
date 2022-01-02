@@ -19,11 +19,4 @@ exports.gmailMailOpt = {
     to: email,
     subject: "Mail de prueba desde Node.js",
     html: "<h1>Test Node.js - Nodemailer</h1>",
-    /*
-     *attachments: [
-     *  {
-     *    path: "",
-     *  },
-     *],
-     */
 };

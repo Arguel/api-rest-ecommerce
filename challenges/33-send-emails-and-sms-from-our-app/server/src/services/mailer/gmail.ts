@@ -18,16 +18,17 @@ export const gmailTsp = nodemailer.createTransport({
   },
 });
 
-export const gmailMailOpt = {
+interface IGmailMailOpt {
+  from: string;
+  to: string;
+  subject?: string;
+  html: string;
+  attachments?: [{path?: string}];
+}
+
+export const gmailMailOpt: IGmailMailOpt = {
   from: "Servidor Node.js",
   to: email,
   subject: "Mail de prueba desde Node.js",
   html: "<h1>Test Node.js - Nodemailer</h1>",
-  /*
-   *attachments: [
-   *  {
-   *    path: "",
-   *  },
-   *],
-   */
 };

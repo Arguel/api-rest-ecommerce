@@ -80,6 +80,7 @@ const config = {
     appId: appId || process.env.FACEBOOK_APP_ID,
     appSecret: appSecret || process.env.FACEBOOK_APP_SECRET,
   },
+  // Used in email services
   mailer: {
     gmail: {
       email: process.env.GMAIL_EMAIL,
@@ -90,6 +91,7 @@ const config = {
       pass: process.env.ETHEREAL_PASS,
     },
   },
+  // Used in telephone services
   twilio: {
     accountSid: process.env.TWILIO_ACCOUNT_SID,
     authToken: process.env.TWILIO_AUTH_TOKEN,

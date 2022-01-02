@@ -6,8 +6,8 @@ import {IExpressUser} from "../libs/interfaces/app.interfaces";
 export class AuthController {
   genSubject(msg: string, req: Request): string {
     return `${
-      msg + (req.user as IExpressUser).displayName
-    } - date: ${new Date().toString()}`;
+      msg + " " + (req.user as IExpressUser).displayName
+    } account was detected in ${new Date().toString()}`;
   }
 
   getLogin(req: Request, res: Response): void {
@@ -17,17 +17,20 @@ export class AuthController {
   async postLogin(req: Request, res: Response): Promise<void> {
     if (req.isAuthenticated())
       try {
-        etherealMailOpt.subject = this.genSubject("log in", req);
+        etherealMailOpt.subject = this.genSubject("A new login of the", req);
         await etherealTsp.sendMail(etherealMailOpt);
 
-        gmailMailOpt.subject = this.genSubject("log in", req);
+        gmailMailOpt.subject = this.genSubject("A new login of the", req);
+        const {photos} = req.user as IExpressUser;
+        if (photos) gmailMailOpt.attachments = [{path: photos[0].value}];
+
         await gmailTsp.sendMail(gmailMailOpt);
 
         res.redirect("/api/");
       } catch (err) {
         console.log(err);
       }
-    else res.send("Invalid data, please enter a valid name");
+    else res.send("Invalid information check that the data entered is correct");
   }
 
   getFailLogin(req: Request, res: Response): void {
@@ -43,8 +46,12 @@ export class AuthController {
   }
 
   async getLogout(req: Request, res: Response): Promise<void> {
-    etherealMailOpt.subject = this.genSubject("log out", req);
-    await etherealTsp.sendMail(etherealMailOpt);
+    try {
+      etherealMailOpt.subject = this.genSubject("Log out of", req);
+      await etherealTsp.sendMail(etherealMailOpt);
+    } catch (err) {
+      console.log(err);
+    }
 
     const {displayName} = req.user as IExpressUser;
     req.session.destroy((err) => {

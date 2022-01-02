@@ -43,14 +43,14 @@ var AuthController = /** @class */ (function () {
     function AuthController() {
     }
     AuthController.prototype.genSubject = function (msg, req) {
-        return msg + req.user.displayName + " - date: " + new Date().toString();
+        return msg + " " + req.user.displayName + " account was detected in " + new Date().toString();
     };
     AuthController.prototype.getLogin = function (req, res) {
         res.status(200).render("login");
     };
     AuthController.prototype.postLogin = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var err_1;
+            var photos, err_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -58,11 +58,14 @@ var AuthController = /** @class */ (function () {
                         _a.label = 1;
                     case 1:
                         _a.trys.push([1, 4, , 5]);
-                        ethereal_1.etherealMailOpt.subject = this.genSubject("log in", req);
+                        ethereal_1.etherealMailOpt.subject = this.genSubject("A new login of the", req);
                         return [4 /*yield*/, ethereal_1.etherealTsp.sendMail(ethereal_1.etherealMailOpt)];
                     case 2:
                         _a.sent();
-                        gmail_1.gmailMailOpt.subject = this.genSubject("log in", req);
+                        gmail_1.gmailMailOpt.subject = this.genSubject("A new login of the", req);
+                        photos = req.user.photos;
+                        if (photos)
+                            gmail_1.gmailMailOpt.attachments = [{ path: photos[0].value }];
                         return [4 /*yield*/, gmail_1.gmailTsp.sendMail(gmail_1.gmailMailOpt)];
                     case 3:
                         _a.sent();
@@ -74,7 +77,7 @@ var AuthController = /** @class */ (function () {
                         return [3 /*break*/, 5];
                     case 5: return [3 /*break*/, 7];
                     case 6:
-                        res.send("Invalid data, please enter a valid name");
+                        res.send("Invalid information check that the data entered is correct");
                         _a.label = 7;
                     case 7: return [2 /*return*/];
                 }
@@ -92,14 +95,21 @@ var AuthController = /** @class */ (function () {
     };
     AuthController.prototype.getLogout = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var displayName;
+            var err_2, displayName;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        ethereal_1.etherealMailOpt.subject = this.genSubject("log out", req);
+                        _a.trys.push([0, 2, , 3]);
+                        ethereal_1.etherealMailOpt.subject = this.genSubject("Log out of", req);
                         return [4 /*yield*/, ethereal_1.etherealTsp.sendMail(ethereal_1.etherealMailOpt)];
                     case 1:
                         _a.sent();
+                        return [3 /*break*/, 3];
+                    case 2:
+                        err_2 = _a.sent();
+                        console.log(err_2);
+                        return [3 /*break*/, 3];
+                    case 3:
                         displayName = req.user.displayName;
                         req.session.destroy(function (err) {
                             if (err)
