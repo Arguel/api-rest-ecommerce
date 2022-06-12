@@ -1,6 +1,6 @@
 function Usuario(nombre, apellido, libros, mascotas) {
-  this.nombre = nombre; // string
-  this.apellido = apellido; // string
+  this.nombre = nombre.charAt(0).toUpperCase() + nombre.slice(1); // string
+  this.apellido = apellido.charAt(0).toUpperCase() + apellido.slice(1); // string
   this.libros = libros; // array
   this.mascotas = mascotas; // array
 
@@ -11,7 +11,7 @@ function Usuario(nombre, apellido, libros, mascotas) {
   this.addMascota = function (mascota) {
     this.mascotas.push(mascota);
   };
-  this.getMascotas = function () {
+  this.countMascotas = function () {
     if (this.mascotas.length > 0)
       return this.mascotas.length;
      else
@@ -25,7 +25,7 @@ function Usuario(nombre, apellido, libros, mascotas) {
     };
     this.libros.push(book);
   };
-  this.getBooks = function () {
+  this.getBookNames = function () {
     if (this.libros.length > 0)
       /* return this.libros.reduce((acc, elem) => ([...acc, elem.nombre]), []);*/
       return this.libros.map((elem) => elem.nombre);
@@ -45,8 +45,8 @@ const juan = new Usuario(
 );
 
 console.log(juan);
-console.log(juan.getMascotas());
-console.log(juan.getBooks());
+console.log(juan.countMascotas());
+console.log(juan.getBookNames());
 console.log(juan.getFullName());
 
 console.log(
@@ -55,8 +55,8 @@ console.log(
 
 class UsuarioClass {
   constructor(nombre, apellido, libros, mascotas) {
-    this._nombre = nombre; // string
-    this._apellido = apellido; // string
+    this._nombre = nombre.charAt(0).toUpperCase() + nombre.slice(1); // string
+    this._apellido = apellido.charAt(0).toUpperCase() + apellido.slice(1); // string
     this._libros = libros; // array
     this._mascotas = mascotas; // array
   }
@@ -68,7 +68,7 @@ class UsuarioClass {
   addMascota(mascota) {
     this._mascotas.push(mascota);
   }
-  get getMascotas() {
+  get countMascotas() {
     if (this._mascotas.length > 0)
       return this._mascotas.length;
      else
@@ -82,7 +82,7 @@ class UsuarioClass {
     };
     this._libros.push(book);
   }
-  get getBooks() {
+  get getBookNames() {
     if (this._libros.length > 0)
       /* return this._libros.reduce((acc, elem) => ([...acc, elem.nombre]), []);*/
       return this._libros.map((elem) => elem.nombre);
@@ -101,5 +101,5 @@ const pedro = new UsuarioClass(
 console.log(pedro);
 pedro.addMascota("perro");
 pedro.addBook("One up on wall street", "Peter Lynch");
-console.log(pedro.getMascotas);
-console.log(pedro.getBooks);
+console.log(pedro.countMascotas);
+console.log(pedro.getBookNames);
