@@ -49,9 +49,7 @@ console.log(juan.countMascotas());
 console.log(juan.getBookNames());
 console.log(juan.getFullName());
 
-console.log(
-  "---------------------------------------------------------------------------------------------------------------",
-);
+console.log('-'.padEnd(100,'-'));
 
 class UsuarioClass {
   constructor(nombre, apellido, libros, mascotas) {
