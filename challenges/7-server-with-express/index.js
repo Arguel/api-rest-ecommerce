@@ -14,13 +14,17 @@ app.get("/items", async (req, res) => {
     const rawData = await fs.promises.readFile("products.json", "utf-8");
     const data = JSON.parse(rawData.toString("utf-8"), null, "\t");
     res.json({
-      "items": data,
-      "quantity": data.length,
+      items: data,
+      quantity: data.length,
     });
     itemsVC++;
   } catch {
-    res.send("Unable to load the /items path at the moment, please try again later");
-    throw new Error("Unable to load the /items path at the moment, please try again later");
+    res.send(
+      "Unable to load the /items path at the moment, please try again later",
+    );
+    throw new Error(
+      "Unable to load the /items path at the moment, please try again later",
+    );
   }
 });
 
@@ -29,12 +33,16 @@ app.get("/item-random", async (req, res) => {
     const rawData = await fs.promises.readFile("products.json", "utf-8");
     const data = JSON.parse(rawData.toString("utf-8"), null, "\t");
     res.json({
-      "item": data[randomInteger(0, data.length - 1)],
+      item: data[randomInteger(0, data.length - 1)],
     });
     itemRandomVC++;
   } catch {
-    res.send("Unable to load the /item-random path at the moment, please try again later");
-    throw new Error("Unable to load the /item-random path at the moment, please try again later");
+    res.send(
+      "Unable to load the /item-random path at the moment, please try again later",
+    );
+    throw new Error(
+      "Unable to load the /item-random path at the moment, please try again later",
+    );
   }
 });
 
@@ -48,4 +56,3 @@ app.get("/views", async (req, res) => {
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });
-
