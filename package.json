@@ -9,13 +9,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Arguel/api-rest-ecommerce.git"
+    "url": "git+https://github.com/enzoarguello512/api-rest-ecommerce.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Arguel/api-rest-ecommerce/issues"
+    "url": "https://github.com/enzoarguello512/api-rest-ecommerce/issues"
   },
-  "homepage": "https://github.com/Arguel/api-rest-ecommerce#readme"
+  "homepage": "https://github.com/enzoarguello512/api-rest-ecommerce#readme"
 }
