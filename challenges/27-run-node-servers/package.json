@@ -17,19 +17,19 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Arguel/api-rest-ecommerce.git"
+    "url": "git+https://github.com/enzoarguello512/api-rest-ecommerce.git"
   },
   "keywords": [
     "node",
     "javascript",
     "typescript"
   ],
-  "author": "Arguel",
+  "author": "enzoarguello512",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Arguel/api-rest-ecommerce/issues"
+    "url": "https://github.com/enzoarguello512/api-rest-ecommerce/issues"
   },
-  "homepage": "https://github.com/Arguel/api-rest-ecommerce#readme",
+  "homepage": "https://github.com/enzoarguello512/api-rest-ecommerce#readme",
   "devDependencies": {
     "@types/bcryptjs": "^2.4.2",
     "@types/debug": "^4.1.7",
