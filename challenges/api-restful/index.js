@@ -1,5 +1,5 @@
-import express from "express";
-import { router } from "./routes.js";
+const express = require("express");
+const routes = require("./routes");
 const app = express();
 const port = process.env.PORT || 8080;
 
@@ -13,7 +13,7 @@ app.use((err, req, res, next) => {
 });
 
 // Routes
-app.use("/api/products", router);
+app.use("/api/products", routes);
 app.get("", (req, res) => {
   res.sendFile("./index.html", { root: __dirname });
 });

@@ -1,6 +1,7 @@
-import { writeFile, readFile } from "fs.promises";
+// import { writeFile, readFile } from "fs.promises";
+const fs = require("fs");
 
-export class FsHandler {
+class FsHandler {
   constructor(fileName) {
     this.fileName = fileName;
   }
@@ -14,7 +15,7 @@ export class FsHandler {
     // We assign the id of the last object of the array or zero in case of being the first item
     let currentId = data.length > 0 ? data[data.length - 1].id : 0;
     obj.id = ++currentId;
-    data = [...data, obj];
+    data.push(obj);
 
     await this.writeData(data);
 
@@ -23,35 +24,39 @@ export class FsHandler {
 
   getById = async (id) => {
     const data = await this.readData();
-    const obj = data.find((obj) => obj.id === id);
+    const obj = data.find((obj) => obj.id === +id);
     return obj ? obj : null;
   };
 
   updateById = async (newValues, id) => {
-    const item = await this.getById(id);
-    if (item) {
-      item = { ...newValues, id };
-      const data = await this.readData();
-      data.push(item);
+    let item = await this.getById(id);
 
-      await this.writeData(data);
-      return item;
-    } else {
-      return null;
-    }
+    if (!item) return null;
+
+    item = { ...newValues, id: +id };
+    let data = await this.readData();
+    data = data.filter((obj) => obj.id !== +id);
+    data.push(item);
+
+    await this.writeData(data);
+    return item;
   };
 
   readData = () =>
-    readFile(this.fileName, "utf-8").then((data) => JSON.parse(data));
+    fs.promises
+      .readFile(this.fileName, "utf-8")
+      .then((data) => JSON.parse(data));
 
   writeData = (data) =>
-    writeFile(this.fileName, JSON.stringify(data, null, "\t"));
+    fs.promises.writeFile(this.fileName, JSON.stringify(data, null, "\t"));
 
   deleteById = async (id) => {
     let data = await this.readData();
-    data = data.filter((obj) => obj.id !== id);
+    data = data.filter((obj) => obj.id !== +id);
     this.writeData(data);
   };
 
   deleteAll = () => this.writeData([]);
 }
+
+module.exports = FsHandler;
