@@ -4,12 +4,7 @@
   "description": "Rest api using Node.js and MongoDB",
   "main": "index.js",
   "scripts": {
-    "start": "node src/server.js",
-    "ts": "npx tsc -p ./tsconfig.json",
-    "tsw": "npx tsc -p ./tsconfig.json -w",
-    "lint": "eslint .",
-    "lintfix": "npm run lint -- --fix",
-    "prepare": "husky install"
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
