@@ -1,0 +1,31 @@
+{
+  "name": "api-rest-ecommerce",
+  "version": "1.0.0",
+  "description": "Rest api using Node.js and MongoDB",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/enzoarguello512/api-rest-ecommerce.git"
+  },
+  "keywords": [
+    "node",
+    "javascript",
+    "typescript"
+  ],
+  "author": "enzoarguello512",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/enzoarguello512/api-rest-ecommerce/issues"
+  },
+  "homepage": "https://github.com/enzoarguello512/api-rest-ecommerce#readme",
+  "dependencies": {
+    "express": "^4.18.1"
+  },
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=6.0.0"
+  }
+}

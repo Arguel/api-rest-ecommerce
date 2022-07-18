@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Challenge - 4</title>
+  </head>
+
+  <body>
+    <form
+      action="api/products"
+      method="POST"
+      accept-charset="utf-8"
+      style="background-color: aqua; padding: 30px"
+    >
+      <label for="title">Item title</label>
+      <input type="text" name="title" id="title" placeholder="item title" />
+      <br />
+      <label for="price">Item price</label>
+      <input type="number" name="price" id="price" value="1" />
+      <br />
+      <label for="thumbnail">Item thumbnail</label>
+      <input
+        type="text"
+        name="thumbnail"
+        id="thumbnail"
+        placeholder="Eg. './img/pato.png'"
+      />
+      <br />
+      <button type="submit">Submit</button>
+    </form>
+  </body>
+</html>
