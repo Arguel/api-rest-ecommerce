@@ -1,0 +1,19 @@
+{
+  "name": "backend",
+  "version": "0.0.1",
+  "description": "backend",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/enzoarguello512/api-rest-ecommerce.git"
+  },
+  "author": "enzoarguello512",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/enzoarguello512/api-rest-ecommerce/issues"
+  },
+  "homepage": "https://github.com/enzoarguello512/api-rest-ecommerce#readme"
+}
