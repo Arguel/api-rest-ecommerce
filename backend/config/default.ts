@@ -1,7 +1,10 @@
 import dotenv from 'dotenv';
 
 // Enable environment variables
-dotenv.config();
+const dotenvResult = dotenv.config();
+if (dotenvResult.error) {
+  throw dotenvResult.error;
+}
 
 const defaultConfig = {
   server: {
