@@ -44,16 +44,6 @@ class ProductsDao {
   }
 
   async putProductById(productId: string, product: IPutProductDto) {
-    // const newValues = {
-    //   "id": product.id || nanoid(),
-    //   "timestamp": product.timestamp || new Date().toUTCString()
-    //   'name': product.name || "no title",
-    //   'description' produc,
-    //   'productCode',
-    //   'thumbnailUrl',
-    //   'price',
-    //   'stock',
-    // }
     await this.crud.update({ id: productId }, product);
     return `${product.id} updated via put`;
   }
@@ -84,20 +74,6 @@ class ProductsDao {
     );
     this.products.splice(objIndex, 1);
     return `${productId} removed`;
-  }
-
-  async validateRequiredUserBodyFields(
-    req: express.Request,
-    res: express.Response,
-    next: express.NextFunction
-  ) {
-    if (req.body && req.body.id && req.body.password) {
-      next();
-    } else {
-      res.status(400).send({
-        error: `Missing required fields email and password`,
-      });
-    }
   }
 }
 
