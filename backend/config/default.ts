@@ -8,7 +8,7 @@ if (dotenvResult.error) {
 
 const defaultConfig = {
   server: {
-    port: process.env.PORT || '8080',
+    port: process.env.PORT || '3000',
     domain: 'localhost',
   },
 };

@@ -11,12 +11,6 @@ const app: express.Application = express();
 const debugLog: debug.IDebugger = debug('app');
 const routes: Array<CommonRoutesConfig> = [];
 
-// Routes config
-routes.push(new ProductsRoutes(app));
-routes.forEach((route: CommonRoutesConfig) => {
-  debugLog(`Routes configured for ${route.getName()}`);
-});
-
 // Logger config
 const loggerOptions: expressWinston.LoggerOptions = {
   transports: [new winston.transports.Console()],
@@ -40,5 +34,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 app.use(helmet());
+
+// Routes config
+routes.push(new ProductsRoutes(app));
+routes.forEach((route: CommonRoutesConfig) => {
+  debugLog(`Routes configured for ${route.getName()}`);
+});
 
 export default app;
