@@ -1,6 +1,5 @@
 import express from 'express';
 import productsService from '../services/product.service';
-import argon2 from 'argon2';
 import debug from 'debug';
 
 const log: debug.IDebugger = debug('app:products-controller');
@@ -16,22 +15,19 @@ class ProductsController {
   }
 
   async createProduct(req: express.Request, res: express.Response) {
-    req.body.password = await argon2.hash(req.body.password);
     const productId = await productsService.create(req.body);
     res.status(201).send({ id: productId });
   }
 
   async patch(req: express.Request, res: express.Response) {
-    if (req.body.password) {
-      req.body.password = await argon2.hash(req.body.password);
-    }
     log(await productsService.patchById(req.body.id, req.body));
     res.status(204).send();
   }
 
   async put(req: express.Request, res: express.Response) {
-    req.body.password = await argon2.hash(req.body.password);
-    log(await productsService.putById(req.body.id, req.body));
+    const rata = req.body;
+    console.log(rata);
+    log(await productsService.putById(req.body.id, rata));
     res.status(204).send();
   }
 

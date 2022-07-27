@@ -4,6 +4,7 @@ import { ICreateProductDto } from '../dto/create.product.dto';
 import { IPatchProductDto } from '../dto/patch.product.dto';
 import { IPutProductDto } from '../dto/put.product.dto';
 import { nanoid } from 'nanoid';
+import path from 'path';
 // @ts-expect-error
 import { localDB } from '@abmsourav/localdb';
 
@@ -11,7 +12,7 @@ const log: debug.IDebugger = debug('app:filesystem-dao');
 
 class ProductsDao {
   private products: Array<ICreateProductDto> = [];
-  private filename = './products.filesystem.db.json';
+  private filename = path.join(__dirname, 'products.filesystem.db.json');
   private crud = localDB(this.filename);
 
   constructor() {
@@ -20,9 +21,7 @@ class ProductsDao {
   }
 
   init(): void {
-    try {
-      fs.readFileSync(this.filename);
-    } catch (error) {
+    if (!fs.existsSync(this.filename)) {
       fs.writeFileSync(this.filename, '');
       log('Database not found, created products.db');
     }
@@ -30,8 +29,7 @@ class ProductsDao {
 
   async addProduct(product: ICreateProductDto) {
     product.id = nanoid();
-    this.products.push(product);
-    this.products = await this.crud.set(product);
+    await this.crud.set(product);
     return product.id;
   }
 
@@ -57,14 +55,16 @@ class ProductsDao {
       'price',
       'stock',
     ] as const;
-    const newValues: IPatchProductDto = {};
-    allowedPatchFields.forEach((field) => {
-      if (field in product) {
-        // @ts-ignore
-        newValues[field] = product[field];
-      }
-    });
-    this.crud.update({ id: productId }, { ...product, ...newValues });
+    //const newValues: IPatchProductDto = {};
+    //allowedPatchFields.forEach((field) => {
+    //if (field in product) {
+    //@ts-ignore
+    //newValues[field] = product[field];
+    //}
+    //});
+    //this.crud.update({ id: productId }, { ...product, ...newValues });
+
+    this.crud.update({ id: productId }, product, allowedPatchFields);
     return `${product.id} patched`;
   }
 
