@@ -2,7 +2,7 @@ import express from 'express';
 
 export default abstract class CommonRoutesConfig {
   protected app: express.Application;
-  private name: string;
+  private readonly name: string;
 
   constructor(app: express.Application, name: string) {
     this.app = app;

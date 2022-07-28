@@ -11,8 +11,11 @@ import { localDB } from '@abmsourav/localdb';
 const log: debug.IDebugger = debug('app:filesystem-dao');
 
 class ProductsDao {
-  private filename = path.join(__dirname, 'products.filesystem.db.json');
-  private crud = localDB(this.filename);
+  private readonly filename = path.join(
+    __dirname,
+    'products.filesystem.db.json'
+  );
+  private readonly crud = localDB(this.filename);
 
   constructor() {
     this.init();
