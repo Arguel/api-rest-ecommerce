@@ -11,7 +11,6 @@ import { localDB } from '@abmsourav/localdb';
 const log: debug.IDebugger = debug('app:filesystem-dao');
 
 class ProductsDao {
-  private products: Array<ICreateProductDto> = [];
   private filename = path.join(__dirname, 'products.filesystem.db.json');
   private crud = localDB(this.filename);
 
@@ -29,6 +28,7 @@ class ProductsDao {
 
   async addProduct(product: ICreateProductDto) {
     product.id = nanoid();
+    product.timestamp = new Date().toUTCString();
     await this.crud.set(product);
     return product.id;
   }
@@ -42,7 +42,16 @@ class ProductsDao {
   }
 
   async putProductById(productId: string, product: IPutProductDto) {
-    await this.crud.update({ id: productId }, product);
+    const allowedPutFields = [
+      'timestamp',
+      'name',
+      'description',
+      'productCode',
+      'thumbnailUrl',
+      'price',
+      'stock',
+    ] as const;
+    await this.crud.update({ id: productId }, product, allowedPutFields);
     return `${product.id} updated via put`;
   }
 
@@ -55,24 +64,12 @@ class ProductsDao {
       'price',
       'stock',
     ] as const;
-    //const newValues: IPatchProductDto = {};
-    //allowedPatchFields.forEach((field) => {
-    //if (field in product) {
-    //@ts-ignore
-    //newValues[field] = product[field];
-    //}
-    //});
-    //this.crud.update({ id: productId }, { ...product, ...newValues });
-
-    this.crud.update({ id: productId }, product, allowedPatchFields);
+    await this.crud.update({ id: productId }, product, allowedPatchFields);
     return `${product.id} patched`;
   }
 
   async removeProductById(productId: string) {
-    const objIndex = this.products.findIndex(
-      (obj: { id: string }) => obj.id === productId
-    );
-    this.products.splice(objIndex, 1);
+    await this.crud.remove({ id: productId });
     return `${productId} removed`;
   }
 }

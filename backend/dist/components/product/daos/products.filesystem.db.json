@@ -1,23 +1,22 @@
 [
     {
-        "id": "11",
-        "timestamp": "11",
-        "name": "1",
-        "price": "1",
-        "stock": "1"
+        "timestamp": "Thu, 28 Jul 2022 17:36:35 GMT",
+        "name": "Name",
+        "description": "pato",
+        "productCode": "pato",
+        "thumbnailUrl": "pato",
+        "price": "pato",
+        "stock": "pato",
+        "id": "iY1Ubu_cj2PdJcVQOIMR4"
     },
     {
-        "id": "A4y4KMveWo0NFqvxlPJqe",
-        "timestamp": "3",
-        "name": "23",
-        "price": "23",
-        "stock": "23"
-    },
-    {
-        "timestamp": "asd",
-        "name": "asd",
-        "price": "asd",
-        "stock": "asd",
-        "id": "CBcGxgEsLbiduofoc10S9"
+        "timestamp": "Thu, 28 Jul 2022 17:36:36 GMT",
+        "name": "Name",
+        "description": "pato",
+        "productCode": "pato",
+        "thumbnailUrl": "pato",
+        "price": "pato",
+        "stock": "pato",
+        "id": "EKrS5nO8dKIAqoFpX5U4J"
     }
 ]
