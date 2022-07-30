@@ -1,5 +1,5 @@
 import ProductsDao from '../daos/product.filesystem.dao';
-import { ICrud } from '../../../common/interfaces/crud.interface';
+import { ICrud } from '../../../common/types/crud.interface';
 import { ICreateProductDto } from '../dto/create.product.dto';
 import { IPutProductDto } from '../dto/put.product.dto';
 import { IPatchProductDto } from '../dto/patch.product.dto';
