@@ -1,16 +1,16 @@
-import { HttpStatusCodeEnum } from '../types/status.code.enum';
+import httpStatus from 'http-status';
 
 export default class BaseError extends Error {
   readonly log: string;
   readonly methodName: string | undefined;
-  readonly httpCode: HttpStatusCodeEnum;
+  readonly httpCode: number;
   readonly isOperational: boolean;
 
   constructor(
     log: string,
     message: string | unknown = log,
     methodName?: string,
-    httpCode = HttpStatusCodeEnum.INTERNAL_SERVER,
+    httpCode = httpStatus.INTERNAL_SERVER_ERROR,
     isOperational = true
   ) {
     super(<string>message);

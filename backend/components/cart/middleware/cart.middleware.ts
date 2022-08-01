@@ -1,12 +1,12 @@
 import express from 'express';
-import productService from '../services/product.service';
+import cartService from '../services/cart.service';
 import debug from 'debug';
 import httpStatus from 'http-status';
 
-const log: debug.IDebugger = debug('app:product-controller');
+const log: debug.IDebugger = debug('app:cart-controller');
 
-class ProductsMiddleware {
-  async validateRequiredProductBodyFields(
+class CartsMiddleware {
+  async validateRequiredCartBodyFields(
     req: express.Request,
     res: express.Response,
     next: express.NextFunction
@@ -26,35 +26,35 @@ class ProductsMiddleware {
     }
   }
 
-  async validateProductExists(
+  async validateCartExists(
     req: express.Request,
     res: express.Response,
     next: express.NextFunction
   ) {
     try {
-      const product = await productService.readById(req.params.productId);
-      if (product) {
+      const cart = await cartService.readById(req.params.cartId);
+      if (cart) {
         next();
       } else {
         res
           .status(httpStatus.NOT_FOUND)
-          .send({ error: `Product ${req.params.userId} not found` });
+          .send({ error: `Cart ${req.params.userId} not found` });
       }
     } catch (err) {
       res
         .status(httpStatus.NOT_FOUND)
-        .send({ error: `Product ${req.params.productId} not found` });
+        .send({ error: `Cart ${req.params.cartId} not found` });
     }
   }
 
-  async extractProductId(
+  async extractCartId(
     req: express.Request,
     res: express.Response,
     next: express.NextFunction
   ) {
-    req.body.id = req.params.productId;
+    req.body.id = req.params.cartId;
     next();
   }
 }
 
-export default new ProductsMiddleware();
+export default new CartsMiddleware();
