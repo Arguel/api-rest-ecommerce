@@ -25,9 +25,7 @@ class ProductsController {
   }
 
   async put(req: express.Request, res: express.Response) {
-    const rata = req.body;
-    console.log(rata);
-    log(await productsService.putById(req.body.id, rata));
+    log(await productsService.putById(req.body.id, req.body));
     res.status(204).send();
   }
 

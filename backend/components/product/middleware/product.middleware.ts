@@ -1,6 +1,7 @@
 import express from 'express';
 import productService from '../services/product.service';
 import debug from 'debug';
+import { HttpStatusCodeEnum } from '../../../common/types/status.code.enum';
 
 const log: debug.IDebugger = debug('app:product-controller');
 
@@ -19,7 +20,7 @@ class ProductsMiddleware {
     ) {
       next();
     } else {
-      res.status(400).send({
+      res.status(HttpStatusCodeEnum.BAD_REQUEST).send({
         error: `Missing required fields {timestamp, name, price, stock}`,
       });
     }
@@ -30,13 +31,12 @@ class ProductsMiddleware {
     res: express.Response,
     next: express.NextFunction
   ) {
-    const product = await productService.readById(req.params.productId);
-    if (product) {
-      next();
-    } else {
-      res.status(404).send({
-        error: `Product ${req.params.productId} not found`,
-      });
+    try {
+      const product = await productService.readById(req.params.productId);
+      if (product) next();
+    } catch (err) {
+      const errMessage = `Product ${req.params.productId} not found`;
+      res.status(HttpStatusCodeEnum.NOT_FOUND).send({ error: errMessage });
     }
   }
 

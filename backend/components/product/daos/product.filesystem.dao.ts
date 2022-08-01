@@ -7,6 +7,7 @@ import { nanoid } from 'nanoid';
 import path from 'path';
 // @ts-expect-error
 import { localDB } from '@abmsourav/localdb';
+import BaseError from '../../../common/error/base.error';
 
 const log: debug.IDebugger = debug('app:filesystem-dao');
 
@@ -30,50 +31,75 @@ class ProductsDao {
   }
 
   async addProduct(product: ICreateProductDto) {
-    product.id = nanoid();
-    product.timestamp = new Date().toUTCString();
-    await this.crud.set(product);
-    return product.id;
+    try {
+      product.id = nanoid();
+      product.timestamp = new Date().toUTCString();
+      await this.crud.set(product);
+      return product.id;
+    } catch (err) {
+      throw new BaseError('Failed to save product', err, 'addProduct');
+    }
   }
 
   async getProducts() {
-    return await this.crud.get();
+    try {
+      return await this.crud.get();
+    } catch (err) {
+      throw new BaseError('Products could not be loaded', err, 'getProducts');
+    }
   }
 
   async getProductById(productId: string) {
-    return await this.crud.search('id', productId);
+    try {
+      console.log('soy yo');
+      return await this.crud.search('id', productId);
+    } catch (err) {
+      throw new BaseError('Could not get the product', err, 'getProductById');
+    }
   }
 
   async putProductById(productId: string, product: IPutProductDto) {
-    const allowedPutFields = [
-      'timestamp',
-      'name',
-      'description',
-      'productCode',
-      'thumbnailUrl',
-      'price',
-      'stock',
-    ] as const;
-    await this.crud.update({ id: productId }, product, allowedPutFields);
-    return `${product.id} updated via put`;
+    try {
+      const allowedPutFields = [
+        'timestamp',
+        'name',
+        'description',
+        'productCode',
+        'thumbnailUrl',
+        'price',
+        'stock',
+      ] as const;
+      await this.crud.update({ id: productId }, product, allowedPutFields);
+      return `${product.id} updated via put`;
+    } catch (err) {
+      throw new BaseError('Failed to update product', err, 'putProductById');
+    }
   }
 
   async patchProductById(productId: string, product: IPatchProductDto) {
-    const allowedPatchFields = [
-      'name',
-      'description',
-      'productCode',
-      'thumbnailUrl',
-      'price',
-      'stock',
-    ] as const;
-    await this.crud.update({ id: productId }, product, allowedPatchFields);
-    return `${product.id} patched`;
+    try {
+      const allowedPatchFields = [
+        'name',
+        'description',
+        'productCode',
+        'thumbnailUrl',
+        'price',
+        'stock',
+      ] as const;
+      await this.crud.update({ id: productId }, product, allowedPatchFields);
+      return `${product.id} patched`;
+    } catch (err) {
+      throw new BaseError('Failed to update product', err, 'patchProductById');
+    }
   }
 
   async removeProductById(productId: string) {
-    await this.crud.remove({ id: productId });
-    return `${productId} removed`;
+    try {
+      await this.crud.remove({ id: productId });
+      return `${productId} removed`;
+    } catch (err) {
+      throw new BaseError('Failed to remove product', err, 'removeProductById');
+    }
   }
 }
 
