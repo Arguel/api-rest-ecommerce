@@ -2,6 +2,7 @@ import CommonRoutesConfig from '../../common/common.routes.config';
 import ProductsController from './controllers/product.controller';
 import ProductsMiddleware from './middleware/product.middleware';
 import express from 'express';
+import PermissionMiddleware from '../../common/middleware/common.permission.middleware';
 
 export default class ProductsRoutes extends CommonRoutesConfig {
   constructor(app: express.Application) {
@@ -13,6 +14,7 @@ export default class ProductsRoutes extends CommonRoutesConfig {
       .get(ProductsController.listProducts)
       .post(
         ProductsMiddleware.validateRequiredProductBodyFields,
+        PermissionMiddleware.isAdmin,
         ProductsController.createProduct
       );
 
@@ -21,6 +23,7 @@ export default class ProductsRoutes extends CommonRoutesConfig {
       .route(`/products/:productId`)
       .all(ProductsMiddleware.validateProductExists)
       .get(ProductsController.getProductById)
+      .all(PermissionMiddleware.isAdmin)
       .delete(ProductsController.removeProduct);
 
     this.app.put(`/products/:productId`, [

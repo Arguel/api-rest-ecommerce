@@ -27,8 +27,10 @@ routes.push(new CartRoutes(app));
 routes.forEach((route: CommonRoutesConfig): void => {
   debugLog(`Routes configured for ${route.getName()}`);
 });
+// Manage non-existent routes
+app.use(ErrorMiddleware.routeNotFound);
 
-// Error
+// Errors
 process.on('uncaughtException', async (error: Error): Promise<void> => {
   ErrorHandler.handleError(error);
   if (!ErrorHandler.isTrustedError(error)) process.exit(1);
