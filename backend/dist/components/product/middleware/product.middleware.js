@@ -14,8 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const product_service_1 = __importDefault(require("../services/product.service"));
 const debug_1 = __importDefault(require("debug"));
-const api_error_1 = require("../../../common/error/api.error");
-const status_code_enum_1 = require("../../../common/types/status.code.enum");
+const http_status_1 = __importDefault(require("http-status"));
 const log = (0, debug_1.default)('app:product-controller');
 class ProductsMiddleware {
     validateRequiredProductBodyFields(req, res, next) {
@@ -28,7 +27,7 @@ class ProductsMiddleware {
                 next();
             }
             else {
-                res.status(400).send({
+                res.status(http_status_1.default.BAD_REQUEST).send({
                     error: `Missing required fields {timestamp, name, price, stock}`,
                 });
             }
@@ -38,13 +37,19 @@ class ProductsMiddleware {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const product = yield product_service_1.default.readById(req.params.productId);
-                if (product)
+                if (product) {
                     next();
+                }
+                else {
+                    res
+                        .status(http_status_1.default.NOT_FOUND)
+                        .send({ error: `Product ${req.params.userId} not found` });
+                }
             }
             catch (err) {
-                const errMessage = `Product ${req.params.productId} not found`;
-                res.status(status_code_enum_1.HttpStatusCodeEnum.NOT_FOUND).send({ error: errMessage });
-                throw new api_error_1.APIError(errMessage, 'validateProductExists', status_code_enum_1.HttpStatusCodeEnum.NOT_FOUND);
+                res
+                    .status(http_status_1.default.NOT_FOUND)
+                    .send({ error: `Product ${req.params.productId} not found` });
             }
         });
     }
@@ -56,4 +61,4 @@ class ProductsMiddleware {
     }
 }
 exports.default = new ProductsMiddleware();
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoicHJvZHVjdC5taWRkbGV3YXJlLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vLi4vLi4vY29tcG9uZW50cy9wcm9kdWN0L21pZGRsZXdhcmUvcHJvZHVjdC5taWRkbGV3YXJlLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7Ozs7Ozs7Ozs7Ozs7O0FBQ0Esa0ZBQXlEO0FBQ3pELGtEQUEwQjtBQUMxQiwrREFBMkQ7QUFDM0QsNkVBQTRFO0FBRTVFLE1BQU0sR0FBRyxHQUFvQixJQUFBLGVBQUssRUFBQyx3QkFBd0IsQ0FBQyxDQUFDO0FBRTdELE1BQU0sa0JBQWtCO0lBQ2hCLGlDQUFpQyxDQUNyQyxHQUFvQixFQUNwQixHQUFxQixFQUNyQixJQUEwQjs7WUFFMUIsSUFDRSxHQUFHLENBQUMsSUFBSTtnQkFDUixHQUFHLENBQUMsSUFBSSxDQUFDLFNBQVM7Z0JBQ2xCLEdBQUcsQ0FBQyxJQUFJLENBQUMsSUFBSTtnQkFDYixHQUFHLENBQUMsSUFBSSxDQUFDLEtBQUs7Z0JBQ2QsR0FBRyxDQUFDLElBQUksQ0FBQyxLQUFLLEVBQ2Q7Z0JBQ0EsSUFBSSxFQUFFLENBQUM7YUFDUjtpQkFBTTtnQkFDTCxHQUFHLENBQUMsTUFBTSxDQUFDLEdBQUcsQ0FBQyxDQUFDLElBQUksQ0FBQztvQkFDbkIsS0FBSyxFQUFFLHlEQUF5RDtpQkFDakUsQ0FBQyxDQUFDO2FBQ0o7UUFDSCxDQUFDO0tBQUE7SUFFSyxxQkFBcUIsQ0FDekIsR0FBb0IsRUFDcEIsR0FBcUIsRUFDckIsSUFBMEI7O1lBRTFCLElBQUk7Z0JBQ0YsTUFBTSxPQUFPLEdBQUcsTUFBTSx5QkFBYyxDQUFDLFFBQVEsQ0FBQyxHQUFHLENBQUMsTUFBTSxDQUFDLFNBQVMsQ0FBQyxDQUFDO2dCQUNwRSxJQUFJLE9BQU87b0JBQUUsSUFBSSxFQUFFLENBQUM7YUFDckI7WUFBQyxPQUFPLEdBQUcsRUFBRTtnQkFDWixNQUFNLFVBQVUsR0FBRyxXQUFXLEdBQUcsQ0FBQyxNQUFNLENBQUMsU0FBUyxZQUFZLENBQUM7Z0JBQy9ELEdBQUcsQ0FBQyxNQUFNLENBQUMscUNBQWtCLENBQUMsU0FBUyxDQUFDLENBQUMsSUFBSSxDQUFDLEVBQUUsS0FBSyxFQUFFLFVBQVUsRUFBRSxDQUFDLENBQUM7Z0JBQ3JFLE1BQU0sSUFBSSxvQkFBUSxDQUNoQixVQUFVLEVBQ1YsdUJBQXVCLEVBQ3ZCLHFDQUFrQixDQUFDLFNBQVMsQ0FDN0IsQ0FBQzthQUNIO1FBQ0gsQ0FBQztLQUFBO0lBRUssZ0JBQWdCLENBQ3BCLEdBQW9CLEVBQ3BCLEdBQXFCLEVBQ3JCLElBQTBCOztZQUUxQixHQUFHLENBQUMsSUFBSSxDQUFDLEVBQUUsR0FBRyxHQUFHLENBQUMsTUFBTSxDQUFDLFNBQVMsQ0FBQztZQUNuQyxJQUFJLEVBQUUsQ0FBQztRQUNULENBQUM7S0FBQTtDQUNGO0FBRUQsa0JBQWUsSUFBSSxrQkFBa0IsRUFBRSxDQUFDIn0=
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoicHJvZHVjdC5taWRkbGV3YXJlLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vLi4vLi4vY29tcG9uZW50cy9wcm9kdWN0L21pZGRsZXdhcmUvcHJvZHVjdC5taWRkbGV3YXJlLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7Ozs7Ozs7Ozs7Ozs7O0FBQ0Esa0ZBQXlEO0FBQ3pELGtEQUEwQjtBQUMxQiw4REFBcUM7QUFFckMsTUFBTSxHQUFHLEdBQW9CLElBQUEsZUFBSyxFQUFDLHdCQUF3QixDQUFDLENBQUM7QUFFN0QsTUFBTSxrQkFBa0I7SUFDaEIsaUNBQWlDLENBQ3JDLEdBQW9CLEVBQ3BCLEdBQXFCLEVBQ3JCLElBQTBCOztZQUUxQixJQUNFLEdBQUcsQ0FBQyxJQUFJO2dCQUNSLEdBQUcsQ0FBQyxJQUFJLENBQUMsU0FBUztnQkFDbEIsR0FBRyxDQUFDLElBQUksQ0FBQyxJQUFJO2dCQUNiLEdBQUcsQ0FBQyxJQUFJLENBQUMsS0FBSztnQkFDZCxHQUFHLENBQUMsSUFBSSxDQUFDLEtBQUssRUFDZDtnQkFDQSxJQUFJLEVBQUUsQ0FBQzthQUNSO2lCQUFNO2dCQUNMLEdBQUcsQ0FBQyxNQUFNLENBQUMscUJBQVUsQ0FBQyxXQUFXLENBQUMsQ0FBQyxJQUFJLENBQUM7b0JBQ3RDLEtBQUssRUFBRSx5REFBeUQ7aUJBQ2pFLENBQUMsQ0FBQzthQUNKO1FBQ0gsQ0FBQztLQUFBO0lBRUsscUJBQXFCLENBQ3pCLEdBQW9CLEVBQ3BCLEdBQXFCLEVBQ3JCLElBQTBCOztZQUUxQixJQUFJO2dCQUNGLE1BQU0sT0FBTyxHQUFHLE1BQU0seUJBQWMsQ0FBQyxRQUFRLENBQUMsR0FBRyxDQUFDLE1BQU0sQ0FBQyxTQUFTLENBQUMsQ0FBQztnQkFDcEUsSUFBSSxPQUFPLEVBQUU7b0JBQ1gsSUFBSSxFQUFFLENBQUM7aUJBQ1I7cUJBQU07b0JBQ0wsR0FBRzt5QkFDQSxNQUFNLENBQUMscUJBQVUsQ0FBQyxTQUFTLENBQUM7eUJBQzVCLElBQUksQ0FBQyxFQUFFLEtBQUssRUFBRSxXQUFXLEdBQUcsQ0FBQyxNQUFNLENBQUMsTUFBTSxZQUFZLEVBQUUsQ0FBQyxDQUFDO2lCQUM5RDthQUNGO1lBQUMsT0FBTyxHQUFHLEVBQUU7Z0JBQ1osR0FBRztxQkFDQSxNQUFNLENBQUMscUJBQVUsQ0FBQyxTQUFTLENBQUM7cUJBQzVCLElBQUksQ0FBQyxFQUFFLEtBQUssRUFBRSxXQUFXLEdBQUcsQ0FBQyxNQUFNLENBQUMsU0FBUyxZQUFZLEVBQUUsQ0FBQyxDQUFDO2FBQ2pFO1FBQ0gsQ0FBQztLQUFBO0lBRUssZ0JBQWdCLENBQ3BCLEdBQW9CLEVBQ3BCLEdBQXFCLEVBQ3JCLElBQTBCOztZQUUxQixHQUFHLENBQUMsSUFBSSxDQUFDLEVBQUUsR0FBRyxHQUFHLENBQUMsTUFBTSxDQUFDLFNBQVMsQ0FBQztZQUNuQyxJQUFJLEVBQUUsQ0FBQztRQUNULENBQUM7S0FBQTtDQUNGO0FBRUQsa0JBQWUsSUFBSSxrQkFBa0IsRUFBRSxDQUFDIn0=

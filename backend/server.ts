@@ -8,5 +8,6 @@ sourceMapSupport.install();
 
 const debugLog: debug.IDebugger = debug('server');
 const port = config.get<number>('server.port');
+const domain = config.get<string>('server.domain');
 
-app.listen(port, () => debugLog(`Server running at http://localhost:${port}`));
+app.listen(port, () => debugLog(`Server running at http://${domain}:${port}`));

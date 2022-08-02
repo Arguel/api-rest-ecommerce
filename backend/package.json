@@ -4,7 +4,7 @@
   "description": "backend",
   "main": "server.js",
   "scripts": {
-    "start": "tsc && node ./dist/server.js",
+    "start": "tsc && node --inspect ./dist/server.js",
     "debug": "export DEBUG=* && npm start",
     "test": "mocha -r ts-node/register 'test/**/*.test.ts'",
     "test-debug": "export DEBUG=* && npm test",

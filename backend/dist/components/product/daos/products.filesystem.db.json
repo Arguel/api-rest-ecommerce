@@ -1,22 +1,32 @@
 [
     {
-        "timestamp": "Thu, 28 Jul 2022 17:36:35 GMT",
-        "name": "Name",
-        "description": "pato",
+        "timestamp": "Testeo33333333333",
+        "name": "Name33333333333",
+        "description": "pato33333333333",
         "productCode": "pato",
         "thumbnailUrl": "pato",
-        "price": "pato",
-        "stock": "pato",
-        "id": "iY1Ubu_cj2PdJcVQOIMR4"
+        "price": "a33333333333",
+        "stock": "a33333333333",
+        "id": "EKrS5nO8dKIAqoFpX5U4J"
     },
     {
-        "timestamp": "Thu, 28 Jul 2022 17:36:36 GMT",
+        "timestamp": "Mon, 01 Aug 2022 22:53:44 GMT",
         "name": "Name",
         "description": "pato",
-        "productCode": "pato",
-        "thumbnailUrl": "pato",
-        "price": "pato",
-        "stock": "pato",
-        "id": "EKrS5nO8dKIAqoFpX5U4J"
+        "price": "a",
+        "stock": "a",
+        "empanada": "2",
+        "duro": 22,
+        "id": "nZ2lM80Api-2uSQqo_Mg8"
+    },
+    {
+        "timestamp": "Mon, 01 Aug 2022 22:57:16 GMT",
+        "name": "Name",
+        "description": "pato",
+        "price": "a",
+        "stock": "a",
+        "empanada": "2",
+        "duro": 22,
+        "id": "x_LLdScZG6z1KqZ8Oc19r"
     }
 ]

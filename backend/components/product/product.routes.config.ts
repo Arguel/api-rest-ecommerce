@@ -8,11 +8,13 @@ export default class ProductsRoutes extends CommonRoutesConfig {
     super(app, 'ProductsRoutes');
   }
   configureRoutes(): express.Application {
-    this.app.route(`/products`).get(ProductsController.listProducts).post(
-      ProductsMiddleware.validateRequiredProductBodyFields,
-      //ProductsMiddleware.validateSameEmailDoesntExist,
-      ProductsController.createProduct
-    );
+    this.app
+      .route(`/products`)
+      .get(ProductsController.listProducts)
+      .post(
+        ProductsMiddleware.validateRequiredProductBodyFields,
+        ProductsController.createProduct
+      );
 
     this.app.param(`productId`, ProductsMiddleware.extractProductId);
     this.app
@@ -23,14 +25,10 @@ export default class ProductsRoutes extends CommonRoutesConfig {
 
     this.app.put(`/products/:productId`, [
       ProductsMiddleware.validateRequiredProductBodyFields,
-      //ProductsMiddleware.validateSameEmailBelongToSameProduct,
       ProductsController.put,
     ]);
 
-    this.app.patch(`/products/:productId`, [
-      //ProductsMiddleware.validatePatchEmail,
-      ProductsController.patch,
-    ]);
+    this.app.patch(`/products/:productId`, [ProductsController.patch]);
 
     return this.app;
   }

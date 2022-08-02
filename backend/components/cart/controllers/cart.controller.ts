@@ -11,9 +11,9 @@ class CartsController {
     res.status(httpStatus.OK).send(carts);
   }
 
-  async getCartById(req: express.Request, res: express.Response) {
+  async getCartProductsById(req: express.Request, res: express.Response) {
     const cart = await cartsService.readById(req.body.id);
-    res.status(httpStatus.OK).send(cart);
+    res.status(httpStatus.OK).send(cart.products);
   }
 
   async createCart(req: express.Request, res: express.Response) {
@@ -21,18 +21,23 @@ class CartsController {
     res.status(httpStatus.CREATED).send({ id: cartId });
   }
 
-  async patch(req: express.Request, res: express.Response) {
-    log(await cartsService.patchById(req.body.id, req.body));
-    res.status(httpStatus.NO_CONTENT).send();
-  }
-
-  async put(req: express.Request, res: express.Response) {
-    log(await cartsService.putById(req.body.id, req.body));
-    res.status(httpStatus.NO_CONTENT).send();
+  async addProduct(req: express.Request, res: express.Response) {
+    const cartId = await cartsService.addProduct(req.body.id, req.body.values);
+    res.status(httpStatus.CREATED).send({ id: cartId });
   }
 
   async removeCart(req: express.Request, res: express.Response) {
     log(await cartsService.deleteById(req.body.id));
+    res.status(httpStatus.NO_CONTENT).send();
+  }
+
+  async removeCartProduct(req: express.Request, res: express.Response) {
+    log(
+      await cartsService.deleteProductById(
+        req.params.cartId,
+        req.params.productId
+      )
+    );
     res.status(httpStatus.NO_CONTENT).send();
   }
 }

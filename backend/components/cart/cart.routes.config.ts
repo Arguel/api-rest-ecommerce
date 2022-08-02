@@ -8,28 +8,33 @@ export default class CartRoutes extends CommonRoutesConfig {
     super(app, 'CartRoutes');
   }
   configureRoutes(): express.Application {
-    this.app.route(`/cart`).get(CartController.listCarts).post(
-      CartMiddleware.validateRequiredCartBodyFields,
-      //CartMiddleware.validateSameEmailDoesntExist,
-      CartController.createCart
-    );
+    this.app
+      .route(`/cart`)
+      .get(CartController.listCarts)
+      .post(
+        CartMiddleware.validateRequiredCartBodyFields,
+        CartController.createCart
+      );
 
     this.app.param(`cartId`, CartMiddleware.extractCartId);
     this.app
       .route(`/cart/:cartId`)
       .all(CartMiddleware.validateCartExists)
-      .get(CartController.getCartById)
       .delete(CartController.removeCart);
 
-    this.app.put(`/cart/:cartId`, [
-      CartMiddleware.validateRequiredCartBodyFields,
-      //CartMiddleware.validateSameEmailBelongToSameCart,
-      CartController.put,
-    ]);
+    this.app
+      .route(`/cart/:cartId/products`)
+      .all(CartMiddleware.validateCartExists)
+      .get([CartController.getCartProductsById])
+      .post([
+        CartMiddleware.validateRequiredCartBodyFields,
+        CartMiddleware.validateProductExists,
+        CartController.addProduct,
+      ]);
 
-    this.app.patch(`/cart/:cartId`, [
-      //CartMiddleware.validatePatchEmail,
-      CartController.patch,
+    this.app.delete(`/cart/:cartId/products/:productId`, [
+      CartMiddleware.validateCartExists,
+      CartController.removeCartProduct,
     ]);
 
     return this.app;

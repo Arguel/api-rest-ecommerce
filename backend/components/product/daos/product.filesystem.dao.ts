@@ -51,7 +51,6 @@ class ProductsDao {
 
   async getProductById(productId: string) {
     try {
-      console.log('soy yo');
       return await this.crud.search('id', productId);
     } catch (err) {
       throw new BaseError('Could not get the product', err, 'getProductById');

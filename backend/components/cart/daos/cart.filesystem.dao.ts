@@ -1,13 +1,12 @@
 import fs from 'fs';
 import debug from 'debug';
 import { ICreateCartDto } from '../dto/create.cart.dto';
-import { IPatchCartDto } from '../dto/patch.cart.dto';
-import { IPutCartDto } from '../dto/put.cart.dto';
 import { nanoid } from 'nanoid';
 import path from 'path';
 // @ts-expect-error
 import { localDB } from '@abmsourav/localdb';
 import BaseError from '../../../common/error/base.error';
+import { ICreateProductDto as IProduct } from '../../product/dto/create.product.dto';
 
 const log: debug.IDebugger = debug('app:filesystem-dao');
 
@@ -38,6 +37,22 @@ class CartsDao {
     }
   }
 
+  async addProduct(cartId: string, products: Array<IProduct>) {
+    try {
+      const cart = await this.crud.search('id', cartId);
+      const allowedPutFields = ['products'];
+      const newProducts = cart.products.concat(products);
+      await this.crud.update(
+        { id: cartId },
+        { products: newProducts },
+        allowedPutFields
+      );
+      return `${cart.id} updated`;
+    } catch (err) {
+      throw new BaseError('Failed to save cart', err, 'addCart');
+    }
+  }
+
   async getCarts() {
     try {
       return await this.crud.get();
@@ -48,45 +63,9 @@ class CartsDao {
 
   async getCartById(cartId: string) {
     try {
-      console.log('soy yo');
       return await this.crud.search('id', cartId);
     } catch (err) {
       throw new BaseError('Could not get the cart', err, 'getCartById');
-    }
-  }
-
-  async putCartById(cartId: string, cart: IPutCartDto) {
-    try {
-      const allowedPutFields = [
-        'timestamp',
-        'name',
-        'description',
-        'cartCode',
-        'thumbnailUrl',
-        'price',
-        'stock',
-      ] as const;
-      await this.crud.update({ id: cartId }, cart, allowedPutFields);
-      return `${cart.id} updated via put`;
-    } catch (err) {
-      throw new BaseError('Failed to update cart', err, 'putCartById');
-    }
-  }
-
-  async patchCartById(cartId: string, cart: IPatchCartDto) {
-    try {
-      const allowedPatchFields = [
-        'name',
-        'description',
-        'cartCode',
-        'thumbnailUrl',
-        'price',
-        'stock',
-      ] as const;
-      await this.crud.update({ id: cartId }, cart, allowedPatchFields);
-      return `${cart.id} patched`;
-    } catch (err) {
-      throw new BaseError('Failed to update cart', err, 'patchCartById');
     }
   }
 
@@ -96,6 +75,28 @@ class CartsDao {
       return `${cartId} removed`;
     } catch (err) {
       throw new BaseError('Failed to remove cart', err, 'removeCartById');
+    }
+  }
+
+  async removeCartProductById(cartId: string, productId: string) {
+    try {
+      const cart = await this.crud.search('id', cartId);
+      const allowedPutFields = ['products'];
+      const newProducts = cart.products.filter(
+        (product: IProduct) => product.id !== productId
+      );
+      await this.crud.update(
+        { id: cartId },
+        { products: newProducts },
+        allowedPutFields
+      );
+      return `${cart.id} updated`;
+    } catch (err) {
+      throw new BaseError(
+        'Failed to remove product',
+        err,
+        'removeCartProductById'
+      );
     }
   }
 }
