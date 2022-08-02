@@ -19,7 +19,7 @@ const log = (0, debug_1.default)('app:common-permission-middleware');
 class CommonPermissionMiddleware {
     isAdmin(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
-            const userPermissionLevel = 1;
+            const userPermissionLevel = 8;
             if (userPermissionLevel & common_permissionlevel_enum_1.EPermissionLevel.ADMIN_PERMISSION) {
                 return next();
             }

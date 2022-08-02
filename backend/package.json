@@ -5,9 +5,9 @@
   "main": "server.js",
   "scripts": {
     "start": "tsc && node --inspect ./dist/server.js",
-    "debug": "export DEBUG=* && npm start",
+    "debug": "cross-env DEBUG=* npm start",
     "test": "mocha -r ts-node/register 'test/**/*.test.ts'",
-    "test-debug": "export DEBUG=* && npm test",
+    "test-debug": "cross-env DEBUG=* npm test",
     "data:import": "node scripts/seed.script.ts"
   },
   "repository": {
@@ -51,6 +51,7 @@
     "@typescript-eslint/eslint-plugin": "^5.30.7",
     "@typescript-eslint/parser": "^5.30.7",
     "chai": "^4.3.6",
+    "cross-env": "^7.0.3",
     "eslint": "^8.20.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-mocha": "^10.1.0",
