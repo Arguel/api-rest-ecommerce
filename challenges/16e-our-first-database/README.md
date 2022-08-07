@@ -1,6 +1,7 @@
 # Importante:
 
 1. Es necesario tener una base de datos con nombre "ecommerce" en MariaDB/MySQL
+2. Instalar las dependencias con `npm install`
 
 ## Comandos para el servidor:
 
