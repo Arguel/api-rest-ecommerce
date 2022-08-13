@@ -6,7 +6,7 @@ import httpStatus from 'http-status';
 const log: debug.IDebugger = debug('app:product-controller');
 
 class ProductsMiddleware {
-  async validateRequiredProductBodyFields(
+  public async validateRequiredProductBodyFields(
     req: express.Request,
     res: express.Response,
     next: express.NextFunction
@@ -26,7 +26,7 @@ class ProductsMiddleware {
     }
   }
 
-  async validateProductExists(
+  public async validateProductExists(
     req: express.Request,
     res: express.Response,
     next: express.NextFunction
@@ -47,7 +47,7 @@ class ProductsMiddleware {
     }
   }
 
-  async extractProductId(
+  public async extractProductId(
     req: express.Request,
     res: express.Response,
     next: express.NextFunction

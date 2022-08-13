@@ -23,14 +23,14 @@ class ProductsDao {
     log('Created new instance of ProductsDao');
   }
 
-  init(): void {
+  private init(): void {
     if (!fs.existsSync(this.filename)) {
       fs.writeFileSync(this.filename, '');
       log('Database not found, created products.db');
     }
   }
 
-  async addProduct(product: ICreateProductDto) {
+  public async addProduct(product: ICreateProductDto) {
     try {
       product.id = nanoid();
       product.timestamp = new Date().toUTCString();
@@ -41,7 +41,7 @@ class ProductsDao {
     }
   }
 
-  async getProducts() {
+  public async getProducts() {
     try {
       return await this.crud.get();
     } catch (err) {
@@ -49,7 +49,7 @@ class ProductsDao {
     }
   }
 
-  async getProductById(productId: string) {
+  public async getProductById(productId: string) {
     try {
       return await this.crud.search('id', productId);
     } catch (err) {
@@ -57,7 +57,7 @@ class ProductsDao {
     }
   }
 
-  async putProductById(productId: string, product: IPutProductDto) {
+  public async putProductById(productId: string, product: IPutProductDto) {
     try {
       const allowedPutFields = [
         'timestamp',
@@ -75,7 +75,7 @@ class ProductsDao {
     }
   }
 
-  async patchProductById(productId: string, product: IPatchProductDto) {
+  public async patchProductById(productId: string, product: IPatchProductDto) {
     try {
       const allowedPatchFields = [
         'name',
@@ -92,7 +92,7 @@ class ProductsDao {
     }
   }
 
-  async removeProductById(productId: string) {
+  public async removeProductById(productId: string) {
     try {
       await this.crud.remove({ id: productId });
       return `${productId} removed`;

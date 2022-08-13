@@ -8,7 +8,7 @@ import { ICreateProductDto as IProduct } from '../../product/dto/create.product.
 const log: debug.IDebugger = debug('app:cart-controller');
 
 class CartsMiddleware {
-  async validateRequiredCartBodyFields(
+  public async validateRequiredCartBodyFields(
     req: express.Request,
     res: express.Response,
     next: express.NextFunction
@@ -22,7 +22,7 @@ class CartsMiddleware {
     }
   }
 
-  async validateCartExists(
+  public async validateCartExists(
     req: express.Request,
     res: express.Response,
     next: express.NextFunction
@@ -43,7 +43,7 @@ class CartsMiddleware {
     }
   }
 
-  async validateProductExists(
+  public async validateProductExists(
     req: express.Request,
     res: express.Response,
     next: express.NextFunction
@@ -66,7 +66,7 @@ class CartsMiddleware {
     }
   }
 
-  async extractCartId(
+  public async extractCartId(
     req: express.Request,
     res: express.Response,
     next: express.NextFunction

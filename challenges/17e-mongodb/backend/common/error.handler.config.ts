@@ -4,11 +4,11 @@ import BaseError from './error/base.error';
 const log: debug.IDebugger = debug('error-handler');
 
 class ErrorHandler {
-  handleError(err: Error): void {
+  public handleError(err: Error): void {
     log(err);
   }
 
-  isTrustedError(error: Error): boolean {
+  public isTrustedError(error: Error): boolean {
     return error instanceof BaseError && error.isOperational;
   }
 }

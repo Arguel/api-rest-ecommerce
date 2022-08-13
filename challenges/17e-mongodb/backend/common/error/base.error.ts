@@ -1,10 +1,10 @@
 import httpStatus from 'http-status';
 
 export default class BaseError extends Error {
-  readonly log: string;
-  readonly methodName: string | undefined;
-  readonly httpCode: number;
-  readonly isOperational: boolean;
+  public readonly log: string;
+  public readonly methodName: string | undefined;
+  public readonly httpCode: number;
+  public readonly isOperational: boolean;
 
   constructor(
     log: string,

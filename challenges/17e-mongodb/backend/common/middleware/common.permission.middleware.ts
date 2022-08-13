@@ -6,7 +6,7 @@ import httpStatus from 'http-status';
 const log: debug.IDebugger = debug('app:common-permission-middleware');
 
 class CommonPermissionMiddleware {
-  async isAdmin(
+  public async isAdmin(
     req: express.Request,
     res: express.Response,
     next: express.NextFunction

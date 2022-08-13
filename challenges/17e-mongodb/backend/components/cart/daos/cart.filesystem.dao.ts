@@ -19,14 +19,14 @@ class CartsDao {
     log('Created new instance of CartsDao');
   }
 
-  init(): void {
+  private init(): void {
     if (!fs.existsSync(this.filename)) {
       fs.writeFileSync(this.filename, '');
       log('Database not found, created carts.db');
     }
   }
 
-  async addCart(cart: ICreateCartDto) {
+  public async addCart(cart: ICreateCartDto) {
     try {
       cart.id = nanoid();
       cart.timestamp = new Date().toUTCString();
@@ -37,7 +37,7 @@ class CartsDao {
     }
   }
 
-  async addProduct(cartId: string, products: Array<IProduct>) {
+  public async addProduct(cartId: string, products: Array<IProduct>) {
     try {
       const cart = await this.crud.search('id', cartId);
       const allowedPutFields = ['products'];
@@ -53,7 +53,7 @@ class CartsDao {
     }
   }
 
-  async getCarts() {
+  public async getCarts() {
     try {
       return await this.crud.get();
     } catch (err) {
@@ -61,7 +61,7 @@ class CartsDao {
     }
   }
 
-  async getCartById(cartId: string) {
+  public async getCartById(cartId: string) {
     try {
       return await this.crud.search('id', cartId);
     } catch (err) {
@@ -69,7 +69,7 @@ class CartsDao {
     }
   }
 
-  async removeCartById(cartId: string) {
+  public async removeCartById(cartId: string) {
     try {
       await this.crud.remove({ id: cartId });
       return `${cartId} removed`;
@@ -78,7 +78,7 @@ class CartsDao {
     }
   }
 
-  async removeCartProductById(cartId: string, productId: string) {
+  public async removeCartProductById(cartId: string, productId: string) {
     try {
       const cart = await this.crud.search('id', cartId);
       const allowedPutFields = ['products'];

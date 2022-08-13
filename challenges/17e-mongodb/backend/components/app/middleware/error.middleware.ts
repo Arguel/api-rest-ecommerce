@@ -4,7 +4,7 @@ import ErrorHandler from '../../../common/error.handler.config';
 import BaseError from '../../../common/error/base.error';
 
 class ErrorMiddleware {
-  async handle(
+  public async handle(
     err: BaseError,
     req: express.Request,
     res: express.Response,
@@ -17,7 +17,7 @@ class ErrorMiddleware {
     ErrorHandler.handleError(err);
   }
 
-  async routeNotFound(
+  public async routeNotFound(
     req: express.Request,
     res: express.Response,
     next: express.NextFunction

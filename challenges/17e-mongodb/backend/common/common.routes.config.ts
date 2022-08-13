@@ -9,8 +9,8 @@ export default abstract class CommonRoutesConfig {
     this.name = name;
     this.configureRoutes();
   }
-  getName(): string {
+  public getName(): string {
     return this.name;
   }
-  abstract configureRoutes(): express.Application;
+  public abstract configureRoutes(): express.Application;
 }

@@ -3,7 +3,7 @@ import express from 'express';
 import * as argon2 from 'argon2';
 
 class AuthMiddleware {
-  async validateBodyRequest(
+  public async validateBodyRequest(
     req: express.Request,
     res: express.Response,
     next: express.NextFunction
@@ -17,7 +17,7 @@ class AuthMiddleware {
     }
   }
 
-  // async verifyUserPassword(
+  // public async verifyUserPassword(
   //   req: express.Request,
   //   res: express.Response,
   //   next: express.NextFunction
