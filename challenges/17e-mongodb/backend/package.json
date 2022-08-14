@@ -5,8 +5,11 @@
   "main": "server.js",
   "scripts": {
     "start": "tsc && node --inspect ./dist/server.js",
+    "ci": "cross-env NODE_ENV=ci npm start",
+    "development": "cross-env NODE_ENV=development npm start",
+    "production": "cross-env NODE_ENV=production npm start",
     "debug": "cross-env DEBUG=* npm start",
-    "test": "mocha -r ts-node/register 'test/**/*.test.ts'",
+    "test": "cross-env NODE_ENV=test mocha -r ts-node/register 'test/**/*.test.ts'",
     "test-debug": "cross-env DEBUG=* npm test",
     "data:import": "node scripts/seed.script.ts"
   },

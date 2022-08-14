@@ -5,6 +5,10 @@ import { IPutProductDto } from '../dto/put.product.dto';
 import { IPatchProductDto } from '../dto/patch.product.dto';
 
 class ProductsService implements ICrud {
+  async getSalaryByUser() {
+    return FactoryInstance.getSalary();
+  }
+
   async create(resource: ICreateProductDto) {
     return ProductsDao.addProduct(resource);
   }
