@@ -12,38 +12,40 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const product_filesystem_dao_1 = __importDefault(require("../daos/product.filesystem.dao"));
+const product_factory_dao_1 = __importDefault(require("../daos/product.factory.dao"));
 class ProductsService {
     create(resource) {
         return __awaiter(this, void 0, void 0, function* () {
-            return product_filesystem_dao_1.default.addProduct(resource);
+            return (yield product_factory_dao_1.default).create(resource);
         });
     }
     deleteById(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            return product_filesystem_dao_1.default.removeProductById(id);
+            // return ProductsDao.removeProductById(id);
+            return ``;
         });
     }
     list(limit, page) {
         return __awaiter(this, void 0, void 0, function* () {
-            return product_filesystem_dao_1.default.getProducts();
+            return (yield product_factory_dao_1.default).list();
         });
     }
     patchById(id, resource) {
         return __awaiter(this, void 0, void 0, function* () {
-            return product_filesystem_dao_1.default.patchProductById(id, resource);
+            // return ProductsDao.patchProductById(id, resource);
         });
     }
     putById(id, resource) {
         return __awaiter(this, void 0, void 0, function* () {
-            return product_filesystem_dao_1.default.putProductById(id, resource);
+            // return ProductsDao.putProductById(id, resource);
         });
     }
     readById(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            return product_filesystem_dao_1.default.getProductById(id);
+            // return ProductsDao.getProductById(id);
+            return ``;
         });
     }
 }
 exports.default = new ProductsService();
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoicHJvZHVjdC5zZXJ2aWNlLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vLi4vLi4vY29tcG9uZW50cy9wcm9kdWN0L3NlcnZpY2VzL3Byb2R1Y3Quc2VydmljZS50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7OztBQUFBLDRGQUF5RDtBQU16RCxNQUFNLGVBQWU7SUFDYixNQUFNLENBQUMsUUFBMkI7O1lBQ3RDLE9BQU8sZ0NBQVcsQ0FBQyxVQUFVLENBQUMsUUFBUSxDQUFDLENBQUM7UUFDMUMsQ0FBQztLQUFBO0lBRUssVUFBVSxDQUFDLEVBQVU7O1lBQ3pCLE9BQU8sZ0NBQVcsQ0FBQyxpQkFBaUIsQ0FBQyxFQUFFLENBQUMsQ0FBQztRQUMzQyxDQUFDO0tBQUE7SUFFSyxJQUFJLENBQUMsS0FBYSxFQUFFLElBQVk7O1lBQ3BDLE9BQU8sZ0NBQVcsQ0FBQyxXQUFXLEVBQUUsQ0FBQztRQUNuQyxDQUFDO0tBQUE7SUFFSyxTQUFTLENBQUMsRUFBVSxFQUFFLFFBQTBCOztZQUNwRCxPQUFPLGdDQUFXLENBQUMsZ0JBQWdCLENBQUMsRUFBRSxFQUFFLFFBQVEsQ0FBQyxDQUFDO1FBQ3BELENBQUM7S0FBQTtJQUVLLE9BQU8sQ0FBQyxFQUFVLEVBQUUsUUFBd0I7O1lBQ2hELE9BQU8sZ0NBQVcsQ0FBQyxjQUFjLENBQUMsRUFBRSxFQUFFLFFBQVEsQ0FBQyxDQUFDO1FBQ2xELENBQUM7S0FBQTtJQUVLLFFBQVEsQ0FBQyxFQUFVOztZQUN2QixPQUFPLGdDQUFXLENBQUMsY0FBYyxDQUFDLEVBQUUsQ0FBQyxDQUFDO1FBQ3hDLENBQUM7S0FBQTtDQUNGO0FBRUQsa0JBQWUsSUFBSSxlQUFlLEVBQUUsQ0FBQyJ9
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoicHJvZHVjdC5zZXJ2aWNlLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vLi4vLi4vY29tcG9uZW50cy9wcm9kdWN0L3NlcnZpY2VzL3Byb2R1Y3Quc2VydmljZS50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7OztBQUtBLHNGQUEwRDtBQUUxRCxNQUFNLGVBQWU7SUFDYixNQUFNLENBQUMsUUFBMkI7O1lBQ3RDLE9BQU8sQ0FBQyxNQUFNLDZCQUFlLENBQUMsQ0FBQyxNQUFNLENBQUMsUUFBUSxDQUFDLENBQUM7UUFDbEQsQ0FBQztLQUFBO0lBRUssVUFBVSxDQUFDLEVBQVU7O1lBQ3pCLDRDQUE0QztZQUM1QyxPQUFPLEVBQUUsQ0FBQztRQUNaLENBQUM7S0FBQTtJQUVLLElBQUksQ0FBQyxLQUFjLEVBQUUsSUFBYTs7WUFDdEMsT0FBTyxDQUFDLE1BQU0sNkJBQWUsQ0FBQyxDQUFDLElBQUksRUFBRSxDQUFDO1FBQ3hDLENBQUM7S0FBQTtJQUVLLFNBQVMsQ0FBQyxFQUFVLEVBQUUsUUFBMEI7O1lBQ3BELHFEQUFxRDtRQUN2RCxDQUFDO0tBQUE7SUFFSyxPQUFPLENBQUMsRUFBVSxFQUFFLFFBQXdCOztZQUNoRCxtREFBbUQ7UUFDckQsQ0FBQztLQUFBO0lBRUssUUFBUSxDQUFDLEVBQVU7O1lBQ3ZCLHlDQUF5QztZQUN6QyxPQUFPLEVBQUUsQ0FBQztRQUNaLENBQUM7S0FBQTtDQUNGO0FBRUQsa0JBQWUsSUFBSSxlQUFlLEVBQUUsQ0FBQyJ9

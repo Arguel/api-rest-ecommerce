@@ -20,12 +20,20 @@ class CartsService implements ICrud {
     return CartsDao.removeCartProductById(id, productId);
   }
 
-  async list(limit: number, page: number) {
+  async list(limit?: number, page?: number) {
     return CartsDao.getCarts();
   }
 
   async readById(id: string) {
     return CartsDao.getCartById(id);
+  }
+
+  async putById() {
+    return ``;
+  }
+
+  async patchById() {
+    return ``;
   }
 }
 

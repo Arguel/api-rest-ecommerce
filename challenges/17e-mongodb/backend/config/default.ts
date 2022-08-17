@@ -15,7 +15,8 @@ const defaultConfig = {
      * Persistence is equal to:
      * 'memory' | 'filesystem' | 'mysql' | 'sqlite3' | 'mongolocal' | 'mongoatlas' | 'firebase';
      */
-    persistence: EPersistenceType.filesystem,
+    persistence: process.env.PERSISTENCE || EPersistenceType.filesystem,
+    mode: process.env.MODE,
   },
   databases: {
     mongolocal: {

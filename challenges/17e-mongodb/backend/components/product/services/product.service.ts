@@ -1,36 +1,32 @@
-import ProductsDao from '../daos/product.filesystem.dao';
 import { ICrud } from '../../../common/types/crud.interface';
 import { ICreateProductDto } from '../dto/create.product.dto';
 import { IPutProductDto } from '../dto/put.product.dto';
 import { IPatchProductDto } from '../dto/patch.product.dto';
+import FactoryInstance from '../daos/product.factory.dao';
 
 class ProductsService implements ICrud {
-  async getSalaryByUser() {
-    return FactoryInstance.getSalary();
-  }
-
   async create(resource: ICreateProductDto) {
-    return ProductsDao.addProduct(resource);
+    return (await FactoryInstance).create(resource);
   }
 
   async deleteById(id: string) {
-    return ProductsDao.removeProductById(id);
+    return (await FactoryInstance).deleteById(id);
   }
 
-  async list(limit: number, page: number) {
-    return ProductsDao.getProducts();
+  async list(limit?: number, page?: number) {
+    return (await FactoryInstance).list(limit, page);
   }
 
   async patchById(id: string, resource: IPatchProductDto): Promise<any> {
-    return ProductsDao.patchProductById(id, resource);
+    return (await FactoryInstance).patchById(id, resource);
   }
 
   async putById(id: string, resource: IPutProductDto): Promise<any> {
-    return ProductsDao.putProductById(id, resource);
+    return (await FactoryInstance).putById(id, resource);
   }
 
   async readById(id: string) {
-    return ProductsDao.getProductById(id);
+    return (await FactoryInstance).readById(id);
   }
 }
 

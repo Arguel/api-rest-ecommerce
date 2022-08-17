@@ -8,10 +8,11 @@ import path from 'path';
 // @ts-expect-error
 import { localDB } from '@abmsourav/localdb';
 import BaseError from '../../../common/error/base.error';
+import { ICrud } from '../../../common/types/crud.interface';
 
 const log: debug.IDebugger = debug('app:filesystem-dao');
 
-class ProductsDao {
+class ProductsDao implements ICrud {
   private readonly filename = path.join(
     __dirname,
     'products.filesystem.db.json'
@@ -30,7 +31,7 @@ class ProductsDao {
     }
   }
 
-  public async addProduct(product: ICreateProductDto) {
+  public async create(product: ICreateProductDto) {
     try {
       product.id = nanoid();
       product.timestamp = new Date().toUTCString();
@@ -41,7 +42,7 @@ class ProductsDao {
     }
   }
 
-  public async getProducts() {
+  public async list() {
     try {
       return await this.crud.get();
     } catch (err) {
@@ -49,7 +50,7 @@ class ProductsDao {
     }
   }
 
-  public async getProductById(productId: string) {
+  public async readById(productId: string) {
     try {
       return await this.crud.search('id', productId);
     } catch (err) {
@@ -57,7 +58,7 @@ class ProductsDao {
     }
   }
 
-  public async putProductById(productId: string, product: IPutProductDto) {
+  public async putById(productId: string, product: IPutProductDto) {
     try {
       const allowedPutFields = [
         'timestamp',
@@ -75,7 +76,7 @@ class ProductsDao {
     }
   }
 
-  public async patchProductById(productId: string, product: IPatchProductDto) {
+  public async patchById(productId: string, product: IPatchProductDto) {
     try {
       const allowedPatchFields = [
         'name',
@@ -92,7 +93,7 @@ class ProductsDao {
     }
   }
 
-  public async removeProductById(productId: string) {
+  public async deleteById(productId: string) {
     try {
       await this.crud.remove({ id: productId });
       return `${productId} removed`;
