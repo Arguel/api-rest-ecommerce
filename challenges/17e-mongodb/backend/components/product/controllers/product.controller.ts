@@ -18,7 +18,7 @@ class ProductsController {
 
   public async createProduct(req: express.Request, res: express.Response) {
     const productId = await productsService.create(req.body);
-    res.status(httpStatus.CREATED).send({ id: productId });
+    res.status(httpStatus.CREATED).send({id: productId});
   }
 
   public async patch(req: express.Request, res: express.Response) {
