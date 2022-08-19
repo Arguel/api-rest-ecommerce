@@ -1,15 +1,11 @@
 version: '3.9'
 services:
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile.dev
+    build: .
     ports:
       - '3000:3000'
     links:
       - mongo
-    volumes:
-      - .:/usr/src/app
   mongo:
     mongo:
     image: mongo

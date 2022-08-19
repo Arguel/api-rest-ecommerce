@@ -1,5 +1,5 @@
 export interface ICreateProductDto {
-  id: string;
+  _id: string;
   timestamp: string;
   name: string;
   description?: string;

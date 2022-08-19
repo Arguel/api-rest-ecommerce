@@ -1,78 +1,78 @@
 import mongooseService from '../../../services/mongoose.service';
-import {nanoid} from 'nanoid';
+import { nanoid } from 'nanoid';
 import debug from 'debug';
-import {CreateUserDto} from '../dto/create.user.dto';
-import {PatchUserDto} from '../dto/patch.user.dto';
-import {PutUserDto} from '../dto/put.user.dto';
+import { CreateUserDto } from '../dto/create.user.dto';
+import { PatchUserDto } from '../dto/patch.user.dto';
+import { PutUserDto } from '../dto/put.user.dto';
 
 const log: debug.IDebugger = debug('app:users-dao');
 
 class UsersDao {
-    Schema = mongooseService.getMongoose().Schema;
+  Schema = mongooseService.getMongoose().Schema;
 
-    userSchema = new this.Schema({
-        _id: String,
-        email: String,
-        password: {type: String, select: false},
-        firstName: String,
-        lastName: String,
-        permissionLevel: Number,
+  userSchema = new this.Schema({
+    _id: String,
+    email: String,
+    password: { type: String, select: false },
+    firstName: String,
+    lastName: String,
+    permissionLevel: Number,
+  });
+
+  User = mongooseService.getMongoose().model('Users', this.userSchema);
+
+  constructor() {
+    log('Created new instance of UsersDao');
+  }
+
+  public async addUser(userFields: CreateUserDto) {
+    const userId = nanoid();
+    const user = new this.User({
+      _id: userId,
+      permissionLevel: 1,
+      ...userFields,
     });
+    await user.save();
+    return userId;
+  }
 
-    User = mongooseService.getMongoose().model('Users', this.userSchema);
+  public async getUserByEmail(email: string) {
+    return this.User.findOne({ email: email }).exec();
+  }
 
-    constructor() {
-        log('Created new instance of UsersDao');
-    }
+  public async getUserByEmailWithPassword(email: string) {
+    return this.User.findOne({ email: email })
+      .select('_id email permissionLevel +password')
+      .exec();
+  }
 
-    public async addUser(userFields: CreateUserDto) {
-        const userId = nanoid();
-        const user = new this.User({
-            _id: userId,
-            permissionLevel: 1,
-            ...userFields,
-        });
-        await user.save();
-        return userId;
-    }
+  public async removeUserById(userId: string) {
+    return this.User.deleteOne({ _id: userId }).exec();
+  }
 
-    public async getUserByEmail(email: string) {
-        return this.User.findOne({email: email}).exec();
-    }
+  public async getUserById(userId: string) {
+    return this.User.findOne({ _id: userId }).populate('User').exec();
+  }
 
-    public async getUserByEmailWithPassword(email: string) {
-        return this.User.findOne({email: email})
-            .select('_id email permissionLevel +password')
-            .exec();
-    }
+  public async getUsers(limit = 25, page = 0) {
+    return this.User.find()
+      .limit(limit)
+      .skip(limit * page)
+      .exec();
+  }
 
-    public async removeUserById(userId: string) {
-        return this.User.deleteOne({_id: userId}).exec();
-    }
+  public async updateUserById(
+    userId: string,
+    userFields: PatchUserDto | PutUserDto
+  ) {
+    const existingUser = await this.User.findOneAndUpdate(
+      { _id: userId },
+      { $set: userFields },
+      { new: true }
+    ).exec();
 
-    public async getUserById(userId: string) {
-        return this.User.findOne({_id: userId}).populate('User').exec();
-    }
-
-    public async getUsers(limit = 25, page = 0) {
-        return this.User.find()
-            .limit(limit)
-            .skip(limit * page)
-            .exec();
-    }
-
-    public async updateUserById(
-        userId: string,
-        userFields: PatchUserDto | PutUserDto
-    ) {
-        const existingUser = await this.User.findOneAndUpdate(
-            {_id: userId},
-            {$set: userFields},
-            {new: true}
-        ).exec();
-
-        return existingUser;
-    }
+    return existingUser;
+  }
 }
 
 export default new UsersDao();

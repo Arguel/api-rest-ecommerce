@@ -1,5 +1,5 @@
 export interface IPutProductDto {
-  id: string;
+  _id: string;
   timestamp: string;
   name: string;
   description: string;
