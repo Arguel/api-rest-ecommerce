@@ -4,10 +4,13 @@ import debug from 'debug';
 import { ICreateProductDto } from '../dto/create.product.dto';
 import { IPatchProductDto } from '../dto/patch.product.dto';
 import { IPutProductDto } from '../dto/put.product.dto';
+import BaseError from '../../../common/error/base.error';
+import { ICrud } from '../../../common/types/crud.interface';
+import { BadRequestError } from '../../../common/error/bad.request.error';
 
 const log: debug.IDebugger = debug('app:products-dao');
 
-class ProductsDao {
+class ProductsDao implements ICrud {
   mongoose = mongooseService.getMongoose();
 
   productSchema = new this.mongoose.Schema<ICreateProductDto>(
@@ -33,7 +36,7 @@ class ProductsDao {
     log('Created new instance of ProductsDao');
   }
 
-  public async addProduct(productFields: ICreateProductDto): Promise<string> {
+  public async create(productFields: ICreateProductDto): Promise<string> {
     try {
       const productId: string = nanoid();
       const product = new this.Product({
@@ -43,46 +46,58 @@ class ProductsDao {
       await product.save();
       return productId;
     } catch (err) {
+      if (err instanceof this.mongoose.Error.ValidationError) {
+        const message = Object.values(err.errors).map((prop) => prop.message);
+        throw new BadRequestError(message.join('. '), 'addProduct');
+      }
       throw new BaseError('Failed to save product', err, 'addProduct');
     }
   }
 
-  public async getProductByEmail(email: string) {
-    return this.Product.findOne({ email: email }).exec();
+  public async deleteById(productId: string) {
+    try {
+      return this.Product.deleteOne({ _id: productId }).exec();
+    } catch (err) {
+      throw new BaseError('Failed to remove product', err, 'deleteById');
+    }
   }
 
-  public async getProductByEmailWithPassword(email: string) {
-    return this.Product.findOne({ email: email })
-      .select('_id email permissionLevel +password')
-      .exec();
+  public async readById(productId: string) {
+    try {
+      return this.Product.findOne({ _id: productId })
+        .populate('Product')
+        .exec();
+    } catch (err) {
+      throw new BaseError('Failed to find product', err, 'readById');
+    }
   }
 
-  public async removeProductById(productId: string) {
-    return this.Product.deleteOne({ _id: productId }).exec();
-  }
-
-  public async getProductById(productId: string) {
-    return this.Product.findOne({ _id: productId }).populate('Product').exec();
-  }
-
-  public async getProducts(limit = 25, page = 0) {
+  public async list(limit = 25, page = 0) {
     return this.Product.find()
       .limit(limit)
       .skip(limit * page)
       .exec();
   }
 
-  public async updateProductById(
+  public async updateById(
     productId: string,
     productFields: IPatchProductDto | IPutProductDto
   ) {
-    const existingProduct = await this.Product.findOneAndUpdate(
-      { _id: productId },
-      { $set: productFields },
-      { new: true }
-    ).exec();
+    try {
+      const existingProduct = await this.Product.findOneAndUpdate(
+        { _id: productId },
+        { $set: productFields },
+        { new: true }
+      ).exec();
 
-    return existingProduct;
+      return existingProduct;
+    } catch (err) {
+      if (err instanceof this.mongoose.Error.ValidationError) {
+        const message = Object.values(err.errors).map((prop) => prop.message);
+        throw new BadRequestError(message.join('. '), 'updateById');
+      }
+      throw new BaseError('Failed to update product', err, 'updateById');
+    }
   }
 }
 

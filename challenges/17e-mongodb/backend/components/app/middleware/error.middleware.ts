@@ -15,6 +15,10 @@ class ErrorMiddleware {
       return;
     }
     ErrorHandler.handleError(err);
+    res.status(err.httpCode).json({
+      error: `${err.httpCode} - ${httpStatus[err.httpCode.toString()]}`,
+      description: err.message,
+    });
   }
 
   public async routeNotFound(

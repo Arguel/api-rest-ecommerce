@@ -1,9 +1,9 @@
 import express from 'express';
 import productService from '../services/product.service';
-import debug from 'debug';
 import httpStatus from 'http-status';
-
-const log: debug.IDebugger = debug('app:product-controller');
+import { Error as MongoError } from 'mongoose';
+import { NotFoundError } from '../../../common/error/not.found.error';
+import { BadRequestError } from '../../../common/error/bad.request.error';
 
 class ProductsMiddleware {
   public async validateRequiredProductBodyFields(
@@ -33,17 +33,18 @@ class ProductsMiddleware {
   ) {
     try {
       const product = await productService.readById(req.params.productId);
-      if (product) {
-        next();
-      } else {
-        res
-          .status(httpStatus.NOT_FOUND)
-          .send({ error: `Product ${req.params.userId} not found` });
+      if (!product) {
+        throw new NotFoundError('Product not found', 'validateProductExists');
       }
+      next();
     } catch (err) {
-      res
-        .status(httpStatus.NOT_FOUND)
-        .send({ error: `Product ${req.params.productId} not found` });
+      if (err instanceof MongoError.CastError) {
+        next(
+          new BadRequestError('Invalid product id', 'validateProductExists')
+        );
+        return;
+      }
+      next(err);
     }
   }
 

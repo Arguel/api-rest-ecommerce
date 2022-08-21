@@ -12,27 +12,27 @@ class ProductsController {
   }
 
   public async getProductById(req: express.Request, res: express.Response) {
-    const product = await productsService.readById(req.body.id);
+    const product = await productsService.readById(req.params.productId);
     res.status(httpStatus.OK).send(product);
   }
 
   public async createProduct(req: express.Request, res: express.Response) {
     const productId = await productsService.create(req.body);
-    res.status(httpStatus.CREATED).send({id: productId});
+    res.status(httpStatus.CREATED).send({ id: productId });
   }
 
   public async patch(req: express.Request, res: express.Response) {
-    log(await productsService.patchById(req.body.id, req.body));
+    log(await productsService.patchById(req.params.productId, req.body));
     res.status(httpStatus.NO_CONTENT).send();
   }
 
   public async put(req: express.Request, res: express.Response) {
-    log(await productsService.putById(req.body.id, req.body));
+    log(await productsService.putById(req.params.productId, req.body));
     res.status(httpStatus.NO_CONTENT).send();
   }
 
   public async removeProduct(req: express.Request, res: express.Response) {
-    log(await productsService.deleteById(req.body.id));
+    log(await productsService.deleteById(req.params.productId));
     res.status(httpStatus.NO_CONTENT).send();
   }
 }
