@@ -1,11 +1,8 @@
 import express from 'express';
 import cartService from '../services/cart.service';
-import debug from 'debug';
 import httpStatus from 'http-status';
 import productService from '../../product/services/product.service';
-import { ICreateProductDto as IProduct } from '../../product/dto/create.product.dto';
-
-const log: debug.IDebugger = debug('app:cart-controller');
+import { ICreateProductDto } from '../../product/dto/create.product.dto';
 
 class CartsMiddleware {
   public async validateRequiredCartBodyFields(
@@ -49,7 +46,7 @@ class CartsMiddleware {
     next: express.NextFunction
   ) {
     try {
-      const values: Array<IProduct> = await Promise.all(
+      const values: Array<ICreateProductDto> = await Promise.all(
         req.body.products.map(async (productId: string) => {
           const product = await productService.readById(productId);
           if (product) return product;

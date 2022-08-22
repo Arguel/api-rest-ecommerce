@@ -1,19 +1,18 @@
 import { ICrud } from '../../../common/types/crud.interface';
 import { ICreateProductDto } from '../dto/create.product.dto';
-import { IPutProductDto } from '../dto/put.product.dto';
 import { IPatchProductDto } from '../dto/patch.product.dto';
 import FactoryInstance from '../daos/product.factory.dao';
 
 class ProductsService implements ICrud {
-  async create(resource: ICreateProductDto) {
+  async create(resource: ICreateProductDto): Promise<any> {
     return (await FactoryInstance).create(resource);
   }
 
-  async deleteById(id: string) {
+  async deleteById(id: string): Promise<any> {
     return (await FactoryInstance).deleteById(id);
   }
 
-  async list(limit?: number, page?: number) {
+  async list(limit?: number, page?: number): Promise<any> {
     return (await FactoryInstance).list(limit, page);
   }
 
@@ -21,11 +20,7 @@ class ProductsService implements ICrud {
     return (await FactoryInstance).patchById(id, resource);
   }
 
-  async putById(id: string, resource: IPutProductDto): Promise<any> {
-    return (await FactoryInstance).putById(id, resource);
-  }
-
-  async readById(id: string) {
+  async readById(id: string): Promise<any> {
     return (await FactoryInstance).readById(id);
   }
 }

@@ -1,5 +1,5 @@
 import express from 'express';
-import usersService from '../../users/services/users.service';
+import usersService from '../../../components/user/services/user.service';
 import * as argon2 from 'argon2';
 
 class AuthMiddleware {
@@ -41,7 +41,7 @@ class AuthMiddleware {
         });
       }
     } else {
-      res.status(400).send({errors: ['Invalid email and/or password']});
+      res.status(400).send({ errors: ['Invalid email and/or password'] });
     }
   }
 }

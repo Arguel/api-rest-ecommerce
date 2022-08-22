@@ -13,9 +13,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const product_service_1 = __importDefault(require("../services/product.service"));
-const debug_1 = __importDefault(require("debug"));
 const http_status_1 = __importDefault(require("http-status"));
-const log = (0, debug_1.default)('app:product-controller');
+const mongoose_1 = require("mongoose");
+const not_found_error_1 = require("../../../common/error/not.found.error");
+const bad_request_error_1 = require("../../../common/error/bad.request.error");
 class ProductsMiddleware {
     validateRequiredProductBodyFields(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -37,19 +38,17 @@ class ProductsMiddleware {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const product = yield product_service_1.default.readById(req.params.productId);
-                if (product) {
-                    next();
+                if (!product) {
+                    throw new not_found_error_1.NotFoundError('Product not found', 'validateProductExists');
                 }
-                else {
-                    res
-                        .status(http_status_1.default.NOT_FOUND)
-                        .send({ error: `Product ${req.params.userId} not found` });
-                }
+                next();
             }
             catch (err) {
-                res
-                    .status(http_status_1.default.NOT_FOUND)
-                    .send({ error: `Product ${req.params.productId} not found` });
+                if (err instanceof mongoose_1.Error.CastError) {
+                    next(new bad_request_error_1.BadRequestError('Invalid product id', 'validateProductExists'));
+                    return;
+                }
+                next(err);
             }
         });
     }
@@ -61,4 +60,4 @@ class ProductsMiddleware {
     }
 }
 exports.default = new ProductsMiddleware();
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoicHJvZHVjdC5taWRkbGV3YXJlLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vLi4vLi4vY29tcG9uZW50cy9wcm9kdWN0L21pZGRsZXdhcmUvcHJvZHVjdC5taWRkbGV3YXJlLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7Ozs7Ozs7Ozs7Ozs7O0FBQ0Esa0ZBQXlEO0FBQ3pELGtEQUEwQjtBQUMxQiw4REFBcUM7QUFFckMsTUFBTSxHQUFHLEdBQW9CLElBQUEsZUFBSyxFQUFDLHdCQUF3QixDQUFDLENBQUM7QUFFN0QsTUFBTSxrQkFBa0I7SUFDVCxpQ0FBaUMsQ0FDNUMsR0FBb0IsRUFDcEIsR0FBcUIsRUFDckIsSUFBMEI7O1lBRTFCLElBQ0UsR0FBRyxDQUFDLElBQUk7Z0JBQ1IsR0FBRyxDQUFDLElBQUksQ0FBQyxTQUFTO2dCQUNsQixHQUFHLENBQUMsSUFBSSxDQUFDLElBQUk7Z0JBQ2IsR0FBRyxDQUFDLElBQUksQ0FBQyxLQUFLO2dCQUNkLEdBQUcsQ0FBQyxJQUFJLENBQUMsS0FBSyxFQUNkO2dCQUNBLElBQUksRUFBRSxDQUFDO2FBQ1I7aUJBQU07Z0JBQ0wsR0FBRyxDQUFDLE1BQU0sQ0FBQyxxQkFBVSxDQUFDLFdBQVcsQ0FBQyxDQUFDLElBQUksQ0FBQztvQkFDdEMsS0FBSyxFQUFFLHlEQUF5RDtpQkFDakUsQ0FBQyxDQUFDO2FBQ0o7UUFDSCxDQUFDO0tBQUE7SUFFWSxxQkFBcUIsQ0FDaEMsR0FBb0IsRUFDcEIsR0FBcUIsRUFDckIsSUFBMEI7O1lBRTFCLElBQUk7Z0JBQ0YsTUFBTSxPQUFPLEdBQUcsTUFBTSx5QkFBYyxDQUFDLFFBQVEsQ0FBQyxHQUFHLENBQUMsTUFBTSxDQUFDLFNBQVMsQ0FBQyxDQUFDO2dCQUNwRSxJQUFJLE9BQU8sRUFBRTtvQkFDWCxJQUFJLEVBQUUsQ0FBQztpQkFDUjtxQkFBTTtvQkFDTCxHQUFHO3lCQUNBLE1BQU0sQ0FBQyxxQkFBVSxDQUFDLFNBQVMsQ0FBQzt5QkFDNUIsSUFBSSxDQUFDLEVBQUUsS0FBSyxFQUFFLFdBQVcsR0FBRyxDQUFDLE1BQU0sQ0FBQyxNQUFNLFlBQVksRUFBRSxDQUFDLENBQUM7aUJBQzlEO2FBQ0Y7WUFBQyxPQUFPLEdBQUcsRUFBRTtnQkFDWixHQUFHO3FCQUNBLE1BQU0sQ0FBQyxxQkFBVSxDQUFDLFNBQVMsQ0FBQztxQkFDNUIsSUFBSSxDQUFDLEVBQUUsS0FBSyxFQUFFLFdBQVcsR0FBRyxDQUFDLE1BQU0sQ0FBQyxTQUFTLFlBQVksRUFBRSxDQUFDLENBQUM7YUFDakU7UUFDSCxDQUFDO0tBQUE7SUFFWSxnQkFBZ0IsQ0FDM0IsR0FBb0IsRUFDcEIsR0FBcUIsRUFDckIsSUFBMEI7O1lBRTFCLEdBQUcsQ0FBQyxJQUFJLENBQUMsRUFBRSxHQUFHLEdBQUcsQ0FBQyxNQUFNLENBQUMsU0FBUyxDQUFDO1lBQ25DLElBQUksRUFBRSxDQUFDO1FBQ1QsQ0FBQztLQUFBO0NBQ0Y7QUFFRCxrQkFBZSxJQUFJLGtCQUFrQixFQUFFLENBQUMifQ==
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoicHJvZHVjdC5taWRkbGV3YXJlLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vLi4vLi4vY29tcG9uZW50cy9wcm9kdWN0L21pZGRsZXdhcmUvcHJvZHVjdC5taWRkbGV3YXJlLnRzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiI7Ozs7Ozs7Ozs7Ozs7O0FBQ0Esa0ZBQXlEO0FBQ3pELDhEQUFxQztBQUNyQyx1Q0FBK0M7QUFDL0MsMkVBQXNFO0FBQ3RFLCtFQUEwRTtBQUUxRSxNQUFNLGtCQUFrQjtJQUNULGlDQUFpQyxDQUM1QyxHQUFvQixFQUNwQixHQUFxQixFQUNyQixJQUEwQjs7WUFFMUIsSUFDRSxHQUFHLENBQUMsSUFBSTtnQkFDUixHQUFHLENBQUMsSUFBSSxDQUFDLFNBQVM7Z0JBQ2xCLEdBQUcsQ0FBQyxJQUFJLENBQUMsSUFBSTtnQkFDYixHQUFHLENBQUMsSUFBSSxDQUFDLEtBQUs7Z0JBQ2QsR0FBRyxDQUFDLElBQUksQ0FBQyxLQUFLLEVBQ2Q7Z0JBQ0EsSUFBSSxFQUFFLENBQUM7YUFDUjtpQkFBTTtnQkFDTCxHQUFHLENBQUMsTUFBTSxDQUFDLHFCQUFVLENBQUMsV0FBVyxDQUFDLENBQUMsSUFBSSxDQUFDO29CQUN0QyxLQUFLLEVBQUUseURBQXlEO2lCQUNqRSxDQUFDLENBQUM7YUFDSjtRQUNILENBQUM7S0FBQTtJQUVZLHFCQUFxQixDQUNoQyxHQUFvQixFQUNwQixHQUFxQixFQUNyQixJQUEwQjs7WUFFMUIsSUFBSTtnQkFDRixNQUFNLE9BQU8sR0FBRyxNQUFNLHlCQUFjLENBQUMsUUFBUSxDQUFDLEdBQUcsQ0FBQyxNQUFNLENBQUMsU0FBUyxDQUFDLENBQUM7Z0JBQ3BFLElBQUksQ0FBQyxPQUFPLEVBQUU7b0JBQ1osTUFBTSxJQUFJLCtCQUFhLENBQUMsbUJBQW1CLEVBQUUsdUJBQXVCLENBQUMsQ0FBQztpQkFDdkU7Z0JBQ0QsSUFBSSxFQUFFLENBQUM7YUFDUjtZQUFDLE9BQU8sR0FBRyxFQUFFO2dCQUNaLElBQUksR0FBRyxZQUFZLGdCQUFVLENBQUMsU0FBUyxFQUFFO29CQUN2QyxJQUFJLENBQ0YsSUFBSSxtQ0FBZSxDQUFDLG9CQUFvQixFQUFFLHVCQUF1QixDQUFDLENBQ25FLENBQUM7b0JBQ0YsT0FBTztpQkFDUjtnQkFDRCxJQUFJLENBQUMsR0FBRyxDQUFDLENBQUM7YUFDWDtRQUNILENBQUM7S0FBQTtJQUVZLGdCQUFnQixDQUMzQixHQUFvQixFQUNwQixHQUFxQixFQUNyQixJQUEwQjs7WUFFMUIsR0FBRyxDQUFDLElBQUksQ0FBQyxFQUFFLEdBQUcsR0FBRyxDQUFDLE1BQU0sQ0FBQyxTQUFTLENBQUM7WUFDbkMsSUFBSSxFQUFFLENBQUM7UUFDVCxDQUFDO0tBQUE7Q0FDRjtBQUVELGtCQUFlLElBQUksa0JBQWtCLEVBQUUsQ0FBQyJ9

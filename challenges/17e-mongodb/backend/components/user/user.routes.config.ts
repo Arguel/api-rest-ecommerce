@@ -9,7 +9,7 @@ import { body } from 'express-validator';
 
 import express from 'express';
 
-export class UsersRoutes extends CommonRoutesConfig {
+export default class UsersRoutes extends CommonRoutesConfig {
   constructor(app: express.Application) {
     super(app, 'UsersRoutes');
   }
@@ -38,25 +38,6 @@ export class UsersRoutes extends CommonRoutesConfig {
       )
       .get(UsersController.getUserById)
       .delete(UsersController.removeUser);
-
-    this.app.put(`/users/:userId`, [
-      JwtMiddleware.validJWTNeeded,
-      body('email').isEmail(),
-      body('password')
-        .isLength({ min: 5 })
-        .withMessage('Must include password (5+ characters)'),
-      body('firstName').isString(),
-      body('lastName').isString(),
-      body('permissionLevel').isInt(),
-      BodyValidationMiddleware.verifyBodyFieldsErrors,
-      UsersMiddleware.validateSameEmailBelongToSameUser,
-      UsersMiddleware.userCantChangePermission,
-      PermissionMiddleware.onlySameUserOrAdminCanDoThisAction,
-      PermissionMiddleware.minimumEPermissionLevelRequired(
-        EPermissionLevel.PAID_PERMISSION
-      ),
-      UsersController.put,
-    ]);
 
     this.app.patch(`/users/:userId`, [
       JwtMiddleware.validJWTNeeded,

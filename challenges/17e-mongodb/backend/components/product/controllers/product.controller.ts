@@ -26,11 +26,6 @@ class ProductsController {
     res.status(httpStatus.NO_CONTENT).send();
   }
 
-  public async put(req: express.Request, res: express.Response) {
-    log(await productsService.putById(req.params.productId, req.body));
-    res.status(httpStatus.NO_CONTENT).send();
-  }
-
   public async removeProduct(req: express.Request, res: express.Response) {
     log(await productsService.deleteById(req.params.productId));
     res.status(httpStatus.NO_CONTENT).send();

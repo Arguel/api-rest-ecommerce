@@ -3,7 +3,6 @@ import { nanoid } from 'nanoid';
 import debug from 'debug';
 import { ICreateProductDto } from '../dto/create.product.dto';
 import { IPatchProductDto } from '../dto/patch.product.dto';
-import { IPutProductDto } from '../dto/put.product.dto';
 import BaseError from '../../../common/error/base.error';
 import { ICrud } from '../../../common/types/crud.interface';
 import { BadRequestError } from '../../../common/error/bad.request.error';
@@ -79,10 +78,7 @@ class ProductsDao implements ICrud {
       .exec();
   }
 
-  public async updateById(
-    productId: string,
-    productFields: IPatchProductDto | IPutProductDto
-  ) {
+  public async patchById(productId: string, productFields: IPatchProductDto) {
     try {
       const existingProduct = await this.Product.findOneAndUpdate(
         { _id: productId },

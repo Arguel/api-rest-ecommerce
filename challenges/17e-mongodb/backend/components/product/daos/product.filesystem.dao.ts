@@ -2,7 +2,6 @@ import fs from 'fs';
 import debug from 'debug';
 import { ICreateProductDto } from '../dto/create.product.dto';
 import { IPatchProductDto } from '../dto/patch.product.dto';
-import { IPutProductDto } from '../dto/put.product.dto';
 import { nanoid } from 'nanoid';
 import path from 'path';
 // @ts-expect-error
@@ -33,10 +32,10 @@ class ProductsDao implements ICrud {
 
   public async create(product: ICreateProductDto) {
     try {
-      product.id = nanoid();
+      product._id = nanoid();
       product.timestamp = new Date().toUTCString();
       await this.crud.set(product);
-      return product.id;
+      return product._id;
     } catch (err) {
       throw new BaseError('Failed to save product', err, 'addProduct');
     }
@@ -58,24 +57,6 @@ class ProductsDao implements ICrud {
     }
   }
 
-  public async putById(productId: string, product: IPutProductDto) {
-    try {
-      const allowedPutFields = [
-        'timestamp',
-        'name',
-        'description',
-        'productCode',
-        'thumbnailUrl',
-        'price',
-        'stock',
-      ] as const;
-      await this.crud.update({ id: productId }, product, allowedPutFields);
-      return `${product.id} updated via put`;
-    } catch (err) {
-      throw new BaseError('Failed to update product', err, 'putProductById');
-    }
-  }
-
   public async patchById(productId: string, product: IPatchProductDto) {
     try {
       const allowedPatchFields = [
@@ -87,7 +68,7 @@ class ProductsDao implements ICrud {
         'stock',
       ] as const;
       await this.crud.update({ id: productId }, product, allowedPatchFields);
-      return `${product.id} patched`;
+      return `${product._id} patched`;
     } catch (err) {
       throw new BaseError('Failed to update product', err, 'patchProductById');
     }
