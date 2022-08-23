@@ -1,7 +1,11 @@
 import mongoose from 'mongoose';
 import debug from 'debug';
+import { Global } from './types/memory.server.interface';
+import MongoMemoryServer from 'mongodb-memory-server-core';
 
 const log: debug.IDebugger = debug('app:mongoose-service');
+
+declare const global: Global;
 
 class MongooseService {
   private count = 0;
@@ -18,6 +22,13 @@ class MongooseService {
 
   getMongoose() {
     return mongoose;
+  }
+
+  async getTestServer() {
+    const instance = await MongoMemoryServer.create();
+    const uri = instance.getUri();
+    global.__MONGOINSTANCE__ = instance;
+    return uri.slice(0, uri.lastIndexOf('/'));
   }
 
   connectWithRetry = async () => {
