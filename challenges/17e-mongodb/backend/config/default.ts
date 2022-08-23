@@ -26,11 +26,8 @@ const defaultConfig = {
     mongoatlas: {
       user: process.env.MONGO_ATLAS_USER || 'user',
       password: process.env.MONGO_ATLAS_PASSWORD || 'password',
-      cluster: process.env.MONGO_ATLAS_CLUSTER || 'clusterurl',
-      database:
-        process.env.NODE_ENV === 'development'
-          ? process.env.MONGO_ATLAS_DB_DEV
-          : process.env.MONGO_ATLAS_DB || 'mongodatabase',
+      clusterurl: process.env.MONGO_ATLAS_CLUSTER_URL || 'clusterurl',
+      database: process.env.MONGO_ATLAS_DB || 'mongodatabase',
     },
   },
 };
