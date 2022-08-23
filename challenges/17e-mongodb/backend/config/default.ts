@@ -15,13 +15,22 @@ const defaultConfig = {
      * Persistence is equal to:
      * 'memory' | 'filesystem' | 'mysql' | 'sqlite3' | 'mongolocal' | 'mongoatlas' | 'firebase';
      */
-    persistence: process.env.PERSISTENCE || EPersistenceType.filesystem,
+    persistence: process.env.PERSISTENCE || EPersistenceType.mongoatlas,
     mode: process.env.MODE,
   },
   databases: {
     mongolocal: {
       port: 27017,
       host: 'localhost',
+    },
+    mongoatlas: {
+      user: process.env.MONGO_ATLAS_USER || 'user',
+      password: process.env.MONGO_ATLAS_PASSWORD || 'password',
+      cluster: process.env.MONGO_ATLAS_CLUSTER || 'clusterurl',
+      database:
+        process.env.NODE_ENV === 'development'
+          ? process.env.MONGO_ATLAS_DB_DEV
+          : process.env.MONGO_ATLAS_DB || 'mongodatabase',
     },
   },
 };
