@@ -1,4 +1,4 @@
-import mongooseService from '../../../services/mongoose/mongoose.service';
+import mongoose from 'mongoose';
 import { nanoid } from 'nanoid';
 import debug from 'debug';
 import { ICreateProductDto } from '../dto/create.product.dto';
@@ -6,31 +6,11 @@ import { IPatchProductDto } from '../dto/patch.product.dto';
 import BaseError from '../../../common/error/base.error';
 import { ICrud } from '../../../common/types/crud.interface';
 import { BadRequestError } from '../../../common/error/bad.request.error';
+import { Product } from '../models/product.model';
 
 const log: debug.IDebugger = debug('app:products-dao');
 
 class ProductsDao implements ICrud {
-  mongoose = mongooseService.getMongoose();
-
-  productSchema = new this.mongoose.Schema<ICreateProductDto>(
-    {
-      _id: { type: String, required: true },
-      timestamp: { type: String, required: true },
-      name: { type: String, required: true },
-      description: String,
-      productCode: Number,
-      thumbnailUrl: String,
-      price: { type: Number, required: true },
-      stock: { type: Number, required: true },
-    },
-    {
-      timestamps: true,
-      versionKey: false,
-    }
-  );
-
-  Product = mongooseService.getMongoose().model('Product', this.productSchema);
-
   constructor() {
     log('Created new instance of ProductsDao');
   }
@@ -38,24 +18,24 @@ class ProductsDao implements ICrud {
   public async create(productFields: ICreateProductDto): Promise<string> {
     try {
       const productId: string = nanoid();
-      const product = new this.Product({
+      const product = new Product({
         ...productFields,
         _id: productId,
       });
       await product.save();
       return productId;
     } catch (err) {
-      if (err instanceof this.mongoose.Error.ValidationError) {
+      if (err instanceof mongoose.Error.ValidationError) {
         const message = Object.values(err.errors).map((prop) => prop.message);
-        throw new BadRequestError(message.join('. '), 'addProduct');
+        throw new BadRequestError(message.join('. '), 'create');
       }
-      throw new BaseError('Failed to save product', err, 'addProduct');
+      throw new BaseError('Failed to save product', err, 'create');
     }
   }
 
   public async deleteById(productId: string) {
     try {
-      return this.Product.deleteOne({ _id: productId }).exec();
+      return Product.deleteOne({ _id: productId }).exec();
     } catch (err) {
       throw new BaseError('Failed to remove product', err, 'deleteById');
     }
@@ -63,16 +43,14 @@ class ProductsDao implements ICrud {
 
   public async readById(productId: string) {
     try {
-      return this.Product.findOne({ _id: productId })
-        .populate('Product')
-        .exec();
+      return Product.findOne({ _id: productId }).populate('Product').exec();
     } catch (err) {
       throw new BaseError('Failed to find product', err, 'readById');
     }
   }
 
   public async list(limit = 25, page = 0) {
-    return this.Product.find()
+    return Product.find()
       .limit(limit)
       .skip(limit * page)
       .exec();
@@ -80,7 +58,7 @@ class ProductsDao implements ICrud {
 
   public async patchById(productId: string, productFields: IPatchProductDto) {
     try {
-      const existingProduct = await this.Product.findOneAndUpdate(
+      const existingProduct = await Product.findOneAndUpdate(
         { _id: productId },
         { $set: productFields },
         { new: true }
@@ -88,11 +66,11 @@ class ProductsDao implements ICrud {
 
       return existingProduct;
     } catch (err) {
-      if (err instanceof this.mongoose.Error.ValidationError) {
+      if (err instanceof mongoose.Error.ValidationError) {
         const message = Object.values(err.errors).map((prop) => prop.message);
-        throw new BadRequestError(message.join('. '), 'updateById');
+        throw new BadRequestError(message.join('. '), 'patchById');
       }
-      throw new BaseError('Failed to update product', err, 'updateById');
+      throw new BaseError('Failed to update product', err, 'patchById');
     }
   }
 }
