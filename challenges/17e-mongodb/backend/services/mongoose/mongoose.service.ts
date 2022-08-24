@@ -12,12 +12,7 @@ declare const global: Global;
 
 class MongooseService {
   private count = 0;
-  private mongooseOptions = {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    serverSelectionTimeoutMS: 5000,
-    useFindAndModify: false,
-  };
+  private mongooseOptions = { serverSelectionTimeoutMS: 5000 };
   // mongoatlas
   private atlasUser = config.get<string>('databases.mongoatlas.user');
   private atlasPassword = config.get<string>('databases.mongoatlas.password');
