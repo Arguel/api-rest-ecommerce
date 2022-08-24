@@ -26,8 +26,8 @@ class MongooseService {
   private atlasDatabase = config.get<string>('databases.mongoatlas.database');
   // mongolocal
   private localHost = config.get<string>('databases.mongolocal.host');
-  private localPort = config.get<string>('databases.mongolocal.host');
-  private localDatabase = config.get<string>('databases.mongolocal.host');
+  private localPort = config.get<string>('databases.mongolocal.port');
+  private localDatabase = config.get<string>('databases.mongolocal.database');
 
   constructor() {
     this.connectWithRetry();
@@ -50,12 +50,10 @@ class MongooseService {
       return `${testServer}/${this.atlasDatabase}`;
     }
 
-    switch (type) {
-      case 'mongolocal':
-        return `mongodb://${this.localHost}:${this.localPort}/${this.localDatabase}`;
-      default:
-        return `mongodb+srv://${this.atlasUser}:${this.atlasPassword}@${this.atlasClusterUrl}/${this.atlasDatabase}?retryWrites=true&w=majority`;
-    }
+    const localUrl = `mongodb://${this.localHost}:${this.localPort}/${this.localDatabase}`;
+    const atlasUrl = `mongodb+srv://${this.atlasUser}:${this.atlasPassword}@${this.atlasClusterUrl}/${this.atlasDatabase}?retryWrites=true&w=majority`;
+
+    return type === 'mongolocal' ? localUrl : atlasUrl;
   };
 
   public connectWithRetry = async (): Promise<void> => {

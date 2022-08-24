@@ -20,14 +20,15 @@ const defaultConfig = {
   },
   databases: {
     mongolocal: {
-      port: 27017,
-      host: 'localhost',
+      port: process.env.MONGO_LOCAL_PORT || 27017,
+      host: process.env.MONGO_LOCAL_HOST || '0.0.0.0',
+      database: process.env.MONGO_LOCAL_DB || 'mongolocaldb',
     },
     mongoatlas: {
       user: process.env.MONGO_ATLAS_USER || 'user',
       password: process.env.MONGO_ATLAS_PASSWORD || 'password',
       clusterurl: process.env.MONGO_ATLAS_CLUSTER_URL || 'clusterurl',
-      database: process.env.MONGO_ATLAS_DB || 'mongodatabase',
+      database: process.env.MONGO_ATLAS_DB || 'mongoatlasdb',
     },
   },
 };
