@@ -33,20 +33,56 @@ export class CartsDao implements ICrud {
     }
   }
 
-  public async list() {
-    return ``;
+  public async list(limit = 25, page = 0) {
+    return Cart.find()
+      .limit(limit)
+      .skip(limit * page)
+      .exec();
   }
 
-  public async readById() {
-    return ``;
+  public async readById(cartId: string) {
+    try {
+      return Cart.findOne({ _id: cartId }).populate('Cart').exec();
+    } catch (err) {
+      throw new BaseError('Failed to find cart', err, 'readById');
+    }
   }
 
-  public async patchById() {
-    return ``;
+  public async patchById(cartId: string, cartFields: IPatchCartDto) {
+    try {
+      const existingCart = await Cart.findOneAndUpdate(
+        { _id: cartId },
+        { $set: cartFields },
+        { new: true }
+      ).exec();
+
+      return existingCart;
+    } catch (err) {
+      if (err instanceof mongoose.Error.ValidationError) {
+        const message = Object.values(err.errors).map((prop) => prop.message);
+        throw new BadRequestError(message.join('. '), 'patchById');
+      }
+      throw new BaseError('Failed to update cart', err, 'patchById');
+    }
   }
 
-  public async deleteById() {
-    return ``;
+  public async deleteById(cartId: string) {
+    try {
+      return Cart.deleteOne({ _id: cartId }).exec();
+    } catch (err) {
+      throw new BaseError('Failed to remove cart', err, 'deleteById');
+    }
+  }
+
+  public async addProduct(productId: string, cart: ICreateCartDto) {
+    try {
+      const productIndex: number = cart.products.findIndex(
+        (product) => product._id === productId
+      );
+      cart.products.push(product);
+    } catch (err) {
+      throw new BaseError('Failed to remove cart', err, 'deleteById');
+    }
   }
 }
 
