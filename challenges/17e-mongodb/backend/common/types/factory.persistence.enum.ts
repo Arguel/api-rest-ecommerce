@@ -3,8 +3,8 @@ export enum EPersistenceType {
   filesystem = 'filesystem',
   mysql = 'mysql',
   sqlite3 = 'sqlite3',
-  mongolocal = 'mongolocal',
-  mongoatlas = 'mongoatlas',
+  mongolocal = 'mongoose',
+  mongoatlas = 'mongoose',
   firebase = 'firebase',
 }
 

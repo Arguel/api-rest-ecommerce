@@ -1,4 +1,4 @@
-import mongooseService from '../../../services/mongoose.service';
+import mongooseService from '../../../services/mongoose/mongoose.service';
 import { nanoid } from 'nanoid';
 import debug from 'debug';
 import { CreateUserDto } from '../dto/create.user.dto';
