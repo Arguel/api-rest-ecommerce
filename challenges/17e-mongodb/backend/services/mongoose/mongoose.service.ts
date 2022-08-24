@@ -4,6 +4,7 @@ import { Global } from './types/memory.server.interface';
 import MongoMemoryServer from 'mongodb-memory-server-core';
 import config from 'config';
 import { TKeys } from '../../common/types/factory.persistence.enum';
+// import { MongoClient } from 'mongodb';
 
 const log: debug.IDebugger = debug('app:mongoose-service');
 
@@ -28,6 +29,8 @@ class MongooseService {
   private localHost = config.get<string>('databases.mongolocal.host');
   private localPort = config.get<string>('databases.mongolocal.port');
   private localDatabase = config.get<string>('databases.mongolocal.database');
+  // persistence type
+  private persistence = config.get<TKeys>('server.persistence');
 
   constructor() {
     this.connectWithRetry();
@@ -56,14 +59,13 @@ class MongooseService {
     return type === 'mongolocal' ? localUrl : atlasUrl;
   };
 
-  public connectWithRetry = async (): Promise<void> => {
+  public connectWithRetry = async () => {
     try {
       log('Attempting MongoDB connection (will retry if needed)');
-      await mongoose.connect(
-        'mongodb://localhost:27017/api-db',
-        this.mongooseOptions
-      );
+      const url: string = await this.getMongoUrl(this.persistence);
+      const mongoInstance = await mongoose.connect(url, this.mongooseOptions);
       log('MongoDB is connected');
+      return mongoInstance.connection.getClient();
     } catch (err) {
       const retrySeconds = 5;
       log(
