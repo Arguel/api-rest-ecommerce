@@ -22,7 +22,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "release": "standard-version"
   },
   "eslintConfig": {
     "extends": [
@@ -50,5 +51,8 @@
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/enzoarguello512/api-rest-ecommerce/issues"
+  },
+  "devDependencies": {
+    "standard-version": "^9.5.0"
   }
 }
