@@ -52,11 +52,15 @@ class UsersController {
     res: express.Response,
     next: express.NextFunction
   ) {
-    if (req.body.password) {
-      req.body.password = await argon2.hash(req.body.password);
+    try {
+      if (req.body.password) {
+        req.body.password = await argon2.hash(req.body.password);
+      }
+      log(await usersService.patchById(req.params.userId, req.body));
+      res.status(204).send();
+    } catch (err) {
+      next(err);
     }
-    log(await usersService.patchById(req.params.userId, req.body));
-    res.status(204).send();
   }
 
   public async removeUser(
@@ -64,8 +68,12 @@ class UsersController {
     res: express.Response,
     next: express.NextFunction
   ) {
-    log(await usersService.deleteById(req.params.userId));
-    res.status(204).send();
+    try {
+      log(await usersService.deleteById(req.params.userId));
+      res.status(204).send();
+    } catch (err) {
+      next(err);
+    }
   }
 
   public async updatePermissionLevel(
