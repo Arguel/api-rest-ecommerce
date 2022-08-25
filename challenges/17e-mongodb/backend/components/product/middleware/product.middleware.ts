@@ -36,6 +36,7 @@ class ProductsMiddleware {
       if (!product) {
         throw new NotFoundError('Product not found', 'validateProductExists');
       }
+      req.body.product = product;
       next();
     } catch (err) {
       if (err instanceof MongoError.CastError) {

@@ -16,7 +16,7 @@ class ErrorMiddleware {
     }
     ErrorHandler.handleError(err);
     res.status(err.httpCode).json({
-      error: `${err.httpCode} - ${httpStatus[err.httpCode.toString()]}`,
+      error: `${err.httpCode} - ${httpStatus[`${err.httpCode}_MESSAGE`]}`,
       description: err.message,
     });
   }

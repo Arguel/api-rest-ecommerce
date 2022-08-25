@@ -31,10 +31,6 @@ class MongooseService {
     this.connectWithRetry();
   }
 
-  public getMongoose() {
-    return mongoose;
-  }
-
   public async getTestServer(): Promise<string> {
     const instance: MongoMemoryServer = await MongoMemoryServer.create();
     const uri: string = instance.getUri();
@@ -71,5 +67,9 @@ class MongooseService {
       setTimeout(this.connectWithRetry, retrySeconds * 1000);
     }
   };
+
+  public getMongoose() {
+    return mongoose;
+  }
 }
 export default new MongooseService();

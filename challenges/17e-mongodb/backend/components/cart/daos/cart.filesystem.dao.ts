@@ -34,7 +34,7 @@ class CartsDao implements ICrud {
       await this.crud.set(cart);
       return cart.id;
     } catch (err) {
-      throw new BaseError('Failed to save cart', err, 'addCart');
+      throw new BaseError('Failed to save cart', err, 'create');
     }
   }
 
@@ -50,7 +50,7 @@ class CartsDao implements ICrud {
       );
       return `${cart.id} updated`;
     } catch (err) {
-      throw new BaseError('Failed to save cart', err, 'addCart');
+      throw new BaseError('Failed to save cart', err, 'addProduct');
     }
   }
 
@@ -58,7 +58,7 @@ class CartsDao implements ICrud {
     try {
       return await this.crud.get();
     } catch (err) {
-      throw new BaseError('Carts could not be loaded', err, 'getCarts');
+      throw new BaseError('Carts could not be loaded', err, 'list');
     }
   }
 
@@ -66,7 +66,7 @@ class CartsDao implements ICrud {
     try {
       return await this.crud.search('id', cartId);
     } catch (err) {
-      throw new BaseError('Could not get the cart', err, 'getCartById');
+      throw new BaseError('Could not get the cart', err, 'readById');
     }
   }
 
@@ -74,7 +74,7 @@ class CartsDao implements ICrud {
     try {
       return 'Not implemented';
     } catch (err) {
-      throw new BaseError('Could not patch the cart', err, 'getCartById');
+      throw new BaseError('Could not patch the cart', err, 'patchById');
     }
   }
 
@@ -83,7 +83,7 @@ class CartsDao implements ICrud {
       await this.crud.remove({ id: cartId });
       return `${cartId} removed`;
     } catch (err) {
-      throw new BaseError('Failed to remove cart', err, 'removeCartById');
+      throw new BaseError('Failed to remove cart', err, 'deleteById');
     }
   }
 
@@ -92,7 +92,7 @@ class CartsDao implements ICrud {
       const cart = await this.crud.search('id', cartId);
       const allowedPutFields = ['products'];
       const newProducts = cart.products.filter(
-        (product: ICreateProductDto) => product._id !== productId
+        (product: ICreateProductDto) => product.id !== productId
       );
       await this.crud.update(
         { id: cartId },

@@ -1,28 +1,30 @@
-import CartsDao from '../daos/cart.filesystem.dao';
-import { ICrud } from '../../../common/types/crud.interface';
+import { ICrudCart } from '../../../common/types/crud.interface';
 import { ICreateCartDto } from '../dto/create.cart.dto';
 import { ICreateProductDto } from '../../product/dto/create.product.dto';
 import FactoryInstance from '../daos/cart.factory.dao';
 import { IPatchCartDto } from '../dto/patch.cart.dto';
 
-class CartsService implements ICrud {
+class CartsService implements ICrudCart {
   async create(resource: ICreateCartDto): Promise<any> {
     return (await FactoryInstance).create(resource);
   }
 
   async addProduct(
-    id: string,
-    resource: Array<ICreateProductDto>
+    product: ICreateProductDto,
+    cart: ICreateCartDto
   ): Promise<any> {
-    return CartsDao.addProduct(id, resource);
+    return (await FactoryInstance).addProduct(product, cart);
   }
 
   async deleteById(id: string): Promise<any> {
     return (await FactoryInstance).deleteById(id);
   }
 
-  async deleteProductById(id: string, productId: string): Promise<any> {
-    return CartsDao.removeCartProductById(id, productId);
+  async deleteProductById(
+    product: ICreateProductDto,
+    cart: ICreateCartDto
+  ): Promise<any> {
+    return (await FactoryInstance).deleteProductById(product, cart);
   }
 
   async list(limit?: number, page?: number): Promise<any> {

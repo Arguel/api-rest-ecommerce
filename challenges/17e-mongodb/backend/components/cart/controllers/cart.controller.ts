@@ -52,8 +52,8 @@ class CartsController {
   ) {
     try {
       const cartId = await cartsService.addProduct(
-        req.body.id,
-        req.body.values
+        req.body.product,
+        req.body.cart
       );
       res.status(httpStatus.CREATED).send({ id: cartId });
     } catch (err) {
@@ -81,10 +81,7 @@ class CartsController {
   ) {
     try {
       log(
-        await cartsService.deleteProductById(
-          req.params.cartId,
-          req.params.productId
-        )
+        await cartsService.deleteProductById(req.body.product, req.body.cart)
       );
       res.status(httpStatus.NO_CONTENT).send();
     } catch (err) {
