@@ -7,23 +7,51 @@ import { PatchUserDto } from '../dto/patch.user.dto';
 const log: debug.IDebugger = debug('app:users-controller');
 
 class UsersController {
-  public async listUsers(req: express.Request, res: express.Response) {
-    const users = await usersService.list(100, 0);
-    res.status(200).send(users);
+  public async listUsers(
+    req: express.Request,
+    res: express.Response,
+    next: express.NextFunction
+  ) {
+    try {
+      const users = await usersService.list(100, 0);
+      res.status(200).send(users);
+    } catch (err) {
+      next(err);
+    }
   }
 
-  public async getUserById(req: express.Request, res: express.Response) {
-    const user = await usersService.readById(req.params.userId);
-    res.status(200).send(user);
+  public async getUserById(
+    req: express.Request,
+    res: express.Response,
+    next: express.NextFunction
+  ) {
+    try {
+      const user = await usersService.readById(req.params.userId);
+      res.status(200).send(user);
+    } catch (err) {
+      next(err);
+    }
   }
 
-  public async createUser(req: express.Request, res: express.Response) {
-    req.body.password = await argon2.hash(req.body.password);
-    const userId = await usersService.create(req.body);
-    res.status(201).send({ id: userId });
+  public async createUser(
+    req: express.Request,
+    res: express.Response,
+    next: express.NextFunction
+  ) {
+    try {
+      req.body.password = await argon2.hash(req.body.password);
+      const userId = await usersService.create(req.body);
+      res.status(201).send({ id: userId });
+    } catch (err) {
+      next(err);
+    }
   }
 
-  public async patch(req: express.Request, res: express.Response) {
+  public async patch(
+    req: express.Request,
+    res: express.Response,
+    next: express.NextFunction
+  ) {
     if (req.body.password) {
       req.body.password = await argon2.hash(req.body.password);
     }
@@ -31,20 +59,29 @@ class UsersController {
     res.status(204).send();
   }
 
-  public async removeUser(req: express.Request, res: express.Response) {
+  public async removeUser(
+    req: express.Request,
+    res: express.Response,
+    next: express.NextFunction
+  ) {
     log(await usersService.deleteById(req.params.userId));
     res.status(204).send();
   }
 
   public async updatePermissionLevel(
     req: express.Request,
-    res: express.Response
+    res: express.Response,
+    next: express.NextFunction
   ) {
-    const patchUserDto: PatchUserDto = {
-      permissionLevel: parseInt(req.params.permissionLevel),
-    };
-    log(await usersService.patchById(req.params.userId, patchUserDto));
-    res.status(204).send();
+    try {
+      const patchUserDto: PatchUserDto = {
+        permissionLevel: parseInt(req.params.permissionLevel),
+      };
+      log(await usersService.patchById(req.params.userId, patchUserDto));
+      res.status(204).send();
+    } catch (err) {
+      next(err);
+    }
   }
 }
 
