@@ -1,6 +1,7 @@
 import CommonRoutesConfig from '../../common/common.routes.config';
 import CartController from './controllers/cart.controller';
 import CartMiddleware from './middleware/cart.middleware';
+import ProductMiddleware from '../product/middleware/product.middleware';
 import express from 'express';
 
 export default class CartRoutes extends CommonRoutesConfig {
@@ -17,25 +18,24 @@ export default class CartRoutes extends CommonRoutesConfig {
       );
 
     this.app.param(`cartId`, CartMiddleware.extractCartId);
-    this.app
-      .route(`/cart/:cartId`)
-      .all(CartMiddleware.validateCartExists)
-      .delete(CartController.removeCart);
-
-    this.app
-      .route(`/cart/:cartId/products`)
-      .all(CartMiddleware.validateCartExists)
-      .get([CartController.getCartProductsById])
-      .post([
-        CartMiddleware.validateRequiredCartBodyFields,
-        CartMiddleware.validateProductExists,
-        CartController.addProduct,
-      ]);
-
-    this.app.delete(`/cart/:cartId/products/:productId`, [
+    this.app.delete(`/cart/:cartId`, [
       CartMiddleware.validateCartExists,
-      CartController.removeCartProduct,
+      CartController.removeCart,
     ]);
+
+    this.app.get(`/cart/:cartId/products`, [
+      CartMiddleware.validateCartExists,
+      CartController.getCartProductsById,
+    ]);
+
+    this.app
+      .route(`/cart/:cartId/products/:productId`)
+      .all(
+        CartMiddleware.validateCartExists,
+        ProductMiddleware.validateProductExists
+      )
+      .post([CartController.addProduct])
+      .delete([CartController.removeCartProduct]);
 
     return this.app;
   }
