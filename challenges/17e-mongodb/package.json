@@ -1,0 +1,33 @@
+{
+  "name": "api-rest-ecommerce",
+  "version": "0.0.1",
+  "description": "Rest api using Node.js and MongoDB",
+  "scripts": {
+    "start": "node backend/dist/server.js",
+    "server": "nodemon backend/dist/server.js",
+    "client": "npm start --prefix frontend",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/enzoarguello512/api-rest-ecommerce.git"
+  },
+  "keywords": [
+    "REST",
+    "API",
+    "ExpressJS",
+    "NodeJS",
+    "React"
+  ],
+  "author": "enzoarguello512",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/enzoarguello512/api-rest-ecommerce/issues"
+  },
+  "homepage": "https://github.com/enzoarguello512/api-rest-ecommerce#readme",
+  "devDependencies": {
+    "concurrently": "^7.3.0",
+    "nodemon": "^2.0.19"
+  }
+}

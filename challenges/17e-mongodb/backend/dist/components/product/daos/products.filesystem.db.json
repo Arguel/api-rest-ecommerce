@@ -1,0 +1,62 @@
+[
+    {
+        "timestamp": "Testeo33333333333",
+        "name": "Name33333333333",
+        "description": "pato33333333333",
+        "productCode": "pato",
+        "thumbnailUrl": "pato",
+        "price": "a33333333333",
+        "stock": "a33333333333",
+        "id": "EKrS5nO8dKIAqoFpX5U4J"
+    },
+    {
+        "timestamp": "Mon, 01 Aug 2022 22:53:44 GMT",
+        "name": "Name",
+        "description": "pato",
+        "price": "a",
+        "stock": "a",
+        "empanada": "2",
+        "duro": 22,
+        "id": "nZ2lM80Api-2uSQqo_Mg8"
+    },
+    {
+        "timestamp": "Mon, 01 Aug 2022 22:57:16 GMT",
+        "name": "Name",
+        "description": "pato",
+        "price": "a",
+        "stock": "a",
+        "empanada": "2",
+        "duro": 22,
+        "id": "x_LLdScZG6z1KqZ8Oc19r"
+    },
+    {
+        "timestamp": "Tue, 02 Aug 2022 16:57:28 GMT",
+        "name": "Name",
+        "description": "pato",
+        "price": "a",
+        "stock": "a",
+        "empanada": "2",
+        "duro": 22,
+        "id": "T65-QdwCCzLGAhEdCzUYC"
+    },
+    {
+        "timestamp": "Testeo33333333333",
+        "name": "Name33333333333",
+        "description": "pato33333333333",
+        "price": "a33333333333",
+        "stock": "a33333333333",
+        "empanada": "2",
+        "duro": 22,
+        "id": "r8YcBnRoxEJLJdy62cQ87"
+    },
+    {
+        "timestamp": "Sun, 14 Aug 2022 22:30:42 GMT",
+        "name": "Name",
+        "description": "pato",
+        "price": "a",
+        "stock": "a",
+        "empanada": "2",
+        "duro": 22,
+        "id": "KISSaJehnpzu807Y5-lGd"
+    }
+]
