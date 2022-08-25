@@ -1,23 +1,28 @@
-import mongoose from 'mongoose';
-import { ICreateCartDto } from '../dto/create.cart.dto';
+import MongooseService from '../../../services/mongoose/mongoose.service';
 
-export const cartSchema = new mongoose.Schema<ICreateCartDto>(
+const Schema = MongooseService.getMongoose().Schema;
+
+export const cartSchema = new Schema(
   {
-    _id: { type: String, required: true },
-    products: {
-      type: [
-        {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: 'Product',
-        },
-      ],
-      required: true,
-    },
+    products: [
+      {
+        _id: false,
+        data: { type: 'ObjectId', ref: 'Product' },
+        quantity: { type: Number, required: true },
+      },
+    ],
   },
   {
     timestamps: true,
-    versionKey: false,
   }
 );
 
-export const Cart = mongoose.model('Cart', cartSchema);
+cartSchema.set('toJSON', {
+  virtuals: true,
+  versionKey: false,
+  transform: function (doc, ret) {
+    delete ret._id;
+  },
+});
+
+export const Cart = MongooseService.getMongoose().model('Cart', cartSchema);
