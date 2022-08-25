@@ -32,10 +32,10 @@ class ProductsDao implements ICrud {
 
   public async create(product: ICreateProductDto) {
     try {
-      product._id = nanoid();
+      product.id = nanoid();
       product.timestamp = new Date().toUTCString();
       await this.crud.set(product);
-      return product._id;
+      return product.id;
     } catch (err) {
       throw new BaseError('Failed to save product', err, 'addProduct');
     }
@@ -68,7 +68,7 @@ class ProductsDao implements ICrud {
         'stock',
       ] as const;
       await this.crud.update({ id: productId }, product, allowedPatchFields);
-      return `${product._id} patched`;
+      return `${product.id} patched`;
     } catch (err) {
       throw new BaseError('Failed to update product', err, 'patchProductById');
     }
