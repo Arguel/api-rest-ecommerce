@@ -1,5 +1,7 @@
-export interface ICreateProductDto {
-  _id: string;
+import mongoose from 'mongoose';
+
+export interface ICreateProductDto extends mongoose.Document {
+  id: string;
   timestamp: string;
   name: string;
   description?: string;
