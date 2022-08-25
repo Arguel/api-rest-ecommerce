@@ -2,7 +2,7 @@ import CommonRoutesConfig from '../../common/common.routes.config';
 import UsersController from './controllers/user.controller';
 import UsersMiddleware from './middleware/user.middleware';
 import JwtMiddleware from '../../services/auth/middleware/jwt.middleware';
-import PermissionMiddleware from '../../common/middleware/common.permission.middleware';
+// import PermissionMiddleware from '../../common/middleware/common.permission.middleware';
 import { EPermissionLevel } from '../../common/types/common.permissionlevel.enum';
 import BodyValidationMiddleware from '../../common/middleware/body.validation.middleware';
 import { body } from 'express-validator';
@@ -19,7 +19,7 @@ export default class UsersRoutes extends CommonRoutesConfig {
       .route(`/users`)
       .get(
         JwtMiddleware.validJWTNeeded,
-        PermissionMiddleware.onlyAdminCanDoThisAction,
+        // PermissionMiddleware.onlyAdminCanDoThisAction,
         UsersController.listUsers
       )
       .post(
@@ -33,8 +33,8 @@ export default class UsersRoutes extends CommonRoutesConfig {
       .route(`/users/:userId`)
       .all(
         UsersMiddleware.validateUserExists,
-        JwtMiddleware.validJWTNeeded,
-        PermissionMiddleware.onlySameUserOrAdminCanDoThisAction
+        JwtMiddleware.validJWTNeeded
+        // PermissionMiddleware.onlySameUserOrAdminCanDoThisAction
       )
       .get(UsersController.getUserById)
       .delete(UsersController.removeUser);
@@ -51,19 +51,19 @@ export default class UsersRoutes extends CommonRoutesConfig {
       body('permissionLevel').isInt().optional(),
       BodyValidationMiddleware.verifyBodyFieldsErrors,
       UsersMiddleware.validatePatchEmail,
-      PermissionMiddleware.onlySameUserOrAdminCanDoThisAction,
-      PermissionMiddleware.minimumEPermissionLevelRequired(
-        EPermissionLevel.PAID_PERMISSION
-      ),
+      // PermissionMiddleware.onlySameUserOrAdminCanDoThisAction,
+      // PermissionMiddleware.minimumEPermissionLevelRequired(
+      // EPermissionLevel.PAID_PERMISSION
+      // ),
       UsersController.patch,
     ]);
 
     this.app.put(`/users/:userId/permissionLevel/:permissionLevel`, [
       JwtMiddleware.validJWTNeeded,
-      PermissionMiddleware.onlySameUserOrAdminCanDoThisAction,
-      PermissionMiddleware.minimumEPermissionLevelRequired(
-        EPermissionLevel.ADMIN_PERMISSION
-      ),
+      // PermissionMiddleware.onlySameUserOrAdminCanDoThisAction,
+      // PermissionMiddleware.minimumEPermissionLevelRequired(
+      // EPermissionLevel.ADMIN_PERMISSION
+      // ),
       UsersController.updatePermissionLevel,
     ]);
 

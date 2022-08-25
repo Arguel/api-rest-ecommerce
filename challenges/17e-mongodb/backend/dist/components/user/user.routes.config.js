@@ -7,8 +7,6 @@ const common_routes_config_1 = __importDefault(require("../../common/common.rout
 const user_controller_1 = __importDefault(require("./controllers/user.controller"));
 const user_middleware_1 = __importDefault(require("./middleware/user.middleware"));
 const jwt_middleware_1 = __importDefault(require("../../services/auth/middleware/jwt.middleware"));
-const common_permission_middleware_1 = __importDefault(require("../../common/middleware/common.permission.middleware"));
-const common_permissionlevel_enum_1 = require("../../common/types/common.permissionlevel.enum");
 const body_validation_middleware_1 = __importDefault(require("../../common/middleware/body.validation.middleware"));
 const express_validator_1 = require("express-validator");
 class UsersRoutes extends common_routes_config_1.default {
@@ -18,12 +16,16 @@ class UsersRoutes extends common_routes_config_1.default {
     configureRoutes() {
         this.app
             .route(`/users`)
-            .get(jwt_middleware_1.default.validJWTNeeded, common_permission_middleware_1.default.onlyAdminCanDoThisAction, user_controller_1.default.listUsers)
+            .get(jwt_middleware_1.default.validJWTNeeded, 
+        // PermissionMiddleware.onlyAdminCanDoThisAction,
+        user_controller_1.default.listUsers)
             .post(user_middleware_1.default.validateRequiredUserBodyFields, user_middleware_1.default.validateSameEmailDoesntExist, user_controller_1.default.createUser);
         this.app.param(`userId`, user_middleware_1.default.extractUserId);
         this.app
             .route(`/users/:userId`)
-            .all(user_middleware_1.default.validateUserExists, jwt_middleware_1.default.validJWTNeeded, common_permission_middleware_1.default.onlySameUserOrAdminCanDoThisAction)
+            .all(user_middleware_1.default.validateUserExists, jwt_middleware_1.default.validJWTNeeded
+        // PermissionMiddleware.onlySameUserOrAdminCanDoThisAction
+        )
             .get(user_controller_1.default.getUserById)
             .delete(user_controller_1.default.removeUser);
         this.app.patch(`/users/:userId`, [
@@ -38,18 +40,22 @@ class UsersRoutes extends common_routes_config_1.default {
             (0, express_validator_1.body)('permissionLevel').isInt().optional(),
             body_validation_middleware_1.default.verifyBodyFieldsErrors,
             user_middleware_1.default.validatePatchEmail,
-            common_permission_middleware_1.default.onlySameUserOrAdminCanDoThisAction,
-            common_permission_middleware_1.default.minimumEPermissionLevelRequired(common_permissionlevel_enum_1.EPermissionLevel.PAID_PERMISSION),
+            // PermissionMiddleware.onlySameUserOrAdminCanDoThisAction,
+            // PermissionMiddleware.minimumEPermissionLevelRequired(
+            // EPermissionLevel.PAID_PERMISSION
+            // ),
             user_controller_1.default.patch,
         ]);
         this.app.put(`/users/:userId/permissionLevel/:permissionLevel`, [
             jwt_middleware_1.default.validJWTNeeded,
-            common_permission_middleware_1.default.onlySameUserOrAdminCanDoThisAction,
-            common_permission_middleware_1.default.minimumEPermissionLevelRequired(common_permissionlevel_enum_1.EPermissionLevel.ADMIN_PERMISSION),
+            // PermissionMiddleware.onlySameUserOrAdminCanDoThisAction,
+            // PermissionMiddleware.minimumEPermissionLevelRequired(
+            // EPermissionLevel.ADMIN_PERMISSION
+            // ),
             user_controller_1.default.updatePermissionLevel,
         ]);
         return this.app;
     }
 }
 exports.default = UsersRoutes;
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoidXNlci5yb3V0ZXMuY29uZmlnLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vLi4vY29tcG9uZW50cy91c2VyL3VzZXIucm91dGVzLmNvbmZpZy50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7OztBQUFBLDZGQUFtRTtBQUNuRSxvRkFBNEQ7QUFDNUQsbUZBQTJEO0FBQzNELG1HQUEwRTtBQUMxRSx3SEFBd0Y7QUFDeEYsZ0dBQWtGO0FBQ2xGLG9IQUEwRjtBQUMxRix5REFBeUM7QUFJekMsTUFBcUIsV0FBWSxTQUFRLDhCQUFrQjtJQUN6RCxZQUFZLEdBQXdCO1FBQ2xDLEtBQUssQ0FBQyxHQUFHLEVBQUUsYUFBYSxDQUFDLENBQUM7SUFDNUIsQ0FBQztJQUVELGVBQWU7UUFDYixJQUFJLENBQUMsR0FBRzthQUNMLEtBQUssQ0FBQyxRQUFRLENBQUM7YUFDZixHQUFHLENBQ0Ysd0JBQWEsQ0FBQyxjQUFjLEVBQzVCLHNDQUFvQixDQUFDLHdCQUF3QixFQUM3Qyx5QkFBZSxDQUFDLFNBQVMsQ0FDMUI7YUFDQSxJQUFJLENBQ0gseUJBQWUsQ0FBQyw4QkFBOEIsRUFDOUMseUJBQWUsQ0FBQyw0QkFBNEIsRUFDNUMseUJBQWUsQ0FBQyxVQUFVLENBQzNCLENBQUM7UUFFSixJQUFJLENBQUMsR0FBRyxDQUFDLEtBQUssQ0FBQyxRQUFRLEVBQUUseUJBQWUsQ0FBQyxhQUFhLENBQUMsQ0FBQztRQUN4RCxJQUFJLENBQUMsR0FBRzthQUNMLEtBQUssQ0FBQyxnQkFBZ0IsQ0FBQzthQUN2QixHQUFHLENBQ0YseUJBQWUsQ0FBQyxrQkFBa0IsRUFDbEMsd0JBQWEsQ0FBQyxjQUFjLEVBQzVCLHNDQUFvQixDQUFDLGtDQUFrQyxDQUN4RDthQUNBLEdBQUcsQ0FBQyx5QkFBZSxDQUFDLFdBQVcsQ0FBQzthQUNoQyxNQUFNLENBQUMseUJBQWUsQ0FBQyxVQUFVLENBQUMsQ0FBQztRQUV0QyxJQUFJLENBQUMsR0FBRyxDQUFDLEtBQUssQ0FBQyxnQkFBZ0IsRUFBRTtZQUMvQix3QkFBYSxDQUFDLGNBQWM7WUFDNUIsSUFBQSx3QkFBSSxFQUFDLE9BQU8sQ0FBQyxDQUFDLE9BQU8sRUFBRSxDQUFDLFFBQVEsRUFBRTtZQUNsQyxJQUFBLHdCQUFJLEVBQUMsVUFBVSxDQUFDO2lCQUNiLFFBQVEsQ0FBQyxFQUFFLEdBQUcsRUFBRSxDQUFDLEVBQUUsQ0FBQztpQkFDcEIsV0FBVyxDQUFDLGdDQUFnQyxDQUFDO2lCQUM3QyxRQUFRLEVBQUU7WUFDYixJQUFBLHdCQUFJLEVBQUMsV0FBVyxDQUFDLENBQUMsUUFBUSxFQUFFLENBQUMsUUFBUSxFQUFFO1lBQ3ZDLElBQUEsd0JBQUksRUFBQyxVQUFVLENBQUMsQ0FBQyxRQUFRLEVBQUUsQ0FBQyxRQUFRLEVBQUU7WUFDdEMsSUFBQSx3QkFBSSxFQUFDLGlCQUFpQixDQUFDLENBQUMsS0FBSyxFQUFFLENBQUMsUUFBUSxFQUFFO1lBQzFDLG9DQUF3QixDQUFDLHNCQUFzQjtZQUMvQyx5QkFBZSxDQUFDLGtCQUFrQjtZQUNsQyxzQ0FBb0IsQ0FBQyxrQ0FBa0M7WUFDdkQsc0NBQW9CLENBQUMsK0JBQStCLENBQ2xELDhDQUFnQixDQUFDLGVBQWUsQ0FDakM7WUFDRCx5QkFBZSxDQUFDLEtBQUs7U0FDdEIsQ0FBQyxDQUFDO1FBRUgsSUFBSSxDQUFDLEdBQUcsQ0FBQyxHQUFHLENBQUMsaURBQWlELEVBQUU7WUFDOUQsd0JBQWEsQ0FBQyxjQUFjO1lBQzVCLHNDQUFvQixDQUFDLGtDQUFrQztZQUN2RCxzQ0FBb0IsQ0FBQywrQkFBK0IsQ0FDbEQsOENBQWdCLENBQUMsZ0JBQWdCLENBQ2xDO1lBQ0QseUJBQWUsQ0FBQyxxQkFBcUI7U0FDdEMsQ0FBQyxDQUFDO1FBRUgsT0FBTyxJQUFJLENBQUMsR0FBRyxDQUFDO0lBQ2xCLENBQUM7Q0FDRjtBQTVERCw4QkE0REMifQ==
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoidXNlci5yb3V0ZXMuY29uZmlnLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vLi4vY29tcG9uZW50cy91c2VyL3VzZXIucm91dGVzLmNvbmZpZy50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7OztBQUFBLDZGQUFtRTtBQUNuRSxvRkFBNEQ7QUFDNUQsbUZBQTJEO0FBQzNELG1HQUEwRTtBQUcxRSxvSEFBMEY7QUFDMUYseURBQXlDO0FBSXpDLE1BQXFCLFdBQVksU0FBUSw4QkFBa0I7SUFDekQsWUFBWSxHQUF3QjtRQUNsQyxLQUFLLENBQUMsR0FBRyxFQUFFLGFBQWEsQ0FBQyxDQUFDO0lBQzVCLENBQUM7SUFFRCxlQUFlO1FBQ2IsSUFBSSxDQUFDLEdBQUc7YUFDTCxLQUFLLENBQUMsUUFBUSxDQUFDO2FBQ2YsR0FBRyxDQUNGLHdCQUFhLENBQUMsY0FBYztRQUM1QixpREFBaUQ7UUFDakQseUJBQWUsQ0FBQyxTQUFTLENBQzFCO2FBQ0EsSUFBSSxDQUNILHlCQUFlLENBQUMsOEJBQThCLEVBQzlDLHlCQUFlLENBQUMsNEJBQTRCLEVBQzVDLHlCQUFlLENBQUMsVUFBVSxDQUMzQixDQUFDO1FBRUosSUFBSSxDQUFDLEdBQUcsQ0FBQyxLQUFLLENBQUMsUUFBUSxFQUFFLHlCQUFlLENBQUMsYUFBYSxDQUFDLENBQUM7UUFDeEQsSUFBSSxDQUFDLEdBQUc7YUFDTCxLQUFLLENBQUMsZ0JBQWdCLENBQUM7YUFDdkIsR0FBRyxDQUNGLHlCQUFlLENBQUMsa0JBQWtCLEVBQ2xDLHdCQUFhLENBQUMsY0FBYztRQUM1QiwwREFBMEQ7U0FDM0Q7YUFDQSxHQUFHLENBQUMseUJBQWUsQ0FBQyxXQUFXLENBQUM7YUFDaEMsTUFBTSxDQUFDLHlCQUFlLENBQUMsVUFBVSxDQUFDLENBQUM7UUFFdEMsSUFBSSxDQUFDLEdBQUcsQ0FBQyxLQUFLLENBQUMsZ0JBQWdCLEVBQUU7WUFDL0Isd0JBQWEsQ0FBQyxjQUFjO1lBQzVCLElBQUEsd0JBQUksRUFBQyxPQUFPLENBQUMsQ0FBQyxPQUFPLEVBQUUsQ0FBQyxRQUFRLEVBQUU7WUFDbEMsSUFBQSx3QkFBSSxFQUFDLFVBQVUsQ0FBQztpQkFDYixRQUFRLENBQUMsRUFBRSxHQUFHLEVBQUUsQ0FBQyxFQUFFLENBQUM7aUJBQ3BCLFdBQVcsQ0FBQyxnQ0FBZ0MsQ0FBQztpQkFDN0MsUUFBUSxFQUFFO1lBQ2IsSUFBQSx3QkFBSSxFQUFDLFdBQVcsQ0FBQyxDQUFDLFFBQVEsRUFBRSxDQUFDLFFBQVEsRUFBRTtZQUN2QyxJQUFBLHdCQUFJLEVBQUMsVUFBVSxDQUFDLENBQUMsUUFBUSxFQUFFLENBQUMsUUFBUSxFQUFFO1lBQ3RDLElBQUEsd0JBQUksRUFBQyxpQkFBaUIsQ0FBQyxDQUFDLEtBQUssRUFBRSxDQUFDLFFBQVEsRUFBRTtZQUMxQyxvQ0FBd0IsQ0FBQyxzQkFBc0I7WUFDL0MseUJBQWUsQ0FBQyxrQkFBa0I7WUFDbEMsMkRBQTJEO1lBQzNELHdEQUF3RDtZQUN4RCxtQ0FBbUM7WUFDbkMsS0FBSztZQUNMLHlCQUFlLENBQUMsS0FBSztTQUN0QixDQUFDLENBQUM7UUFFSCxJQUFJLENBQUMsR0FBRyxDQUFDLEdBQUcsQ0FBQyxpREFBaUQsRUFBRTtZQUM5RCx3QkFBYSxDQUFDLGNBQWM7WUFDNUIsMkRBQTJEO1lBQzNELHdEQUF3RDtZQUN4RCxvQ0FBb0M7WUFDcEMsS0FBSztZQUNMLHlCQUFlLENBQUMscUJBQXFCO1NBQ3RDLENBQUMsQ0FBQztRQUVILE9BQU8sSUFBSSxDQUFDLEdBQUcsQ0FBQztJQUNsQixDQUFDO0NBQ0Y7QUE1REQsOEJBNERDIn0=

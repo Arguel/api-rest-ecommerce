@@ -9,18 +9,21 @@ export default class ProductsRoutes extends CommonRoutesConfig {
     super(app, 'ProductsRoutes');
   }
   configureRoutes(): express.Application {
-    this.app.route(`/products`).get(ProductsController.listProducts).post(
-      ProductsMiddleware.validateRequiredProductBodyFields,
-      // PermissionMiddleware.isAdmin,
-      ProductsController.createProduct
-    );
+    this.app
+      .route(`/products`)
+      .get(ProductsController.listProducts)
+      .post(
+        ProductsMiddleware.validateRequiredProductBodyFields,
+        PermissionMiddleware.isAdmin,
+        ProductsController.createProduct
+      );
 
     this.app.param(`productId`, ProductsMiddleware.extractProductId);
     this.app
       .route(`/products/:productId`)
       .all(ProductsMiddleware.validateProductExists)
       .get(ProductsController.getProductById)
-      // .all(PermissionMiddleware.isAdmin)
+      .all(PermissionMiddleware.isAdmin)
       .delete(ProductsController.removeProduct);
 
     this.app.patch(`/products/:productId`, [ProductsController.patch]);
