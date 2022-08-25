@@ -12,52 +12,36 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const mongoose_service_1 = __importDefault(require("../../../services/mongoose.service"));
-const nanoid_1 = require("nanoid");
+const mongoose_1 = __importDefault(require("mongoose"));
 const debug_1 = __importDefault(require("debug"));
 const base_error_1 = __importDefault(require("../../../common/error/base.error"));
 const bad_request_error_1 = require("../../../common/error/bad.request.error");
+const product_model_1 = require("../models/product.model");
 const log = (0, debug_1.default)('app:products-dao');
 class ProductsDao {
     constructor() {
-        this.mongoose = mongoose_service_1.default.getMongoose();
-        this.productSchema = new this.mongoose.Schema({
-            _id: { type: String, required: true },
-            timestamp: { type: String, required: true },
-            name: { type: String, required: true },
-            description: String,
-            productCode: Number,
-            thumbnailUrl: String,
-            price: { type: Number, required: true },
-            stock: { type: Number, required: true },
-        }, {
-            timestamps: true,
-            versionKey: false,
-        });
-        this.Product = mongoose_service_1.default.getMongoose().model('Product', this.productSchema);
         log('Created new instance of ProductsDao');
     }
     create(productFields) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const productId = (0, nanoid_1.nanoid)();
-                const product = new this.Product(Object.assign(Object.assign({}, productFields), { _id: productId }));
+                const product = new product_model_1.Product(productFields);
                 yield product.save();
-                return productId;
+                return product.id;
             }
             catch (err) {
-                if (err instanceof this.mongoose.Error.ValidationError) {
+                if (err instanceof mongoose_1.default.Error.ValidationError) {
                     const message = Object.values(err.errors).map((prop) => prop.message);
-                    throw new bad_request_error_1.BadRequestError(message.join('. '), 'addProduct');
+                    throw new bad_request_error_1.BadRequestError(message.join('. '), 'create');
                 }
-                throw new base_error_1.default('Failed to save product', err, 'addProduct');
+                throw new base_error_1.default('Failed to save product', err, 'create');
             }
         });
     }
     deleteById(productId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                return this.Product.deleteOne({ _id: productId }).exec();
+                return product_model_1.Product.deleteOne({ _id: productId }).exec();
             }
             catch (err) {
                 throw new base_error_1.default('Failed to remove product', err, 'deleteById');
@@ -67,9 +51,7 @@ class ProductsDao {
     readById(productId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                return this.Product.findOne({ _id: productId })
-                    .populate('Product')
-                    .exec();
+                return product_model_1.Product.findOne({ _id: productId }).exec();
             }
             catch (err) {
                 throw new base_error_1.default('Failed to find product', err, 'readById');
@@ -78,7 +60,7 @@ class ProductsDao {
     }
     list(limit = 25, page = 0) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.Product.find()
+            return product_model_1.Product.find()
                 .limit(limit)
                 .skip(limit * page)
                 .exec();
@@ -87,18 +69,18 @@ class ProductsDao {
     patchById(productId, productFields) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const existingProduct = yield this.Product.findOneAndUpdate({ _id: productId }, { $set: productFields }, { new: true }).exec();
+                const existingProduct = yield product_model_1.Product.findOneAndUpdate({ _id: productId }, { $set: productFields }, { new: true }).exec();
                 return existingProduct;
             }
             catch (err) {
-                if (err instanceof this.mongoose.Error.ValidationError) {
+                if (err instanceof mongoose_1.default.Error.ValidationError) {
                     const message = Object.values(err.errors).map((prop) => prop.message);
-                    throw new bad_request_error_1.BadRequestError(message.join('. '), 'updateById');
+                    throw new bad_request_error_1.BadRequestError(message.join('. '), 'patchById');
                 }
-                throw new base_error_1.default('Failed to update product', err, 'updateById');
+                throw new base_error_1.default('Failed to update product', err, 'patchById');
             }
         });
     }
 }
 exports.default = new ProductsDao();
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoicHJvZHVjdC5tb25nb29zZS5kYW8uanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi8uLi9jb21wb25lbnRzL3Byb2R1Y3QvZGFvcy9wcm9kdWN0Lm1vbmdvb3NlLmRhby50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7OztBQUFBLDBGQUFpRTtBQUNqRSxtQ0FBZ0M7QUFDaEMsa0RBQTBCO0FBRzFCLGtGQUF5RDtBQUV6RCwrRUFBMEU7QUFFMUUsTUFBTSxHQUFHLEdBQW9CLElBQUEsZUFBSyxFQUFDLGtCQUFrQixDQUFDLENBQUM7QUFFdkQsTUFBTSxXQUFXO0lBc0JmO1FBckJBLGFBQVEsR0FBRywwQkFBZSxDQUFDLFdBQVcsRUFBRSxDQUFDO1FBRXpDLGtCQUFhLEdBQUcsSUFBSSxJQUFJLENBQUMsUUFBUSxDQUFDLE1BQU0sQ0FDdEM7WUFDRSxHQUFHLEVBQUUsRUFBRSxJQUFJLEVBQUUsTUFBTSxFQUFFLFFBQVEsRUFBRSxJQUFJLEVBQUU7WUFDckMsU0FBUyxFQUFFLEVBQUUsSUFBSSxFQUFFLE1BQU0sRUFBRSxRQUFRLEVBQUUsSUFBSSxFQUFFO1lBQzNDLElBQUksRUFBRSxFQUFFLElBQUksRUFBRSxNQUFNLEVBQUUsUUFBUSxFQUFFLElBQUksRUFBRTtZQUN0QyxXQUFXLEVBQUUsTUFBTTtZQUNuQixXQUFXLEVBQUUsTUFBTTtZQUNuQixZQUFZLEVBQUUsTUFBTTtZQUNwQixLQUFLLEVBQUUsRUFBRSxJQUFJLEVBQUUsTUFBTSxFQUFFLFFBQVEsRUFBRSxJQUFJLEVBQUU7WUFDdkMsS0FBSyxFQUFFLEVBQUUsSUFBSSxFQUFFLE1BQU0sRUFBRSxRQUFRLEVBQUUsSUFBSSxFQUFFO1NBQ3hDLEVBQ0Q7WUFDRSxVQUFVLEVBQUUsSUFBSTtZQUNoQixVQUFVLEVBQUUsS0FBSztTQUNsQixDQUNGLENBQUM7UUFFRixZQUFPLEdBQUcsMEJBQWUsQ0FBQyxXQUFXLEVBQUUsQ0FBQyxLQUFLLENBQUMsU0FBUyxF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
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoicHJvZHVjdC5tb25nb29zZS5kYW8uanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi8uLi8uLi8uLi9jb21wb25lbnRzL3Byb2R1Y3QvZGFvcy9wcm9kdWN0Lm1vbmdvb3NlLmRhby50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7OztBQUFBLHdEQUFnQztBQUNoQyxrREFBMEI7QUFHMUIsa0ZBQXlEO0FBRXpELCtFQUEwRTtBQUMxRSwyREFBa0Q7QUFFbEQsTUFBTSxHQUFHLEdBQW9CLElBQUEsZUFBSyxFQUFDLGtCQUFrQixDQUFDLENBQUM7QUFFdkQsTUFBTSxXQUFXO0lBQ2Y7UUFDRSxHQUFHLENBQUMscUNBQXFDLENBQUMsQ0FBQztJQUM3QyxDQUFDO0lBRVksTUFBTSxDQUFDLGFBQWdDOztZQUNsRCxJQUFJO2dCQUNGLE1BQU0sT0FBTyxHQUFHLElBQUksdUJBQU8sQ0FBQyxhQUFhLENBQUMsQ0FBQztnQkFDM0MsTUFBTSxPQUFPLENBQUMsSUFBSSxFQUFFLENBQUM7Z0JBQ3JCLE9BQU8sT0FBTyxDQUFDLEVBQUUsQ0FBQzthQUNuQjtZQUFDLE9BQU8sR0FBRyxFQUFFO2dCQUNaLElBQUksR0FBRyxZQUFZLGtCQUFRLENBQUMsS0FBSyxDQUFDLGVBQWUsRUFBRTtvQkFDakQsTUFBTSxPQUFPLEdBQUcsTUFBTSxDQUFDLE1BQU0sQ0FBQyxHQUFHLENBQUMsTUFBTSxDQUFDLENBQUMsR0FBRyxDQUFDLENBQUMsSUFBSSxFQUFFLEVBQUUsQ0FBQyxJQUFJLENBQUMsT0FBTyxDQUFDLENBQUM7b0JBQ3RFLE1BQU0sSUFBSSxtQ0FBZSxDQUFDLE9BQU8sQ0FBQyxJQUFJLENBQUMsSUFBSSxDQUFDLEVBQUUsUUFBUSxDQUFDLENBQUM7aUJBQ3pEO2dCQUNELE1BQU0sSUFBSSxvQkFBUyxDQUFDLHdCQUF3QixFQUFFLEdBQUcsRUFBRSxRQUFRLENBQUMsQ0FBQzthQUM5RDtRQUNILENBQUM7S0FBQTtJQUVZLFVBQVUsQ0FBQyxTQUFpQjs7WUFDdkMsSUFBSTtnQkFDRixPQUFPLHVCQUFPLENBQUMsU0FBUyxDQUFDLEVBQUUsR0FBRyxFQUFFLFNBQVMsRUFBRSxDQUFDLENBQUMsSUFBSSxFQUFFLENBQUM7YUFDckQ7WUFBQyxPQUFPLEdBQUcsRUFBRTtnQkFDWixNQUFNLElBQUksb0JBQVMsQ0FBQywwQkFBMEIsRUFBRSxHQUFHLEVBQUUsWUFBWSxDQUFDLENBQUM7YUFDcEU7UUFDSCxDQUFDO0tBQUE7SUFFWSxRQUFRLENBQUMsU0FBaUI7O1lBQ3JDLElBQUk7Z0JBQ0YsT0FBTyx1QkFBTyxDQUFDLE9BQU8sQ0FBQyxFQUFFLEdBQUcsRUFBRSxTQUFTLEVBQUUsQ0FBQyxDQUFDLElBQUksRUFBRSxDQUFDO2FBQ25EO1lBQUMsT0FBTyxHQUFHLEVBQUU7Z0JBQ1osTUFBTSxJQUFJLG9CQUFTLENBQUMsd0JBQXdCLEVBQUUsR0FBRyxFQUFFLFVBQVUsQ0FBQyxDQUFDO2FBQ2hFO1FBQ0gsQ0FBQztLQUFBO0lBRVksSUFBSSxDQUFDLEtBQUssR0FBRyxFQUFFLEVBQUUsSUFBSSxHQUFHLENBQUM7O1lBQ3BDLE9BQU8sdUJBQU8sQ0FBQyxJQUFJLEVBQUU7aUJBQ2xCLEtBQUssQ0FBQyxLQUFLLENBQUM7aUJBQ1osSUFBSSxDQUFDLEtBQUssR0FBRyxJQUFJLENBQUM7aUJBQ2xCLElBQUksRUFBRSxDQUFDO1FBQ1osQ0FBQztLQUFBO0lBRVksU0FBUyxDQUFDLFNBQWlCLEVBQUUsYUFBK0I7O1lBQ3ZFLElBQUk7Z0JBQ0YsTUFBTSxlQUFlLEdBQUcsTUFBTSx1QkFBTyxDQUFDLGdCQUFnQixDQUNwRCxFQUFFLEdBQUcsRUFBRSxTQUFTLEVBQUUsRUFDbEIsRUFBRSxJQUFJLEVBQUUsYUFBYSxFQUFFLEVBQ3ZCLEVBQUUsR0FBRyxFQUFFLElBQUksRUFBRSxDQUNkLENBQUMsSUFBSSxFQUFFLENBQUM7Z0JBRVQsT0FBTyxlQUFlLENBQUM7YUFDeEI7WUFBQyxPQUFPLEdBQUcsRUFBRTtnQkFDWixJQUFJLEdBQUcsWUFBWSxrQkFBUSxDQUFDLEtBQUssQ0FBQyxlQUFlLEVBQUU7b0JBQ2pELE1BQU0sT0FBTyxHQUFHLE1BQU0sQ0FBQyxNQUFNLENBQUMsR0FBRyxDQUFDLE1BQU0sQ0FBQyxDQUFDLEdBQUcsQ0FBQyxDQUFDLElBQUksRUFBRSxFQUFFLENBQUMsSUFBSSxDQUFDLE9BQU8sQ0FBQyxDQUFDO29CQUN0RSxNQUFNLElBQUksbUNBQWUsQ0FBQyxPQUFPLENBQUMsSUFBSSxDQUFDLElBQUksQ0FBQyxFQUFFLFdBQVcsQ0FBQyxDQUFDO2lCQUM1RDtnQkFDRCxNQUFNLElBQUksb0JBQVMsQ0FBQywwQkFBMEIsRUFBRSxHQUFHLEVBQUUsV0FBVyxDQUFDLENBQUM7YUFDbkU7UUFDSCxDQUFDO0tBQUE7Q0FDRjtBQUVELGtCQUFlLElBQUksV0FBVyxFQUFFLENBQUMifQ==
