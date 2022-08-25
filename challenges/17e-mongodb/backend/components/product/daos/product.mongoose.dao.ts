@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-import { nanoid } from 'nanoid';
 import debug from 'debug';
 import { ICreateProductDto } from '../dto/create.product.dto';
 import { IPatchProductDto } from '../dto/patch.product.dto';
@@ -17,13 +16,9 @@ class ProductsDao implements ICrud {
 
   public async create(productFields: ICreateProductDto): Promise<string> {
     try {
-      const productId: string = nanoid();
-      const product = new Product({
-        ...productFields,
-        _id: productId,
-      });
+      const product = new Product(productFields);
       await product.save();
-      return productId;
+      return product.id;
     } catch (err) {
       if (err instanceof mongoose.Error.ValidationError) {
         const message = Object.values(err.errors).map((prop) => prop.message);
@@ -43,7 +38,7 @@ class ProductsDao implements ICrud {
 
   public async readById(productId: string) {
     try {
-      return Product.findOne({ _id: productId }).populate('Product').exec();
+      return Product.findOne({ _id: productId }).exec();
     } catch (err) {
       throw new BaseError('Failed to find product', err, 'readById');
     }
