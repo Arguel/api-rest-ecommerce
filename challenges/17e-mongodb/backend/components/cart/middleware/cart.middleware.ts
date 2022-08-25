@@ -1,8 +1,10 @@
 import express from 'express';
 import cartService from '../services/cart.service';
 import httpStatus from 'http-status';
-import productService from '../../product/services/product.service';
-import { ICreateProductDto } from '../../product/dto/create.product.dto';
+import { Error as MongoError } from 'mongoose';
+import { NotFoundError } from '../../../common/error/not.found.error';
+import { BadRequestError } from '../../../common/error/bad.request.error';
+import { ICreateCartDto } from '../dto/create.cart.dto';
 
 class CartsMiddleware {
   public async validateRequiredCartBodyFields(
@@ -25,41 +27,20 @@ class CartsMiddleware {
     next: express.NextFunction
   ) {
     try {
-      const cart = await cartService.readById(req.params.cartId);
-      if (cart) {
-        next();
-      } else {
-        res
-          .status(httpStatus.NOT_FOUND)
-          .send({ error: `Cart ${req.params.userId} not found` });
-      }
-    } catch (err) {
-      res
-        .status(httpStatus.NOT_FOUND)
-        .send({ error: `Cart ${req.params.cartId} not found` });
-    }
-  }
-
-  public async validateProductExists(
-    req: express.Request,
-    res: express.Response,
-    next: express.NextFunction
-  ) {
-    try {
-      const values: Array<ICreateProductDto> = await Promise.all(
-        req.body.products.map(async (productId: string) => {
-          const product = await productService.readById(productId);
-          if (product) return product;
-        })
+      const cart: ICreateCartDto = await cartService.readById(
+        req.params.cartId
       );
-      if (values) {
-        req.body.values = values;
-        next();
-      } else {
-        res.status(httpStatus.NOT_FOUND).send({ error: `Products not found` });
+      if (!cart) {
+        throw new NotFoundError('Cart not found', 'validateCartExists');
       }
+      req.body.cart = cart;
+      next();
     } catch (err) {
-      res.status(httpStatus.NOT_FOUND).send({ error: `Products not found` });
+      if (err instanceof MongoError.CastError) {
+        next(new BadRequestError('Invalid cart id', 'validateCartExists'));
+        return;
+      }
+      next(err);
     }
   }
 
