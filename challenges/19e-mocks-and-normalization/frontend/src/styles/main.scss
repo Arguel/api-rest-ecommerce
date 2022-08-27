@@ -1,0 +1,24 @@
+// The modules have to go in that precise order because we are working with bootstrap
+
+// Base
+@import 'base/reset';
+// Configuration
+@import 'helpers/variables';
+@import 'helpers/mixins';
+
+//---------Bootstrap---------
+// Vendors
+//-Original
+@import '../../node_modules/bootstrap/scss/bootstrap'; //full bootstrap modules
+
+@import 'vendors/vendors-extensions/custom-config'; //to overwrite bootstrap classes
+//---------------------------
+
+// Layout & components
+@import 'layout/header'; //navigation bar
+@import 'layout/footer'; //footer
+// Pages
+@import 'pages/shop';
+@import 'pages/cart';
+// Helpers
+@import 'helpers/helpers';
