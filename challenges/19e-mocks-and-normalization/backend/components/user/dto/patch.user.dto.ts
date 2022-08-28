@@ -1,3 +1,4 @@
-import { PutUserDto } from './put.user.dto';
+import { ICreateUserDto } from './create.user.dto';
 
-export interface PatchUserDto extends Partial<PutUserDto> {}
+// eslint-disable-next-line
+export interface IPatchUserDto extends Partial<ICreateUserDto> {}
