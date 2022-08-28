@@ -108,6 +108,9 @@ out
 # vuepress build output
 .vuepress/dist
 
+# typescript build output
+build/
+
 # Serverless directories
 .serverless/
 
