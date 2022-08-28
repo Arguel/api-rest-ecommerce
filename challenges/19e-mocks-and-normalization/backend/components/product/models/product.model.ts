@@ -1,8 +1,9 @@
 import MongooseService from '../../../services/mongoose/mongoose.service';
+import { ICreateProductDto } from '../dto/create.product.dto';
 
 const Schema = MongooseService.getMongoose().Schema;
 
-export const productSchema = new Schema(
+export const productSchema = new Schema<ICreateProductDto>(
   {
     name: { type: String, required: true },
     description: String,
@@ -24,7 +25,7 @@ productSchema.set('toJSON', {
   },
 });
 
-export const Product = MongooseService.getMongoose().model(
+export const Product = MongooseService.getMongoose().model<ICreateProductDto>(
   'Product',
   productSchema
 );

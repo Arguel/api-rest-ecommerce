@@ -11,17 +11,11 @@ class ProductsMiddleware {
     res: express.Response,
     next: express.NextFunction
   ) {
-    if (
-      req.body &&
-      req.body.timestamp &&
-      req.body.name &&
-      req.body.price &&
-      req.body.stock
-    ) {
+    if (req.body && req.body.name && req.body.price && req.body.stock) {
       next();
     } else {
       res.status(httpStatus.BAD_REQUEST).send({
-        error: `Missing required fields {timestamp, name, price, stock}`,
+        error: `Missing required fields {name, price, stock}`,
       });
     }
   }

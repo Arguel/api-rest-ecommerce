@@ -30,7 +30,7 @@ class CartsDao implements ICrud {
   public async create(cart: ICreateCartDto) {
     try {
       cart.id = nanoid();
-      cart.timestamp = new Date().toUTCString();
+      cart.createdAt = new Date();
       await this.crud.set(cart);
       return cart.id;
     } catch (err) {

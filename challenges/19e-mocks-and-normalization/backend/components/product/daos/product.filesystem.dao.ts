@@ -33,7 +33,7 @@ class ProductsDao implements ICrud {
   public async create(product: ICreateProductDto) {
     try {
       product.id = nanoid();
-      product.timestamp = new Date().toUTCString();
+      product.createdAt = new Date();
       await this.crud.set(product);
       return product.id;
     } catch (err) {
