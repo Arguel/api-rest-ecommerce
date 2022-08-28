@@ -27,6 +27,7 @@
   "dependencies": {
     "@abmsourav/localdb": "github:enzoarguello512/localdb",
     "argon2": "^0.28.7",
+    "bcryptjs": "^2.4.3",
     "class-validator": "^0.13.2",
     "config": "^3.3.7",
     "cors": "^2.8.5",
@@ -46,6 +47,7 @@
     "winston": "^3.8.1"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.2",
     "@types/chai": "^4.3.1",
     "@types/config": "^0.0.41",
     "@types/cors": "^2.8.12",
