@@ -9,8 +9,12 @@ import ErrorMiddleware from './components/app/middleware/error.middleware';
 import ErrorHandler from './common/error.handler.config';
 import CartRoutes from './components/cart/cart.routes.config';
 import UsersRoutes from './components/user/user.routes.config';
+import http from 'http';
+import SocketServer from './services/socket/socket.service';
 
+// Server
 const app: express.Application = express();
+const server: http.Server = http.createServer(app);
 const debugLog: debug.IDebugger = debug('app');
 const routes: Array<CommonRoutesConfig> = [];
 
@@ -29,11 +33,11 @@ routes.forEach((route: CommonRoutesConfig): void => {
   debugLog(`Routes configured for ${route.getName()}`);
 });
 
+// Errors
 app.use(ErrorMiddleware.handle);
 // Manage non-existent routes
 app.use(ErrorMiddleware.routeNotFound);
 
-// Errors
 process.on('uncaughtException', async (error: Error): Promise<void> => {
   console.log('uncaughtException');
   ErrorHandler.handleError(error);
@@ -43,4 +47,7 @@ process.on('unhandledRejection', (reason: Error): never => {
   throw reason;
 });
 
-export default app;
+// Library
+new SocketServer(server);
+
+export default server;
