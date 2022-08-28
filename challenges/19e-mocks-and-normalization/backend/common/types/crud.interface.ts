@@ -19,3 +19,11 @@ export interface ICrudCart extends ICrud {
     cart: ICreateCartDto
   ) => Promise<any>;
 }
+
+export interface ICrudMessage extends ICrud {
+  listUserMessages: (
+    userId: string,
+    limit?: number,
+    page?: number
+  ) => Promise<any>;
+}
