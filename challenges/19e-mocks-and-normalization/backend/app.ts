@@ -11,10 +11,12 @@ import CartRoutes from './components/cart/cart.routes.config';
 import UsersRoutes from './components/user/user.routes.config';
 import http from 'http';
 import SocketServer from './services/socket/socket.service';
+import MessagesRoutes from './components/message/message.routes.config';
+import socketio from 'socket.io';
+import sessionMiddleware from './components/app/middleware/session.middleware';
 
-// Server
+// App
 const app: express.Application = express();
-const server: http.Server = http.createServer(app);
 const debugLog: debug.IDebugger = debug('app');
 const routes: Array<CommonRoutesConfig> = [];
 
@@ -24,11 +26,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 app.use(helmet());
+app.use(sessionMiddleware);
 
 // Routes config
 routes.push(new ProductsRoutes(app));
 routes.push(new CartRoutes(app));
 routes.push(new UsersRoutes(app));
+routes.push(new MessagesRoutes(app));
 routes.forEach((route: CommonRoutesConfig): void => {
   debugLog(`Routes configured for ${route.getName()}`);
 });

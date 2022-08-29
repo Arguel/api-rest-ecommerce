@@ -1,3 +1,6 @@
+// import path from 'path';
+// // For the "config" module to correctly detect our configuration folder ("config/")
+// process.env['NODE_CONFIG_DIR'] = path.join(__dirname, '/backend/config');
 import dotenv from 'dotenv';
 import { EPersistenceType } from '../common/types/factory.persistence.enum';
 
@@ -9,7 +12,7 @@ if (dotenvResult.error) {
 
 const defaultConfig = {
   server: {
-    port: process.env.PORT || 3000,
+    port: process.env.PORT || 8080,
     domain: 'localhost',
     /**
      * Persistence is equal to:
@@ -17,6 +20,11 @@ const defaultConfig = {
      */
     persistence: process.env.PERSISTENCE || EPersistenceType.mongoatlas,
     mode: process.env.MODE,
+    session: {
+      secret: process.env.SESSION_SECRET || 'secret',
+      // Timeout in minutes
+      cookietimeout: process.env.SESSION_COOKIE_TIMEOUT || '10',
+    },
   },
   databases: {
     mongolocal: {

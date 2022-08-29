@@ -4,7 +4,7 @@ import { Global } from './types/memory.server.interface';
 import MongoMemoryServer from 'mongodb-memory-server-core';
 import config from 'config';
 import { TKeys } from '../../common/types/factory.persistence.enum';
-// import { MongoClient } from 'mongodb';
+import { MongoClient } from 'mongodb';
 
 const log: debug.IDebugger = debug('app:mongoose-service');
 
@@ -38,7 +38,7 @@ class MongooseService {
     return uri.slice(0, uri.lastIndexOf('/'));
   }
 
-  public getMongoUrl = async (type: TKeys): Promise<string> => {
+  public getMongoUri = async (type: TKeys): Promise<string> => {
     if (process.env.NODE_ENV === 'test') {
       const testServer: string = await this.getTestServer();
       return `${testServer}/${this.atlasDatabase}`;
@@ -49,13 +49,14 @@ class MongooseService {
 
     return type === 'mongolocal' ? localUrl : atlasUrl;
   };
-
-  public connectWithRetry = async () => {
+  // @ts-ignore
+  public connectWithRetry = async (): Promise<MongoClient> => {
     try {
       log('Attempting MongoDB connection (will retry if needed)');
-      const url: string = await this.getMongoUrl(this.persistence);
-      const mongoInstance = await mongoose.connect(url, this.mongooseOptions);
+      const uri: string = await this.getMongoUri(this.persistence);
+      const mongoInstance = await mongoose.connect(uri, this.mongooseOptions);
       log('MongoDB is connected');
+      // @ts-ignore
       return mongoInstance.connection.getClient();
     } catch (err) {
       const retrySeconds = 5;
