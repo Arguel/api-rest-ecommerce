@@ -39,7 +39,6 @@ app.use(ErrorMiddleware.handle);
 app.use(ErrorMiddleware.routeNotFound);
 
 process.on('uncaughtException', async (error: Error): Promise<void> => {
-  console.log('uncaughtException');
   ErrorHandler.handleError(error);
   if (!ErrorHandler.isTrustedError(error)) process.exit(1);
 });
@@ -47,7 +46,18 @@ process.on('unhandledRejection', (reason: Error): never => {
   throw reason;
 });
 
-// Library
-new SocketServer(server);
+// Server
+const httpServer: http.Server = http.createServer(app);
 
-export default server;
+// Chat server
+const ioServer: socketio.Server = new socketio.Server(httpServer, {
+  cors: {
+    origin: '*',
+    methods: ['GET', 'POST'],
+  },
+});
+ioServer.on('connection', (socket) => {
+  new SocketServer(ioServer, socket);
+});
+
+export default httpServer;
