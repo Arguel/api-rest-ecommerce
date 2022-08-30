@@ -1,49 +1,30 @@
-import './Navbar.css';
+// import './Navbar.css';
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+// import { useSelector } from 'react-redux';
 
 const Navbar = ({ click }) => {
-  const cart = useSelector((state) => state.cart);
-  const { cartItems } = cart;
+  // const cart = useSelector((state) => state.cart);
+  // const { cartItems } = cart;
 
-  const getCartCount = () => {
-    return cartItems.reduce((qty, item) => Number(item.qty) + qty, 0);
-  };
+  // const getCartCount = () => {
+  //   return cartItems.reduce((qty, item) => Number(item.qty) + qty, 0);
+  // };
 
   return (
     // Start of nav-menu-container
-    <div class="container-xxl navbar-min-h fixed-top bg-white">
-      <nav className="navbar">
-        <div className="navbar__logo">
-          <h2>MERN Shopping Cart</h2>
-        </div>
-        <ul className="navbar__links">
-          <li>
-            <Link to="/cart" className="cart__link">
-              <i className="fas fa-shopping-cart"></i>
-              <span>
-                Cart <span className="cartlogo__badge">{getCartCount()}</span>
-              </span>
-            </Link>
-          </li>
-          <li>
-            <Link to="/">Shop</Link>
-          </li>
-        </ul>
-      </nav>
-      {/* ####################### */}
-      <nav class="navbar navbar-expand-lg navbar-light m-2">
-        <div class="h-40px text-center">
-          <a class="navbar-brand" href="/">
+    <div className="container-xxl navbar-min-h fixed-top bg-white">
+      <nav className="navbar navbar-expand-lg navbar-light m-2">
+        <div className="h-40px text-center">
+          <Link className="navbar-brand" to="/">
             <img
-              class="h-100 w-auto"
-              src="../../public/img/logo/white_background/medium_logo_side/svg/medium_logo_side.svg"
+              className="h-100 w-auto"
+              src="/img/logo/white_background/medium_logo_side/svg/medium_logo_side.svg"
               alt="side-logo"
             />
-          </a>
+          </Link>
         </div>
         <button
-          class="navbar-toggler"
+          className="navbar-toggler"
           type="button"
           data-bs-toggle="collapse"
           data-bs-target="#navbarSupportedContent"
@@ -51,164 +32,164 @@ const Navbar = ({ click }) => {
           aria-expanded="false"
           aria-label="Toggle navigation"
         >
-          <span class="navbar-toggler-icon"></span>
+          <span className="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div className="collapse navbar-collapse" id="navbarSupportedContent">
           {/* nav */}
-          <ul class="navbar-nav align-items-center justify-content-around mx-auto col-lg-8">
+          <ul className="navbar-nav align-items-center justify-content-around mx-auto col-lg-8">
             {/* Home */}
-            <li class="nav-item">
-              <a class="nav-link fs-5" href="/" aria-current="page">
+            <li className="nav-item">
+              <Link className="nav-link fs-5" to="/" aria-current="page">
                 Home
-              </a>
+              </Link>
             </li>
             {/* About */}
-            <li class="nav-item dropdown text-center">
-              <a
-                class="nav-link fs-5"
-                href="#"
+            <li className="nav-item dropdown text-center">
+              <Link
+                className="nav-link fs-5"
+                to="#"
                 id="navbarDropdownMenuLinkAbout"
                 role="button"
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
                 About
-              </a>
+              </Link>
               <ul
-                class="nav-color-list dropdown-menu text-center text-lg-start"
+                className="nav-color-list dropdown-menu text-center text-lg-start"
                 aria-labelledby="navbarDropdownMenuLinkAbout"
               >
                 <li>
-                  <a class="dropdown-item" href="../about/about-us.html">
+                  <Link className="dropdown-item" to="../about/about-us">
                     About us
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a class="dropdown-item" href="../about/locations.html">
+                  <Link className="dropdown-item" to="../about/locations">
                     Locations
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a class="dropdown-item" href="../about/our-products.html">
+                  <Link className="dropdown-item" to="../about/our-products">
                     Our products
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </li>
             {/* Shop */}
-            <li class="nav-item dropdown text-center">
-              <a
-                class="nav-link active fs-5"
-                href="#"
+            <li className="nav-item dropdown text-center">
+              <Link
+                className="nav-link active fs-5"
+                to="#"
                 id="navbarDropdownMenuLinkShop"
                 role="button"
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
                 Shop
-              </a>
+              </Link>
               <ul
-                class="nav-color-list dropdown-menu text-center text-lg-start"
+                className="nav-color-list dropdown-menu text-center text-lg-start"
                 aria-labelledby="navbarDropdownMenuLinkDrop"
               >
                 <li>
-                  <a class="dropdown-item" href="../shop/shop.html">
+                  <Link className="dropdown-item" to="../shop/shop">
                     Catalogue
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a class="dropdown-item" href="../shop/top-offers.html">
+                  <Link className="dropdown-item" to="../shop/top-offers">
                     Top offers
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </li>
             {/* Recipes */}
-            <li class="nav-item dropdown text-center">
-              <a
-                class="nav-link fs-5"
-                href="#"
+            <li className="nav-item dropdown text-center">
+              <Link
+                className="nav-link fs-5"
+                to="#"
                 id="navbarDropdownMenuLinkRecipes"
                 role="button"
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
                 Recipes
-              </a>
+              </Link>
               <ul
-                class="nav-color-list dropdown-menu text-center text-lg-start"
+                className="nav-color-list dropdown-menu text-center text-lg-start"
                 aria-labelledby="navbarDropdownMenuLinkRecipes"
               >
                 <li>
-                  <a class="dropdown-item" href="../recipes/classics.html">
+                  <Link className="dropdown-item" to="../recipes/classNameics">
                     Classics
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
-                    class="dropdown-item"
-                    href="../recipes/healthy-recipes.html"
+                  <Link
+                    className="dropdown-item"
+                    to="../recipes/healthy-recipes"
                   >
                     Healthy
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a
-                    class="dropdown-item"
-                    href="../recipes/wholemeal-recipes.html"
+                  <Link
+                    className="dropdown-item"
+                    to="../recipes/wholemeal-recipes"
                   >
                     Wholemeal
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a class="dropdown-item" href="../recipes/easy-recipes.html">
+                  <Link className="dropdown-item" to="../recipes/easy-recipes">
                     Easy
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </li>
             {/* Help */}
-            <li class="nav-item dropdown text-center">
-              <a
-                class="nav-link fs-5"
-                href="#"
+            <li className="nav-item dropdown text-center">
+              <Link
+                className="nav-link fs-5"
+                to="#"
                 id="navbarDropdownMenuLinkHelp"
                 role="button"
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
                 Help
-              </a>
+              </Link>
               <ul
-                class="nav-color-list dropdown-menu text-center text-lg-start"
+                className="nav-color-list dropdown-menu text-center text-lg-start"
                 aria-labelledby="navbarDropdownMenuLinkHelp"
               >
                 <li>
-                  <a class="dropdown-item" href="../help/contact.html">
+                  <Link className="dropdown-item" to="../help/contact">
                     Contact
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                  <a class="dropdown-item" href="../help/faq/faq.html">
+                  <Link className="dropdown-item" to="../help/faq/faq">
                     FAQ
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </li>
             {/* Searchbar */}
-            <li class="nav-item">
+            <li className="nav-item">
               <form>
-                <div class="input-group">
+                <div className="input-group">
                   <button
-                    class="input-group-text nav-searchbar"
+                    className="input-group-text nav-searchbar"
                     id="search-icon"
                     aria-label="searchbar icon"
                   >
-                    <i class="fas fa-search"></i>
+                    <i className="fas fa-search"></i>
                   </button>
                   <input
                     type="text"
-                    class="form-control nav-searchbar"
+                    className="form-control nav-searchbar"
                     placeholder="Search"
                     aria-label="Search"
                     aria-describedby="search-icon"
@@ -219,26 +200,45 @@ const Navbar = ({ click }) => {
           </ul>
           <hr />
           {/* account-nav */}
-          <ul class="navbar-nav align-items-center justify-content-evenly min-w-179px">
-            <li class="m-1 d-none d-lg-block">
-              <i class="fas fa-user-circle fa-fw fs-4 h-pointer"></i>
-              <span class="text-darker-4 h-pointer">Username</span>
-              <span class="visually-hidden">account</span>
-            </li>
-            <li class="m-1 d-none d-lg-block position-relative">
-              <a
-                class="text-dark"
-                id="cart-checkout"
-                href="../cart/checkout.html"
+          <ul className="navbar-nav align-items-center justify-content-evenly min-w-179px">
+            <li className="nav-item d-block d-lg-flex text-center btn-login-container m-1">
+              <Link
+                className="nav-link btn-login rounded text-nowrap px-4 py-3 px-lg-2 py-lg-2"
+                to="/login"
               >
-                <i class="fas fa-shopping-cart fa-fw fs-4 h-pointer"></i>
-                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary h-pointer">
-                  <span>0</span>
-                  <span class="visually-hidden">cart</span>
-                </span>
-              </a>
+                Log in
+              </Link>
+            </li>
+            <li className="nav-item text-center btn-sign-up-container m-1">
+              <Link
+                className="nav-link btn-sign-up rounded text-nowrap px-4 py-3 px-lg-2 py-lg-2"
+                to="/register"
+              >
+                Sign up
+              </Link>
             </li>
           </ul>
+          {/* {/1* account-nav *1/} */}
+          {/* <ul className="navbar-nav align-items-center justify-content-evenly min-w-179px"> */}
+          {/*   <li className="m-1 d-none d-lg-block"> */}
+          {/*     <i className="fas fa-user-circle fa-fw fs-4 h-pointer"></i> */}
+          {/*     <span className="text-darker-4 h-pointer">Username</span> */}
+          {/*     <span className="visually-hidden">account</span> */}
+          {/*   </li> */}
+          {/*   <li className="m-1 d-none d-lg-block position-relative"> */}
+          {/*     <Link */}
+          {/*       className="text-dark" */}
+          {/*       id="cart-checkout" */}
+          {/*       to="../cart/checkout" */}
+          {/*     > */}
+          {/*       <i className="fas fa-shopping-cart fa-fw fs-4 h-pointer"></i> */}
+          {/*       <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary h-pointer"> */}
+          {/*         <span>0</span> */}
+          {/*         <span className="visually-hidden">cart</span> */}
+          {/*       </span> */}
+          {/*     </Link> */}
+          {/*   </li> */}
+          {/* </ul> */}
         </div>
       </nav>
     </div>

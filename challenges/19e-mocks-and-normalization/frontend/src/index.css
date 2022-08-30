@@ -8589,6 +8589,78 @@ textarea.form-control-lg {
   visibility: hidden;
   opacity: 0; }
 
+@media only screen and (max-width: 576px) {
+  .contact-w-80 {
+    width: 100% !important; } }
+
+@media only screen and (min-width: 577px) {
+  .contact-w-80 {
+    width: 100% !important; } }
+
+@media only screen and (min-width: 768px) {
+  .contact-w-80 {
+    width: 90% !important; } }
+
+@media only screen and (min-width: 992px) {
+  .contact-w-80 {
+    width: 80% !important; } }
+
+@media only screen and (max-width: 576px) {
+  .faq-w-75 {
+    width: 95% !important; } }
+
+@media only screen and (min-width: 577px) {
+  .faq-w-75 {
+    width: 90% !important; } }
+
+@media only screen and (min-width: 768px) {
+  .faq-w-75 {
+    width: 75% !important; } }
+
+@media only screen and (max-width: 576px) {
+  .ticket-w-50 {
+    width: 95% !important; } }
+
+@media only screen and (min-width: 577px) {
+  .ticket-w-50 {
+    width: 80% !important; } }
+
+@media only screen and (min-width: 768px) {
+  .ticket-w-50 {
+    width: 70% !important; } }
+
+@media only screen and (min-width: 992px) {
+  .ticket-w-50 {
+    width: 50% !important; } }
+
+@media only screen and (max-width: 576px) {
+  .login-w-50 {
+    width: 90% !important; } }
+
+@media only screen and (min-width: 577px) {
+  .login-w-50 {
+    width: 70% !important; } }
+
+@media only screen and (min-width: 768px) {
+  .login-w-50 {
+    width: 50% !important; } }
+
+@media only screen and (max-width: 576px) {
+  .register-w-50 {
+    width: 95% !important; } }
+
+@media only screen and (min-width: 577px) {
+  .register-w-50 {
+    width: 90% !important; } }
+
+@media only screen and (min-width: 768px) {
+  .register-w-50 {
+    width: 70% !important; } }
+
+@media only screen and (min-width: 992px) {
+  .register-w-50 {
+    width: 50% !important; } }
+
 .cart-title-250px {
   width: auto !important; }
   @media only screen and (min-width: 768px) {

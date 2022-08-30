@@ -1,25 +1,27 @@
-import './HomeScreen.css';
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import Navbar from '../../components/Navbar/Navbar';
+// import './HomeScreen.css';
+// import { useEffect } from 'react';
+// import { useDispatch, useSelector } from 'react-redux';
 
 // Components
 // import Product from '../components/Product';
 
 //Actions
-import { getProducts as listProducts } from '../redux/actions/productActions';
+// import { getProducts as listProducts } from '../redux/actions/productActions';
 
 const HomeScreen = () => {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
-  const getProducts = useSelector((state) => state.getProducts);
-  const { products, loading, error } = getProducts;
+  // const getProducts = useSelector((state) => state.getProducts);
+  // const { products, loading, error } = getProducts;
 
-  useEffect(() => {
-    dispatch(listProducts());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(listProducts());
+  // }, [dispatch]);
 
   return (
     <div className="homescreen">
+      <Navbar />
       {/* <h2 className="homescreen__title">Latest Products</h2> */}
       {/* <div className="homescreen__products"> */}
       {/*   {loading ? ( */}
