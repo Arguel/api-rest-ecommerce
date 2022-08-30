@@ -8,6 +8,6 @@ export interface ICreateProductDto extends mongoose.Document {
   thumbnailUrl?: string;
   price: number;
   stock: number;
-  createdAt: Date;
+  createdAt?: Date;
   updatedAt?: Date;
 }

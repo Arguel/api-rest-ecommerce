@@ -6,7 +6,7 @@ export interface ICreateMessageDto extends mongoose.Document {
   user: TMessageUser;
   text: string;
   type: TMessageType;
-  createdAt: Date;
+  createdAt?: Date;
   updatedAt?: Date;
 }
 

@@ -1,12 +1,10 @@
 import UsersDao from '../daos/user.dao';
 import { ICrud } from '../../../common/types/crud.interface';
-import { CreateUserDto } from '../dto/create.user.dto';
-import { PutUserDto } from '../dto/put.user.dto';
-import { PatchUserDto } from '../dto/patch.user.dto';
+import { ICreateUserDto } from '../dto/create.user.dto';
+import { IPatchUserDto } from '../dto/patch.user.dto';
 
 class UsersService implements ICrud {
-  public async create(resource: CreateUserDto) {
-    resource.permissionLevel = 1;
+  public async create(resource: ICreateUserDto) {
     return UsersDao.addUser(resource);
   }
 
@@ -18,11 +16,11 @@ class UsersService implements ICrud {
     return UsersDao.getUsers(limit, page);
   }
 
-  public async patchById(id: string, resource: PatchUserDto): Promise<any> {
+  public async patchById(id: string, resource: IPatchUserDto): Promise<any> {
     return UsersDao.updateUserById(id, resource);
   }
 
-  public async putById(id: string, resource: PutUserDto): Promise<any> {
+  public async putById(id: string, resource: IPatchUserDto): Promise<any> {
     return UsersDao.updateUserById(id, resource);
   }
 
@@ -30,7 +28,7 @@ class UsersService implements ICrud {
     return UsersDao.getUserById(id);
   }
 
-  public async updateById(id: string, resource: CreateUserDto): Promise<any> {
+  public async updateById(id: string, resource: ICreateUserDto): Promise<any> {
     return UsersDao.updateUserById(id, resource);
   }
 

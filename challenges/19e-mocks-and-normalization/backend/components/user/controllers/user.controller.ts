@@ -2,7 +2,7 @@ import express from 'express';
 import usersService from '../services/user.service';
 import argon2 from 'argon2';
 import debug from 'debug';
-import { PatchUserDto } from '../dto/patch.user.dto';
+import { IPatchUserDto } from '../dto/patch.user.dto';
 
 const log: debug.IDebugger = debug('app:users-controller');
 
@@ -82,7 +82,7 @@ class UsersController {
     next: express.NextFunction
   ) {
     try {
-      const patchUserDto: PatchUserDto = {
+      const patchUserDto: IPatchUserDto = {
         permissionLevel: parseInt(req.params.permissionLevel),
       };
       log(await usersService.patchById(req.params.userId, patchUserDto));

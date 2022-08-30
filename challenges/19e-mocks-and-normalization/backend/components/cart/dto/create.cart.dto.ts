@@ -4,7 +4,7 @@ import { ICreateProductDto } from '../../product/dto/create.product.dto';
 export interface ICreateCartDto extends mongoose.Document {
   id: string;
   products: Array<ICartProduct>;
-  createdAt: Date;
+  createdAt?: Date;
   updatedAt?: Date;
 }
 

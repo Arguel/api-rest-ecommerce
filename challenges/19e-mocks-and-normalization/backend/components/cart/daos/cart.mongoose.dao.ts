@@ -73,7 +73,6 @@ export class CartsDao implements ICrudCart {
 
   public async addProduct(product: ICreateProductDto, cart: ICreateCartDto) {
     try {
-      console.log(cart);
       const productIndex: number = cart.products.findIndex(
         (item) => item.data.id === product.id
       );

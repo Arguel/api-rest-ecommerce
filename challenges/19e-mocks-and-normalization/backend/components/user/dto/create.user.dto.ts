@@ -16,6 +16,6 @@ export interface ICreateUserDto extends mongoose.Document {
   phoneNumber: string;
   avatar: string;
   avatarId: string;
-  createdAt: Date;
+  createdAt?: Date;
   updatedAt?: Date;
 }

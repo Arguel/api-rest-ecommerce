@@ -1,10 +1,9 @@
 // import mongoose from 'mongoose';
-import { nanoid } from 'nanoid';
 import debug from 'debug';
-import { CreateUserDto } from '../dto/create.user.dto';
-import { PatchUserDto } from '../dto/patch.user.dto';
-import { PutUserDto } from '../dto/put.user.dto';
+import { ICreateUserDto } from '../dto/create.user.dto';
+import { IPatchUserDto } from '../dto/patch.user.dto';
 import { User } from '../models/user.model';
+import { EPermissionLevel } from '../../../common/types/common.permissionlevel.enum';
 
 const log: debug.IDebugger = debug('app:users-dao');
 
@@ -13,19 +12,17 @@ class UsersDao {
     log('Created new instance of UsersDao');
   }
 
-  public async addUser(userFields: CreateUserDto) {
-    const userId = nanoid();
+  public async addUser(userFields: ICreateUserDto) {
     const user = new User({
-      id: userId,
-      permissionLevel: 1,
       ...userFields,
+      permissionLevel: EPermissionLevel.FREE_PERMISSION,
     });
     await user.save();
-    return userId;
+    return user.id;
   }
 
   public async getUserByEmail(email: string) {
-    return User.findOne({ email: email }).exec();
+    return User.findOne({ email }).exec();
   }
 
   public async getUserByEmailWithPassword(email: string) {
@@ -49,10 +46,7 @@ class UsersDao {
       .exec();
   }
 
-  public async updateUserById(
-    userId: string,
-    userFields: PatchUserDto | PutUserDto
-  ) {
+  public async updateUserById(userId: string, userFields: IPatchUserDto) {
     const existingUser = await User.findOneAndUpdate(
       { _id: userId },
       { $set: userFields },
