@@ -1,24 +1,31 @@
 import './App.css';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import {
+  HashRouter as Router,
+  Routes,
+  Route,
+  Redirect,
+} from 'react-router-dom';
 
 // Components
-import Navbar from './components/Navbar';
+// import Navbar from './components/Navbar';
 
 // Screens
-import HomeScreen from './screens/HomeScreen';
-import ProductScreen from './screens/ProductScreen';
-import CartScreen from './screens/CartScreen';
+// import HomeScreen from './pages/Home/HomeScreen';
+// import ProductScreen from './screens/ProductScreen';
+// import CartScreen from './screens/CartScreen';
+import Chat from './pages/Chat/Chat';
 
 function App() {
   return (
     <Router>
-      <Navbar />
+      {/* <Navbar /> */}
       <main className="app">
-        <Switch>
-          <Route exact path="/" component={HomeScreen} />
-          <Route exact path="/product/:id" component={ProductScreen} />
-          <Route exact path="/cart" component={CartScreen} />
-        </Switch>
+        <Routes>
+          <Route exact path="/chat" element={<Chat />} />
+          {/* <Route exact path="/" component={HomeScreen} /> */}
+          {/* <Route exact path="/product/:id" component={ProductScreen} /> */}
+          {/* <Route exact path="/cart" component={CartScreen} /> */}
+        </Routes>
       </main>
     </Router>
   );
