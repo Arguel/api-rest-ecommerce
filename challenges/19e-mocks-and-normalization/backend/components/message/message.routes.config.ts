@@ -28,6 +28,10 @@ export default class MessagesRoutes extends CommonRoutesConfig {
 
     this.app.patch(`/messages/:messageId`, [MessagesController.patch]);
 
+    this.app.get(`/messages/user/:userId`, [
+      MessagesController.listUserMessages,
+    ]);
+
     return this.app;
   }
 }

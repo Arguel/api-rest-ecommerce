@@ -74,6 +74,7 @@ class MessagesDao implements ICrudMessage {
       return Message.find({ user: userId })
         .limit(limit)
         .skip(limit * page)
+        .populate('user')
         .exec();
     } catch (err) {
       throw new BaseError('Failed to find messages', err, 'listUserMessages');
