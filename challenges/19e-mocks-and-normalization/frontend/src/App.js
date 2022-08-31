@@ -1,35 +1,54 @@
 import './App.css';
+
 import {
   HashRouter as Router,
-  Routes,
+  Switch,
   Route,
   Redirect,
 } from 'react-router-dom';
 
 // Components
-// import Navbar from './components/Navbar';
 
 // Screens
-import HomeScreen from './pages/Home/HomeScreen';
 // import ProductScreen from './screens/ProductScreen';
 // import CartScreen from './screens/CartScreen';
+import Login from './pages/Login/Login';
+import Signup from './pages/Signup/Signup';
 import Chat from './pages/Chat/Chat';
-import Login from './components/Login/Login';
-import Register from './components/Register/Register';
+// import Cart from './pages/Cart/Cart';
+// import SuccesfulOrder from './pages/SuccesfulOrder/SuccesfulOrder';
+// import Orders from './pages/Orders/Orders';
+// import Account from './pages/Account/Account';
+// import Products from './pages/Products/Products';
+import Shop from './pages/Shop/Shop';
+
+const isLoggedIn = true;
 
 function App() {
   return (
     <Router>
-      {/* <Navbar /> */}
       <main className="app">
-        <Routes>
-          <Route exact path="/" element={<HomeScreen />} />
-          <Route exact path="/chat" element={<Chat />} />
-          <Route exact path="/login" element={<Login />} />
-          <Route exact path="/register" element={<Register />} />
-          {/* <Route exact path="/product/:id" component={ProductScreen} /> */}
-          {/* <Route exact path="/cart" component={CartScreen} /> */}
-        </Routes>
+        <Switch>
+          <Route path="/login" component={Login} />
+          <Route path="/signup" component={Signup} />
+          <Route path="/chat">
+            {isLoggedIn ? <Chat /> : <Redirect to="/login" />}
+          </Route>
+          {/* <Route path="/cart"> */}
+          {/*   {isLoggedIn ? <Cart /> : <Redirect to="/login" />} */}
+          {/* </Route> */}
+          {/* <Route path="/successful-order"> */}
+          {/*   {isLoggedIn ? <SuccesfulOrder /> : <Redirect to="/login" />} */}
+          {/* </Route> */}
+          {/* <Route path="/orders"> */}
+          {/*   {isLoggedIn ? <Orders /> : <Redirect to="/login" />} */}
+          {/* </Route> */}
+          {/* <Route path="/account"> */}
+          {/*   {isLoggedIn ? <Account /> : <Redirect to="/login" />} */}
+          {/* </Route> */}
+          {/* <Route path="/products/:id" component={Products} /> */}
+          <Route path="/" component={Shop} />
+        </Switch>
       </main>
     </Router>
   );
