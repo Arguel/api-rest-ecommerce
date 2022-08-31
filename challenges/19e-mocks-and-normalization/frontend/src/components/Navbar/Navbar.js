@@ -212,7 +212,7 @@ const Navbar = ({ click }) => {
             <li className="nav-item text-center btn-sign-up-container m-1">
               <Link
                 className="nav-link btn-sign-up rounded text-nowrap px-4 py-3 px-lg-2 py-lg-2"
-                to="/register"
+                to="/signup"
               >
                 Sign up
               </Link>
