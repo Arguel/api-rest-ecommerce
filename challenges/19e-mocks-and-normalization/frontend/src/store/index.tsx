@@ -6,3 +6,6 @@ export const store = configureStore({
     user: userReducer,
   },
 });
+
+// Infer the `RootState` and `AppDispatch` types from the store itself
+export type TRootState = ReturnType<typeof store.getState>;

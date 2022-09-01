@@ -2,7 +2,7 @@
 import { Link } from 'react-router-dom';
 // import { useSelector } from 'react-redux';
 
-const Navbar = ({ click }) => {
+const Navbar = () => {
   // const cart = useSelector((state) => state.cart);
   // const { cartItems } = cart;
 

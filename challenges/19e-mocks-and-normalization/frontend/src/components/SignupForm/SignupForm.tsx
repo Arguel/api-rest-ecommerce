@@ -97,7 +97,7 @@ const SignupForm = () => {
               id="d-month"
               aria-describedby="d-month-feedback"
               required
-              defaultValue={{ label: 'January', value: 'January' }}
+              defaultValue="January"
             >
               <option value="January">January</option>
               <option value="February">February</option>

@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { TRootState } from '../../store';
 
 const initialState = {
   data: null,
@@ -17,7 +18,7 @@ export const userSlice = createSlice({
   },
 });
 
-export const userDataSel = (state) => state.user.data;
+export const userDataSel = (state: TRootState) => state.user.data;
 
 export const { setStatus } = userSlice.actions;
 
