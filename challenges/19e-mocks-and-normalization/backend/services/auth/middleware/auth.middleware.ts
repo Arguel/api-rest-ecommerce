@@ -1,6 +1,5 @@
 import express from 'express';
 import usersService from '../../../components/user/services/user.service';
-import * as argon2 from 'argon2';
 
 class AuthMiddleware {
   public async validateBodyRequest(
@@ -25,9 +24,10 @@ class AuthMiddleware {
     const user: any = await usersService.getUserByEmailWithPassword(
       req.body.email
     );
+    console.log(user);
     if (user) {
-      const passwordHash = user.password;
-      if (await argon2.verify(passwordHash, req.body.password)) {
+      // const passwordHash = user.password;
+      if (await user.comparePassword(req.body.password)) {
         req.body = {
           userId: user.id,
           email: user.email,

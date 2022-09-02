@@ -2,11 +2,11 @@ import express from 'express';
 import debug from 'debug';
 import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
+import config from 'config';
 
 const log: debug.IDebugger = debug('app:auth-controller');
 
-// @ts-expect-error
-const jwtSecret: string = process.env.JWT_SECRET;
+const jwtSecret = config.get<string>('server.jwtsecret');
 const tokenExpirationInSeconds = 36000;
 
 class AuthController {
@@ -22,9 +22,7 @@ class AuthController {
       const token = jwt.sign(req.body, jwtSecret, {
         expiresIn: tokenExpirationInSeconds,
       });
-      return res
-        .status(201)
-        .send({accessToken: token, refreshToken: hash});
+      return res.status(201).send({ accessToken: token, refreshToken: hash });
     } catch (err) {
       log('createJWT error: %O', err);
       return res.status(500).send();

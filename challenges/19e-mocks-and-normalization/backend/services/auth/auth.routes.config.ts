@@ -4,7 +4,7 @@ import JwtMiddleware from './middleware/jwt.middleware';
 import AuthMiddleware from './middleware/auth.middleware';
 import express from 'express';
 
-export class AuthRoutes extends CommonRoutesConfig {
+export default class AuthRoutes extends CommonRoutesConfig {
   constructor(app: express.Application) {
     super(app, 'AuthRoutes');
   }
