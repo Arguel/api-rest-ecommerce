@@ -1,6 +1,5 @@
 import express from 'express';
 import productService from '../services/product.service';
-import httpStatus from 'http-status';
 import { Error as MongoError } from 'mongoose';
 import { NotFoundError } from '../../../common/error/not.found.error';
 import { BadRequestError } from '../../../common/error/bad.request.error';
@@ -14,9 +13,12 @@ class ProductsMiddleware {
     if (req.body && req.body.name && req.body.price && req.body.stock) {
       next();
     } else {
-      res.status(httpStatus.BAD_REQUEST).send({
-        error: `Missing required fields {name, price, stock}`,
-      });
+      next(
+        new BadRequestError(
+          `Missing required fields: name, price and stock`,
+          'validateRequiredProductBodyFields'
+        )
+      );
     }
   }
 
