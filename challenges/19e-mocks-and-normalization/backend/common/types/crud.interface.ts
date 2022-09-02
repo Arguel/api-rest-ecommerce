@@ -27,3 +27,8 @@ export interface ICrudMessage extends ICrud {
     page?: number
   ) => Promise<any>;
 }
+
+export interface ICrudUser extends ICrud {
+  getUserByEmail: (email: string) => Promise<any>;
+  getUserByEmailWithPassword: (email: string) => Promise<any>;
+}
