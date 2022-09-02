@@ -14,6 +14,7 @@ import SocketServer from './services/socket/socket.service';
 import MessagesRoutes from './components/message/message.routes.config';
 import socketio from 'socket.io';
 import sessionMiddleware from './components/app/middleware/session.middleware';
+import AuthRoutes from './services/auth/auth.routes.config';
 
 // App
 const app: express.Application = express();
@@ -33,6 +34,7 @@ routes.push(new ProductsRoutes(app));
 routes.push(new CartRoutes(app));
 routes.push(new UsersRoutes(app));
 routes.push(new MessagesRoutes(app));
+routes.push(new AuthRoutes(app));
 routes.forEach((route: CommonRoutesConfig): void => {
   debugLog(`Routes configured for ${route.getName()}`);
 });

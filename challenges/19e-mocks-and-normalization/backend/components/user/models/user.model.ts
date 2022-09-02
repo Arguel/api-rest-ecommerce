@@ -2,10 +2,11 @@ import { EPermissionLevel } from '../../../common/types/common.permissionlevel.e
 import MongooseService from '../../../services/mongoose/mongoose.service';
 import bcryptjs from 'bcryptjs';
 import { ICreateUserDto } from '../dto/create.user.dto';
+import { IUserModel } from '../../../common/types/user.model.interface';
 
 const Schema = MongooseService.getMongoose().Schema;
 
-export const userSchema = new Schema<ICreateUserDto>(
+export const userSchema = new Schema<ICreateUserDto, IUserModel>(
   {
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true, select: false },
@@ -51,7 +52,7 @@ userSchema.set('toJSON', {
   },
 });
 
-export const User = MongooseService.getMongoose().model<ICreateUserDto>(
-  'User',
-  userSchema
-);
+export const User = MongooseService.getMongoose().model<
+  ICreateUserDto,
+  IUserModel
+>('User', userSchema);

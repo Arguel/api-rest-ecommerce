@@ -9,21 +9,18 @@ export default class MessagesRoutes extends CommonRoutesConfig {
     super(app, 'MessagesRoutes');
   }
   configureRoutes(): express.Application {
-    this.app
-      .route(`/messages`)
-      .get(MessagesController.listMessages)
-      .post(
-        MessagesMiddleware.validateRequiredMessageBodyFields,
-        PermissionMiddleware.isAdmin,
-        MessagesController.createMessage
-      );
+    this.app.route(`/messages`).get(MessagesController.listMessages).post(
+      MessagesMiddleware.validateRequiredMessageBodyFields,
+      // PermissionMiddleware.isAdmin,
+      MessagesController.createMessage
+    );
 
     this.app.param(`messageId`, MessagesMiddleware.extractMessageId);
     this.app
       .route(`/messages/:messageId`)
       .all(MessagesMiddleware.validateMessageExists)
       .get(MessagesController.getMessageById)
-      .all(PermissionMiddleware.isAdmin)
+      // .all(PermissionMiddleware.isAdmin)
       .delete(MessagesController.removeMessage);
 
     this.app.patch(`/messages/:messageId`, [MessagesController.patch]);

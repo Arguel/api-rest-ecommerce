@@ -1,42 +1,34 @@
-import UsersDao from '../daos/user.dao';
-import { ICrud } from '../../../common/types/crud.interface';
+import { ICrudUser } from '../../../common/types/crud.interface';
 import { ICreateUserDto } from '../dto/create.user.dto';
 import { IPatchUserDto } from '../dto/patch.user.dto';
+import FactoryInstance from '../daos/user.factory.dao';
 
-class UsersService implements ICrud {
+class UsersService implements ICrudUser {
   public async create(resource: ICreateUserDto) {
-    return UsersDao.addUser(resource);
+    return (await FactoryInstance).create(resource);
   }
 
   public async deleteById(id: string) {
-    return UsersDao.removeUserById(id);
+    return (await FactoryInstance).deleteById(id);
   }
 
   public async list(limit?: number, page?: number) {
-    return UsersDao.getUsers(limit, page);
+    return (await FactoryInstance).list(limit, page);
   }
 
   public async patchById(id: string, resource: IPatchUserDto): Promise<any> {
-    return UsersDao.updateUserById(id, resource);
-  }
-
-  public async putById(id: string, resource: IPatchUserDto): Promise<any> {
-    return UsersDao.updateUserById(id, resource);
+    return (await FactoryInstance).patchById(id, resource);
   }
 
   public async readById(id: string) {
-    return UsersDao.getUserById(id);
-  }
-
-  public async updateById(id: string, resource: ICreateUserDto): Promise<any> {
-    return UsersDao.updateUserById(id, resource);
+    return (await FactoryInstance).readById(id);
   }
 
   public async getUserByEmail(email: string) {
-    return UsersDao.getUserByEmail(email);
+    return (await FactoryInstance).getUserByEmail(email);
   }
   public async getUserByEmailWithPassword(email: string) {
-    return UsersDao.getUserByEmailWithPassword(email);
+    return (await FactoryInstance).getUserByEmailWithPassword(email);
   }
 }
 

@@ -1,8 +1,8 @@
 import express from 'express';
 import usersService from '../services/user.service';
-import argon2 from 'argon2';
 import debug from 'debug';
 import { IPatchUserDto } from '../dto/patch.user.dto';
+import { User } from '../models/user.model';
 
 const log: debug.IDebugger = debug('app:users-controller');
 
@@ -39,7 +39,7 @@ class UsersController {
     next: express.NextFunction
   ) {
     try {
-      req.body.password = await argon2.hash(req.body.password);
+      req.body.password = await User.encryptPassword(req.body.password);
       const userId = await usersService.create(req.body);
       res.status(201).send({ id: userId });
     } catch (err) {
@@ -54,7 +54,7 @@ class UsersController {
   ) {
     try {
       if (req.body.password) {
-        req.body.password = await argon2.hash(req.body.password);
+        req.body.password = await User.encryptPassword(req.body.password);
       }
       log(await usersService.patchById(req.params.userId, req.body));
       res.status(204).send();
