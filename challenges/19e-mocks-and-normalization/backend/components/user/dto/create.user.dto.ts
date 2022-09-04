@@ -18,4 +18,5 @@ export interface ICreateUserDto extends mongoose.Document {
   avatarId: string;
   createdAt?: Date;
   updatedAt?: Date;
+  refreshToken?: Array<string>;
 }

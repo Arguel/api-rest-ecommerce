@@ -31,4 +31,5 @@ export interface ICrudMessage extends ICrud {
 export interface ICrudUser extends ICrud {
   getUserByEmail: (email: string) => Promise<any>;
   getUserByEmailWithPassword: (email: string) => Promise<any>;
+  getUserByRefreshToken: (email: string) => Promise<any>;
 }

@@ -26,6 +26,7 @@ export const userSchema = new Schema<ICreateUserDto, IUserModel>(
     phoneNumber: { type: String, required: true },
     avatar: { type: String, required: true },
     avatarId: { type: String, required: true },
+    refreshToken: [String],
   },
   {
     timestamps: true,

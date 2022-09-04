@@ -30,6 +30,9 @@ class UsersService implements ICrudUser {
   public async getUserByEmailWithPassword(email: string) {
     return (await FactoryInstance).getUserByEmailWithPassword(email);
   }
+  public async getUserByRefreshToken(refreshToken: string) {
+    return (await FactoryInstance).getUserByRefreshToken(refreshToken);
+  }
 }
 
 export default new UsersService();

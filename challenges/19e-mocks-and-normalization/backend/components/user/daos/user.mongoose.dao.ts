@@ -54,6 +54,14 @@ class UsersDao implements ICrudUser {
     }
   }
 
+  public async getUserByRefreshToken(refreshToken: string) {
+    try {
+      return User.findOne({ refreshToken }).exec();
+    } catch (err) {
+      throw new BaseError('Failed to find user', err, 'getUserByRefreshToken');
+    }
+  }
+
   public async deleteById(userId: string) {
     try {
       return User.deleteOne({ _id: userId }).exec();
