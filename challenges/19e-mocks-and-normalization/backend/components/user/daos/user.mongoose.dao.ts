@@ -43,7 +43,7 @@ class UsersDao implements ICrudUser {
   public async getUserByEmailWithPassword(email: string) {
     try {
       return User.findOne({ email: email })
-        .select('id email permissionLevel +password')
+        .select('id email permissionLevel +password refreshToken')
         .exec();
     } catch (err) {
       throw new BaseError(
