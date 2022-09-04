@@ -15,19 +15,39 @@ import MessagesRoutes from './components/message/message.routes.config';
 import socketio from 'socket.io';
 import sessionMiddleware from './components/app/middleware/session.middleware';
 import AuthRoutes from './services/auth/auth.routes.config';
+import { corsOptions } from './components/app/middleware/cors.middleware';
+import { credentials } from './components/app/middleware/credentials.middleware';
+import cookieParser from 'cookie-parser';
 
 // App
+
 const app: express.Application = express();
 const debugLog: debug.IDebugger = debug('app');
 const routes: Array<CommonRoutesConfig> = [];
 
 // Middlewares
+
+// custom middleware logger
 app.use(logsMiddleware);
+
+// built-in middleware for json
 app.use(express.json());
+
+// built-in middleware to handle urlencoded form data
 app.use(express.urlencoded({ extended: false }));
-app.use(cors());
+
+// handle options credentials check - before CORS!
+// and fetch cookies credentials requirement
+app.use(credentials);
+
+// cross Origin Resource Sharing
+app.use(cors(corsOptions));
+
 app.use(helmet());
 app.use(sessionMiddleware);
+
+//middleware for cookies
+app.use(cookieParser());
 
 // Routes config
 routes.push(new ProductsRoutes(app));
