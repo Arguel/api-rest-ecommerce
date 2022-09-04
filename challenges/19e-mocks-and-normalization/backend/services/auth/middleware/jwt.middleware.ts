@@ -1,55 +1,11 @@
 import express from 'express';
 import jwt from 'jsonwebtoken';
-import crypto from 'crypto';
-import { TJwt } from '../../../common/types/jwt';
-import usersService from '../../../components/user/services/user.service';
+import config from 'config';
+import { IJwt } from '../../../common/types/jwt.interface';
 
-// @ts-expect-error
-const jwtSecret: string = process.env.JWT_SECRET;
+const accessTokenSecret = config.get<string>('jwt.accesstoken');
 
 class JwtMiddleware {
-  public verifyRefreshBodyField(
-    req: express.Request,
-    res: express.Response,
-    next: express.NextFunction
-  ) {
-    if (req.body && req.body.refreshToken) {
-      return next();
-    } else {
-      return res
-        .status(400)
-        .send({ errors: ['Missing required field: refreshToken'] });
-    }
-  }
-
-  public async validRefreshNeeded(
-    req: express.Request,
-    res: express.Response,
-    next: express.NextFunction
-  ) {
-    const user: any = await usersService.getUserByEmailWithPassword(
-      res.locals.jwt.email
-    );
-    const salt = crypto.createSecretKey(
-      Buffer.from(res.locals.jwt.refreshKey.data)
-    );
-    const hash = crypto
-      .createHmac('sha512', salt)
-      .update(res.locals.jwt.userId + jwtSecret)
-      .digest('base64');
-    if (hash === req.body.refreshToken) {
-      req.body = {
-        userId: user.id,
-        email: user.email,
-        provider: 'email',
-        permissionLevel: user.permissionLevel,
-      };
-      return next();
-    } else {
-      return res.status(400).send({ errors: ['Invalid refresh token'] });
-    }
-  }
-
   public validJWTNeeded(
     req: express.Request,
     res: express.Response,
@@ -60,12 +16,15 @@ class JwtMiddleware {
         const authorization = req.headers['authorization'].split(' ');
         if (authorization[0] !== 'Bearer') {
           return res.status(401).send();
-        } else {
-          res.locals.jwt = jwt.verify(authorization[1], jwtSecret) as TJwt;
-          next();
         }
+        const decoded = jwt.verify(authorization[1], accessTokenSecret) as IJwt;
+        res.locals.jwt = {
+          email: decoded.UserInfo.email,
+          permissionLevel: decoded.UserInfo.permissionLevel,
+        };
+        next();
       } catch (err) {
-        return res.status(403).send();
+        return res.status(403).send(); //invalid token
       }
     } else {
       return res.status(401).send();

@@ -25,7 +25,11 @@ const defaultConfig = {
       // Timeout in minutes
       cookietimeout: process.env.SESSION_COOKIE_TIMEOUT || '10',
     },
-    jwtsecret: process.env.JWT_SECRET || 'mysecret',
+  },
+  jwt: {
+    // Secrets
+    accesstoken: process.env.JWT_ACCESS_TOKEN_SECRET || 'secret',
+    refreshtoken: process.env.JWT_REFRESH_TOKEN_SECRET || 'secret',
   },
   databases: {
     mongolocal: {
