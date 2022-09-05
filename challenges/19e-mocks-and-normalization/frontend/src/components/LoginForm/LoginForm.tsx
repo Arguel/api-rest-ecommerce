@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useRef, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -16,6 +16,9 @@ const LoginForm = () => {
   const [password, setPassword] = useState('');
   const [errMsg, setErrMsg] = useState('');
   const navigate = useNavigate();
+  const location = useLocation();
+  // @ts-ignore
+  const from = location.state?.from?.pathname || '/';
 
   const [login, { isLoading }] = useLoginMutation();
   const dispatch = useDispatch();
@@ -36,7 +39,6 @@ const LoginForm = () => {
       const payload = await login({ email, password }).unwrap();
       // @ts-ignore
       const decodedUser: IUser = jwtDecode<JwtPayload>(payload.accessToken);
-      console.log(decodedUser);
       const user = {
         email: decodedUser.email,
         firstName: decodedUser.firstName,
@@ -45,7 +47,7 @@ const LoginForm = () => {
       dispatch(setCredentials({ ...payload, user }));
       setEmail('');
       setPassword('');
-      navigate('/');
+      navigate(from, { replace: true });
     } catch (err) {
       if (!err?.originalStatus) {
         // isLoading: true until timeout occurs
@@ -67,16 +69,20 @@ const LoginForm = () => {
   const handlePasswordInput = (e) => setPassword(e.target.value);
 
   const content = isLoading ? (
-    <h1>Loading...</h1>
+    <div className="spinner-border text-center" role="status">
+      <span className="visually-hidden">Loading...</span>
+    </div>
   ) : (
     <form className="row needs-validation p-2 p-sm-3" onSubmit={handleSubmit}>
-      <p
-        ref={errRef}
-        className={errMsg ? 'errmsg' : 'offscreen'}
-        aria-live="assertive"
-      >
-        {errMsg}
-      </p>
+      <div className={errMsg ? 'col-md-11 mx-auto mb-3' : 'd-none'}>
+        <p
+          ref={errRef}
+          className="bg-warning text-dark fw-bold p-2 rounded m-0 text-center"
+          aria-live="assertive"
+        >
+          {errMsg}
+        </p>
+      </div>
       {/* f-email */}
       <div className="col-md-11 mx-auto mb-3">
         <label htmlFor="email" className="form-label">

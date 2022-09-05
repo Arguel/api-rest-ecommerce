@@ -27,7 +27,7 @@ const Login = () => {
             </figure>
           </div>
           <div className="col-11 col-sm-10 col-lg-5 bg-white rounded my-5 min-h-400px">
-            <div className="d-flex align-items-center min-h-400px">
+            <div className="d-flex align-items-center justify-content-center min-h-400px">
               <LoginForm />
             </div>
           </div>
