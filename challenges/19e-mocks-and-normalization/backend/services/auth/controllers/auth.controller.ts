@@ -37,10 +37,9 @@ class AuthController {
       if (foundUser && (await foundUser.comparePassword(req.body.password))) {
         const accessToken = jwt.sign(
           {
-            UserInfo: {
-              email: foundUser.email,
-              permissionLevel: foundUser.permissionLevel,
-            },
+            email: foundUser.email,
+            firstName: foundUser.firstName,
+            permissionLevel: foundUser.permissionLevel,
           },
           accessTokenSecret,
           { expiresIn: '10m' }
@@ -51,7 +50,6 @@ class AuthController {
           { expiresIn: '1d' }
         );
 
-        // Changed to let keyword
         let newRefreshTokenArray = !cookies?.jwt
           ? foundUser.refreshToken
           : foundUser.refreshToken.filter((rt: string) => rt !== cookies.jwt);
@@ -70,7 +68,7 @@ class AuthController {
 
           // Detected refresh token reuse!
           if (!foundToken) {
-            console.log('attempted refresh token reuse at login!');
+            log('Attempted refresh token reuse at login!');
             // clear out ALL previous refresh tokens
             newRefreshTokenArray = [];
           }
@@ -156,7 +154,7 @@ class AuthController {
         // @ts-ignore
         jwt.verify(refreshToken, refreshTokenSecret, async (err, decoded) => {
           if (err) return res.sendStatus(403); //Forbidden
-          console.log('Attempted refresh token reuse!');
+          log('Attempted refresh token reuse!');
           const hackedUser = await usersService.getUserByEmail(decoded.email);
           hackedUser.refreshToken = [];
           await hackedUser.save();
@@ -183,10 +181,9 @@ class AuthController {
         // Refresh token was still valid
         const accessToken = jwt.sign(
           {
-            UserInfo: {
-              email: decoded.email,
-              permissionLevel: decoded.permissionLevel,
-            },
+            email: decoded.email,
+            firstName: decoded.firstName,
+            permissionLevel: decoded.permissionLevel,
           },
           accessTokenSecret,
           { expiresIn: '10m' }
