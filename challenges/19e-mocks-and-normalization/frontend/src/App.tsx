@@ -1,6 +1,6 @@
 import './App.css';
 
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 
 // Components
 import Layout from 'components/Layout/Layout';
@@ -18,6 +18,8 @@ import Chat from './pages/Chat/Chat';
 // import Account from './pages/Account/Account';
 // import Products from './pages/Products/Products';
 import Shop from './pages/Shop/Shop';
+import RequireAuth from 'components/RequireAuth/RequireAuth';
+import { ERoles } from 'common/types/common.roles.enum';
 
 function App() {
   return (
@@ -25,38 +27,18 @@ function App() {
       <Route path="/" element={<Layout />}>
         {/* public routes */}
         <Route index element={<Shop />} />
+
         <Route path="login" element={<Login />} />
         <Route path="signup" element={<Signup />} />
 
         {/* protected routes */}
-        {/*<Route element={<RequireAuth />}>*/}
-        <Route path="chat" element={<Chat />} />
-        {/*   <Route path="userslist" element={<UsersList />} /> */}
-        {/*</Route>*/}
+        <Route element={<RequireAuth allowedRoles={ERoles.FREE} />}>
+          <Route path="chat" element={<Chat />} />
+        </Route>
+
+        {/* Catch all - replace with 404 component if you want */}
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Route>
-      {/* <main className="app"> */}
-      {/*   <Switch> */}
-      {/*     <Route path="/login" component={Login} /> */}
-      {/*     <Route path="/signup" component={Signup} /> */}
-      {/*     <Route path="/chat"> */}
-      {/*       {isLoggedIn ? <Chat /> : <Redirect to="/login" />} */}
-      {/*     </Route> */}
-      {/*     {/1* <Route path="/cart"> *1/} */}
-      {/*     {/1*   {isLoggedIn ? <Cart /> : <Redirect to="/login" />} *1/} */}
-      {/*     {/1* </Route> *1/} */}
-      {/*     {/1* <Route path="/successful-order"> *1/} */}
-      {/*     {/1*   {isLoggedIn ? <SuccesfulOrder /> : <Redirect to="/login" />} *1/} */}
-      {/*     {/1* </Route> *1/} */}
-      {/*     {/1* <Route path="/orders"> *1/} */}
-      {/*     {/1*   {isLoggedIn ? <Orders /> : <Redirect to="/login" />} *1/} */}
-      {/*     {/1* </Route> *1/} */}
-      {/*     {/1* <Route path="/account"> *1/} */}
-      {/*     {/1*   {isLoggedIn ? <Account /> : <Redirect to="/login" />} *1/} */}
-      {/*     {/1* </Route> *1/} */}
-      {/*     {/1* <Route path="/products/:id" component={Products} /> *1/} */}
-      {/*     <Route path="/" component={Shop} /> */}
-      {/*   </Switch> */}
-      {/* </main> */}
     </Routes>
   );
 }
