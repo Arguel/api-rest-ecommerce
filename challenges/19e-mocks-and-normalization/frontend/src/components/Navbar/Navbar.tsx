@@ -1,9 +1,31 @@
-import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import { selectCurrentUser } from 'features/auth/authSlice';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { logOut, selectCurrentUser } from 'features/auth/authSlice';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faAngleDown,
+  faRightFromBracket,
+  faSearch,
+  faShoppingCart,
+  faUserCircle,
+} from '@fortawesome/free-solid-svg-icons';
+import { useLogoutMutation } from 'features/auth/authApiSlice';
 
 const Navbar = () => {
   const user = useSelector(selectCurrentUser);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [logoutUser, { isLoading }] = useLogoutMutation();
+
+  const handleLogOut = async () => {
+    try {
+      await logoutUser().unwrap();
+      dispatch(logOut());
+      navigate('/');
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return (
     // Start of nav-menu-container
@@ -180,7 +202,10 @@ const Navbar = () => {
                     id="search-icon"
                     aria-label="searchbar icon"
                   >
-                    <i className="fas fa-search"></i>
+                    <FontAwesomeIcon
+                      icon={faSearch}
+                      className="text-darker-4"
+                    />
                   </button>
                   <input
                     type="text"
@@ -215,20 +240,42 @@ const Navbar = () => {
             </ul>
           ) : (
             <ul className="navbar-nav align-items-center justify-content-evenly min-w-179px">
-              <li className="m-1 d-none d-lg-block">
-                <i className="fas fa-user-circle fa-fw fs-4 h-pointer"></i>
-                <span className="text-darker-4 h-pointer">
-                  {user.firstName}
-                </span>
-                <span className="visually-hidden">account</span>
+              <li className="m-1 d-none d-lg-block nav-item dropdown">
+                <button
+                  className="btn"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  <FontAwesomeIcon icon={faUserCircle} className="fs-4 me-2" />
+                  <span className="text-darker-5 h-pointer">
+                    {user.firstName}
+                  </span>
+                  <span className="visually-hidden">account</span>
+                  <FontAwesomeIcon icon={faAngleDown} className="ms-3" />
+                </button>
+                <ul className="nav-color-list dropdown-menu">
+                  <li>
+                    {isLoading ? (
+                      <div className="dropdown-item text-center">
+                        <div className="spinner-border" role="status">
+                          <span className="visually-hidden">Loading...</span>
+                        </div>
+                      </div>
+                    ) : (
+                      <button className="dropdown-item" onClick={handleLogOut}>
+                        <FontAwesomeIcon
+                          icon={faRightFromBracket}
+                          className="me-2"
+                        />
+                        Log Out
+                      </button>
+                    )}
+                  </li>
+                </ul>
               </li>
               <li className="m-1 d-none d-lg-block position-relative">
-                <Link
-                  className="text-dark"
-                  id="cart-checkout"
-                  to="../cart/checkout"
-                >
-                  <i className="fas fa-shopping-cart fa-fw fs-4 h-pointer"></i>
+                <Link className="text-dark" id="cart-checkout" to="/cart">
+                  <FontAwesomeIcon icon={faShoppingCart} className="fs-4" />
                   <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary h-pointer">
                     <span>0</span>
                     <span className="visually-hidden">cart</span>
