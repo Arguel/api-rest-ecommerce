@@ -1,14 +1,9 @@
-// import './Navbar.css';
 import { Link } from 'react-router-dom';
-// import { useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { selectCurrentUser } from 'features/auth/authSlice';
 
 const Navbar = () => {
-  // const cart = useSelector((state) => state.cart);
-  // const { cartItems } = cart;
-
-  // const getCartCount = () => {
-  //   return cartItems.reduce((qty, item) => Number(item.qty) + qty, 0);
-  // };
+  const user = useSelector(selectCurrentUser);
 
   return (
     // Start of nav-menu-container
@@ -199,46 +194,49 @@ const Navbar = () => {
             </li>
           </ul>
           <hr />
-          {/* account-nav */}
-          <ul className="navbar-nav align-items-center justify-content-evenly min-w-179px">
-            <li className="nav-item d-block d-lg-flex text-center btn-login-container m-1">
-              <Link
-                className="nav-link btn-login rounded text-nowrap px-4 py-3 px-lg-2 py-lg-2"
-                to="/login"
-              >
-                Log in
-              </Link>
-            </li>
-            <li className="nav-item text-center btn-sign-up-container m-1">
-              <Link
-                className="nav-link btn-sign-up rounded text-nowrap px-4 py-3 px-lg-2 py-lg-2"
-                to="/signup"
-              >
-                Sign up
-              </Link>
-            </li>
-          </ul>
-          {/* {/1* account-nav *1/} */}
-          {/* <ul className="navbar-nav align-items-center justify-content-evenly min-w-179px"> */}
-          {/*   <li className="m-1 d-none d-lg-block"> */}
-          {/*     <i className="fas fa-user-circle fa-fw fs-4 h-pointer"></i> */}
-          {/*     <span className="text-darker-4 h-pointer">Username</span> */}
-          {/*     <span className="visually-hidden">account</span> */}
-          {/*   </li> */}
-          {/*   <li className="m-1 d-none d-lg-block position-relative"> */}
-          {/*     <Link */}
-          {/*       className="text-dark" */}
-          {/*       id="cart-checkout" */}
-          {/*       to="../cart/checkout" */}
-          {/*     > */}
-          {/*       <i className="fas fa-shopping-cart fa-fw fs-4 h-pointer"></i> */}
-          {/*       <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary h-pointer"> */}
-          {/*         <span>0</span> */}
-          {/*         <span className="visually-hidden">cart</span> */}
-          {/*       </span> */}
-          {/*     </Link> */}
-          {/*   </li> */}
-          {/* </ul> */}
+          {!user ? (
+            <ul className="navbar-nav align-items-center justify-content-evenly min-w-179px">
+              <li className="nav-item d-block d-lg-flex text-center btn-login-container m-1">
+                <Link
+                  className="nav-link btn-login rounded text-nowrap px-4 py-3 px-lg-2 py-lg-2"
+                  to="/login"
+                >
+                  Log in
+                </Link>
+              </li>
+              <li className="nav-item text-center btn-sign-up-container m-1">
+                <Link
+                  className="nav-link btn-sign-up rounded text-nowrap px-4 py-3 px-lg-2 py-lg-2"
+                  to="/signup"
+                >
+                  Sign up
+                </Link>
+              </li>
+            </ul>
+          ) : (
+            <ul className="navbar-nav align-items-center justify-content-evenly min-w-179px">
+              <li className="m-1 d-none d-lg-block">
+                <i className="fas fa-user-circle fa-fw fs-4 h-pointer"></i>
+                <span className="text-darker-4 h-pointer">
+                  {user.firstName}
+                </span>
+                <span className="visually-hidden">account</span>
+              </li>
+              <li className="m-1 d-none d-lg-block position-relative">
+                <Link
+                  className="text-dark"
+                  id="cart-checkout"
+                  to="../cart/checkout"
+                >
+                  <i className="fas fa-shopping-cart fa-fw fs-4 h-pointer"></i>
+                  <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary h-pointer">
+                    <span>0</span>
+                    <span className="visually-hidden">cart</span>
+                  </span>
+                </Link>
+              </li>
+            </ul>
+          )}
         </div>
       </nav>
     </div>

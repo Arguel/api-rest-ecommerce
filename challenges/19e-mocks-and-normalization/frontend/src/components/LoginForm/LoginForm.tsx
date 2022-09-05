@@ -1,54 +1,122 @@
 import { Link } from 'react-router-dom';
+import { useRef, useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import { useDispatch } from 'react-redux';
+import { setCredentials } from 'features/auth/authSlice';
+import { useLoginMutation } from 'features/auth/authApiSlice';
+
+import jwtDecode, { JwtPayload } from 'jwt-decode';
+import { IUser } from 'common/types/user.interface';
 
 const LoginForm = () => {
-  return (
-    <form className="row needs-validation p-2 p-sm-3" noValidate>
+  const emailRef = useRef();
+  const errRef = useRef();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [errMsg, setErrMsg] = useState('');
+  const navigate = useNavigate();
+
+  const [login, { isLoading }] = useLoginMutation();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    //@ts-ignore
+    emailRef.current.focus();
+  }, []);
+
+  useEffect(() => {
+    setErrMsg('');
+  }, [email, password]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const payload = await login({ email, password }).unwrap();
+      // @ts-ignore
+      const decodedUser: IUser = jwtDecode<JwtPayload>(payload.accessToken);
+      console.log(decodedUser);
+      const user = {
+        email: decodedUser.email,
+        firstName: decodedUser.firstName,
+        permissionLevel: decodedUser.permissionLevel,
+      };
+      dispatch(setCredentials({ ...payload, user }));
+      setEmail('');
+      setPassword('');
+      navigate('/');
+    } catch (err) {
+      if (!err?.originalStatus) {
+        // isLoading: true until timeout occurs
+        setErrMsg('No Server Response');
+      } else if (err.originalStatus === 400) {
+        setErrMsg('Missing Email or Password');
+      } else if (err.originalStatus === 401) {
+        setErrMsg('Unauthorized');
+      } else {
+        setErrMsg('Login Failed');
+      }
+      //@ts-ignore
+      errRef.current.focus();
+    }
+  };
+
+  const handleEmailInput = (e): void => setEmail(e.target.value);
+
+  const handlePasswordInput = (e) => setPassword(e.target.value);
+
+  const content = isLoading ? (
+    <h1>Loading...</h1>
+  ) : (
+    <form className="row needs-validation p-2 p-sm-3" onSubmit={handleSubmit}>
+      <p
+        ref={errRef}
+        className={errMsg ? 'errmsg' : 'offscreen'}
+        aria-live="assertive"
+      >
+        {errMsg}
+      </p>
       {/* f-email */}
       <div className="col-md-11 mx-auto mb-3">
-        <label htmlFor="email-i" className="form-label">
+        <label htmlFor="email" className="form-label">
           Email
         </label>
         <input
           type="email"
           className="form-control"
-          id="email-i"
           placeholder="email@domain.com"
-          aria-describedby="email-i-feedback"
+          id="email"
+          ref={emailRef}
+          value={email}
+          onChange={handleEmailInput}
           autoComplete="email"
           required
         />
-        <div id="email-i-feedback" className="invalid-feedback">
-          Please choose a valid email.
-        </div>
       </div>
       {/* f-email */}
 
       {/* f-password */}
       <div className="col-md-11 mx-auto mb-3">
-        <label htmlFor="password-i" className="form-label">
+        <label htmlFor="password" className="form-label">
           Password
         </label>
         <input
           type="password"
           className="form-control"
-          id="password-i"
           placeholder="password"
-          aria-describedby="password-i-feedback"
+          id="password"
+          onChange={handlePasswordInput}
+          value={password}
           autoComplete="current-password"
           required
         />
-        <div id="password-i-feedback" className="invalid-feedback">
-          Please provide a valid password
-        </div>
       </div>
       {/* f-password */}
 
       {/* f-login-btn */}
       <div className="col-12 mb-3">
-        <button
-          className="btn btn-success d-block mx-auto login-w-50"
-          type="submit"
-        >
+        <button className="btn btn-success d-block mx-auto login-w-50">
           Log in
         </button>
         <span className="d-block mt-4 text-center">
@@ -58,6 +126,8 @@ const LoginForm = () => {
       {/* f-login-btn */}
     </form>
   );
+
+  return content;
 };
 
 export default LoginForm;
