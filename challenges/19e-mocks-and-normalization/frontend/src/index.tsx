@@ -10,6 +10,10 @@ import { Provider } from 'react-redux';
 
 // Router
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { productApiSlice } from 'features/products/productsApiSlice';
+
+// @ts-ignore
+store.dispatch(productApiSlice.endpoints.list.initiate());
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
