@@ -11,7 +11,8 @@
     "debug": "cross-env DEBUG=* npm start",
     "test": "cross-env NODE_ENV=test mocha -r ts-node/register 'test/**/*.test.ts'",
     "test-debug": "cross-env DEBUG=* npm test",
-    "data:import": "node scripts/seed.script.ts",
+    "migrate:db": "tsc && node ./build/scripts/migrate.mongoose.js",
+    "rollback:db": "tsc && node ./build/scripts/rollback.mongoose.js",
     "release": "standard-version"
   },
   "repository": {
