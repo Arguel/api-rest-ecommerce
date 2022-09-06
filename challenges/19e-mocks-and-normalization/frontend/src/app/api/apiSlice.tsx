@@ -21,7 +21,11 @@ const baseQueryWithReauth = async (args, api, extraOptions) => {
   //@ts-ignore
   if (result?.error?.originalStatus === 403) {
     // send refresh token to get new access token
-    const refreshResult = await baseQuery('/refresh', api, extraOptions);
+    const refreshResult = await baseQuery(
+      '/auth/refresh-token',
+      api,
+      extraOptions
+    );
     if (refreshResult?.data) {
       const user = api.getState().auth.user;
       // @ts-ignore
