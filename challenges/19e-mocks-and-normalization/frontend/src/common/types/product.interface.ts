@@ -1,5 +1,5 @@
 export interface IProduct {
-  _id: string;
+  id: string;
   name: string;
   description?: string;
   productCode?: number;
@@ -16,4 +16,12 @@ export interface IProduct {
   createdAt?: Date;
   updatedAt?: Date;
   __v: number;
+}
+
+export interface IProductsAdapter {
+  ids: Array<string | number>;
+  // A lookup table mapping entity IDs to the corresponding entity objects
+  entities: {
+    [index: number]: IProduct;
+  };
 }

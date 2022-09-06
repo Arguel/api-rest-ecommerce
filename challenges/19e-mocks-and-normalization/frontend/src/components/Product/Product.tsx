@@ -1,11 +1,10 @@
-import { IProduct } from 'common/types/product.interface';
 import { Link } from 'react-router-dom';
 
-const Product = (product: IProduct) => {
+const Product = ({ product }) => {
   return (
     <li className="m-2 shop-w-220px d-inline-block">
       <div className="border m-2 rounded">
-        <Link className="d-block" to={`/product/${product._id}`}>
+        <Link className="d-block" to={`/product/${product.id}`}>
           <div className="m-auto p-2 h-200px overflow-hidden">
             <figure className="figure w-100 h-100">
               <img
@@ -18,7 +17,7 @@ const Product = (product: IProduct) => {
         </Link>
         <div className="p-2 h-130px">
           <h5 className="my-2 text-truncate ff-lato-4 child-underline">
-            <Link className="c-under text-dark" to={`/product/${product._id}`}>
+            <Link className="c-under text-dark" to={`/product/${product.id}`}>
               {product.name}
             </Link>
           </h5>
