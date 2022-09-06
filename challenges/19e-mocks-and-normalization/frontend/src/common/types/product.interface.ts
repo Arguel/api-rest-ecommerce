@@ -1,7 +1,5 @@
-import mongoose from 'mongoose';
-
-export interface ICreateProductDto extends mongoose.Document {
-  id: string;
+export interface IProduct {
+  _id: string;
   name: string;
   description?: string;
   productCode?: number;
@@ -17,4 +15,5 @@ export interface ICreateProductDto extends mongoose.Document {
   stock: number;
   createdAt?: Date;
   updatedAt?: Date;
+  __v: number;
 }
