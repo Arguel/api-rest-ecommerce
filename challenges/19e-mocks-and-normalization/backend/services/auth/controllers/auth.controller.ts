@@ -181,9 +181,9 @@ class AuthController {
         // Refresh token was still valid
         const accessToken = jwt.sign(
           {
-            email: decoded.email,
-            firstName: decoded.firstName,
-            permissionLevel: decoded.permissionLevel,
+            email: foundUser.email,
+            firstName: foundUser.firstName,
+            permissionLevel: foundUser.permissionLevel,
           },
           accessTokenSecret,
           { expiresIn: '10m' }

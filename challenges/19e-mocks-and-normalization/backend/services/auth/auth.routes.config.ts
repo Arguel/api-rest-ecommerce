@@ -14,10 +14,7 @@ export default class AuthRoutes extends CommonRoutesConfig {
       AuthMiddleware.validateBodyRequest,
       AuthController.auth,
     ]);
-    this.app.post(`/auth/refresh-token`, [
-      JwtMiddleware.validJWTNeeded,
-      AuthController.refreshToken,
-    ]);
+    this.app.post(`/auth/refresh-token`, [AuthController.refreshToken]);
     this.app.post(`/auth/logout`, [AuthController.logout]);
     return this.app;
   }
