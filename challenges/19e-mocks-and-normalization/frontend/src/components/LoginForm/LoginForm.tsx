@@ -38,8 +38,8 @@ const LoginForm = () => {
     try {
       const payload = await login({ email, password }).unwrap();
       // @ts-ignore
-      const decodedUser: IUser = jwtDecode<JwtPayload>(payload.accessToken);
-      const user = {
+      const decodedUser: IUser = jwtDecode<JwtPayload>(payload?.accessToken);
+      const user: IUser = {
         email: decodedUser.email,
         firstName: decodedUser.firstName,
         permissionLevel: decodedUser.permissionLevel,

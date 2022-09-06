@@ -191,7 +191,7 @@ const SignupForm = () => {
 
       {/* f-sign-up-btn */}
       <div className="col-12">
-        <button className="btn btn-primary d-block mx-auto w-50" type="submit">
+        <button className="btn btn-primary d-block mx-auto w-50">
           Sign up
         </button>
         <span className="d-block mt-4 text-center">
