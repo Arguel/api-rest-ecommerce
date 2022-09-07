@@ -1,0 +1,41 @@
+.cart-title-250px {
+  width: auto !important;
+
+  @include bps($bp-md) {
+    width: 15.625em !important; //250px
+  }
+  @include bps($bp-lg) {
+    width: auto !important;
+  }
+}
+.ps-60px {
+  padding-left: 3.75em !important;
+
+  @include bps($bp-xs) {
+    padding-left: initial !important;
+  }
+}
+
+.w-checkout-item-title {
+  width: auto;
+
+  @include bps($bp-sm) {
+    max-width: 60% !important;
+  }
+}
+
+.w-checkout-item-price {
+  width: auto;
+
+  @include bps($bp-sm) {
+    max-width: 30% !important;
+  }
+}
+
+.cost-border {
+  border-top: initial;
+
+  @include bps($bp-xs) {
+    border-top: 1px $color-darker-2 solid;
+  }
+}
