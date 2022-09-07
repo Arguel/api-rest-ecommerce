@@ -2,6 +2,7 @@ import Navbar from '../../components/Navbar/Navbar';
 import React from 'react';
 import Banner from 'components/Banner/Banner';
 import Items from 'components/Items/Items';
+import Footer from 'components/Footer/Footer';
 
 const Shop = () => {
   return (
@@ -17,6 +18,7 @@ const Shop = () => {
         </section>
         {/*shop*/}
       </main>
+      <Footer />
     </React.Fragment>
   );
 };
