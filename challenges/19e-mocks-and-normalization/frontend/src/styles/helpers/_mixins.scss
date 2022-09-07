@@ -1,0 +1,20 @@
+@mixin transition($args...) {
+  -webkit-transition: $args;
+  -moz-transition: $args;
+  -ms-transition: $args;
+  -o-transition: $args;
+  transition: $args;
+}
+@mixin opacity($opacity) {
+  opacity: $opacity;
+  $opacity-ie: $opacity * 100;
+  filter: alpha(opacity=$opacity-ie); //IE8
+}
+//breakpoints
+@mixin bps ($args...) {
+  @each $i in $args {
+    @media only screen and ($i) {
+      @content;
+    }
+  }
+}
