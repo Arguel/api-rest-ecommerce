@@ -51,147 +51,38 @@ const Navbar = () => {
         >
           <span className="navbar-toggler-icon"></span>
         </button>
-        <div className="collapse navbar-collapse" id="navbarSupportedContent">
+        <div className="collapse navbar-collapse">
           {/* nav */}
           <ul className="navbar-nav align-items-center justify-content-around mx-auto col-lg-8">
             {/* Home */}
             <li className="nav-item">
-              <Link className="nav-link fs-5" to="/" aria-current="page">
+              <Link className="nav-link fs-5" to="/">
                 Home
               </Link>
             </li>
             {/* About */}
-            <li className="nav-item dropdown text-center">
-              <Link
-                className="nav-link fs-5"
-                to="#"
-                id="navbarDropdownMenuLinkAbout"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
+            <li className="nav-item">
+              <Link className="nav-link fs-5" to="/">
                 About
               </Link>
-              <ul
-                className="nav-color-list dropdown-menu text-center text-lg-start"
-                aria-labelledby="navbarDropdownMenuLinkAbout"
-              >
-                <li>
-                  <Link className="dropdown-item" to="../about/about-us">
-                    About us
-                  </Link>
-                </li>
-                <li>
-                  <Link className="dropdown-item" to="../about/locations">
-                    Locations
-                  </Link>
-                </li>
-                <li>
-                  <Link className="dropdown-item" to="../about/our-products">
-                    Our products
-                  </Link>
-                </li>
-              </ul>
             </li>
             {/* Shop */}
-            <li className="nav-item dropdown text-center">
-              <Link
-                className="nav-link active fs-5"
-                to="#"
-                id="navbarDropdownMenuLinkShop"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
+            <li className="nav-item">
+              <Link className="nav-link active fs-5" to="/" aria-current="page">
                 Shop
               </Link>
-              <ul
-                className="nav-color-list dropdown-menu text-center text-lg-start"
-                aria-labelledby="navbarDropdownMenuLinkDrop"
-              >
-                <li>
-                  <Link className="dropdown-item" to="../shop/shop">
-                    Catalogue
-                  </Link>
-                </li>
-                <li>
-                  <Link className="dropdown-item" to="../shop/top-offers">
-                    Top offers
-                  </Link>
-                </li>
-              </ul>
             </li>
             {/* Recipes */}
-            <li className="nav-item dropdown text-center">
-              <Link
-                className="nav-link fs-5"
-                to="#"
-                id="navbarDropdownMenuLinkRecipes"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
+            <li className="nav-item">
+              <Link className="nav-link fs-5" to="/">
                 Recipes
               </Link>
-              <ul
-                className="nav-color-list dropdown-menu text-center text-lg-start"
-                aria-labelledby="navbarDropdownMenuLinkRecipes"
-              >
-                <li>
-                  <Link className="dropdown-item" to="../recipes/classNameics">
-                    Classics
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    className="dropdown-item"
-                    to="../recipes/healthy-recipes"
-                  >
-                    Healthy
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    className="dropdown-item"
-                    to="../recipes/wholemeal-recipes"
-                  >
-                    Wholemeal
-                  </Link>
-                </li>
-                <li>
-                  <Link className="dropdown-item" to="../recipes/easy-recipes">
-                    Easy
-                  </Link>
-                </li>
-              </ul>
             </li>
             {/* Help */}
-            <li className="nav-item dropdown text-center">
-              <Link
-                className="nav-link fs-5"
-                to="#"
-                id="navbarDropdownMenuLinkHelp"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
+            <li className="nav-item">
+              <Link className="nav-link fs-5" to="/">
                 Help
               </Link>
-              <ul
-                className="nav-color-list dropdown-menu text-center text-lg-start"
-                aria-labelledby="navbarDropdownMenuLinkHelp"
-              >
-                <li>
-                  <Link className="dropdown-item" to="../help/contact">
-                    Contact
-                  </Link>
-                </li>
-                <li>
-                  <Link className="dropdown-item" to="../help/faq/faq">
-                    FAQ
-                  </Link>
-                </li>
-              </ul>
             </li>
             {/* Searchbar */}
             <li className="nav-item">
@@ -199,7 +90,6 @@ const Navbar = () => {
                 <div className="input-group">
                   <button
                     className="input-group-text nav-searchbar"
-                    id="search-icon"
                     aria-label="searchbar icon"
                   >
                     <FontAwesomeIcon
@@ -274,7 +164,7 @@ const Navbar = () => {
                 </ul>
               </li>
               <li className="m-1 d-none d-lg-block position-relative">
-                <Link className="text-dark" id="cart-checkout" to="/cart">
+                <Link className="text-dark" to="/cart">
                   <FontAwesomeIcon icon={faShoppingCart} className="fs-4" />
                   <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-primary h-pointer">
                     <span>0</span>
